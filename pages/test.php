@@ -23,10 +23,13 @@ class vector {
         $this->_tailleTableau++;
     }
     public function size(){
-    	echo $this->_tailleTableau;
+    	return $this->_tailleTableau;
     }
     public function getTab(){
     	return $this->_arrayList;
+    }
+    public function at($i){
+    	return $this->_arrayList[$i];
     }
 } 
 
@@ -38,10 +41,14 @@ function showDir($dir,$nbTabulation,&$vector)
 	$files1 = scandir($dir);
 	for($j=0;$j<count($files1);$j++){
 		$value = $files1[$j];
-		if($value != ".." && $value != '.' && $value != ".Trash-1000"){
-			//Enleve le format de la video
-			$value=explode(".",$value);
-			$value=$value[0];
+		//echo $value;
+		if($value != ".." && $value != '.' && $value != ".Trash-1000" && $value != "affiche"){
+			/////////////////////////////////////////////////
+			//Enleve le format de la video si besoin
+			//$value=explode(".",$value);
+			//$value=$value[0];
+			////////////////////////////////////////////////
+			
 			//echo $value;
 			/////ECHO LES TABULATIONS POUR FAIRE L'ARBRE
 			/*for($i=0;$i<$nbTab;$i++){
@@ -61,33 +68,54 @@ function showDir($dir,$nbTabulation,&$vector)
 	return $vector;
 }
 
-
+//MAIN
+//Connexion a la base de données et récupération de la base de donnée
 $link = mysqli_connect("localhost","pi","raspberry","site_martin");
 $rqtAfficher = mysqli_query($link, "SELECT * FROM films") or die(mysql_error());
 
+//Initialisation de mes variables
 $vectorFilmUSB = new vector; 
 $vectorFilmBDD = new vector; 
-
 $nbTab=0;
-$dir = '../films';
+$dir = '../Films';
+$dirAffiche = '../Films/affiche';
 $films = array();
+
+//vectorFilmUSB est rempli par le contenu du fichier contenu dasn le disque
 $vectorFilmUSB = showDir($dir,$nbTab,$vectorFilmUSB);
 
-$vectorFilmUSB->size();
-print("!");
 
+//Affichage sur la page !
+print("</br>Film sur le disque :");
 $films = $vectorFilmUSB->getTab();
-print_r($films);
 for($i=0;$i<count($films);$i++)
 {
-	echo " Pute ".$films[$i];
+	echo "</br>".$films[$i];
 }
-print("¡");
-
+echo "\n";
+print("</br>Film dans la base de donnée :");
 while ($row = mysqli_fetch_assoc($rqtAfficher)) {
 	$titre=$row["titre"];
 	$vectorFilmBDD->add($titre);
-	print($titre."\n");
+	print(",".$titre);
+}
+//FIN Affichage sur la page !
+
+//Insertion dasn la base de donnée si le film n'existe pas '
+for($i=0;$i<$vectorFilmUSB->size();$i++){
+	$existeDeja=false;
+	$nomFilm=explode(".",$vectorFilmUSB->at($i));
+	$nomFilm=$nomFilm[0];
+	for($j=0;$j<$vectorFilmBDD->size();$j++){
+		if($nomFilm==$vectorFilmBDD->at($j)){
+			$existeDeja = true;
+			echo "</br> Ce film existe deja : ".$nomFilm;
+		}
+	}
+	if($existeDeja == false){
+		$rqtInsertion = mysqli_query($link,"INSERT INTO `films`(`chemin`,`affiche`,`titre`) VALUES (\"".$dir."/".$vectorFilmUSB->at($i)."\",\"".$dirAffiche."/".$nomFilm.".jpg\",\"".$nomFilm."\")") or die(mysql_error());
+		echo "</br> Ajout de : ".$nomFilm;
+	}
 }
 
 ?>

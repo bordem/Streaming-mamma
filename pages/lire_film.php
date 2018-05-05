@@ -47,7 +47,6 @@
         <?php //echo $chemin_du_film; ?>
         <p><video width="50%" controls>
             <source src="<?php echo $chemin_du_film; ?>" type="video/webm">
-            
             Votre navigateur ne supporte pas la vidéo. Mettez le à jour ou utilisez un autre navigateur.
         </video></p>
     </body>
