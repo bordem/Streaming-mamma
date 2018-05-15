@@ -5,10 +5,15 @@
     <head>
         <title>Films</title>
         <meta charset="utf-8"  />
-        <link rel="stylesheet" href="style/style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
+        
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        
+        <link rel="stylesheet" href="style/style.css" />
     </head>
     
     <body>
@@ -23,58 +28,9 @@
                 include('footer.html');
                 exit();
             }
-        ?>
-        
-        
-        
-        <?php
-        // MODIFICATION DE LA BD ---------------------------------------
-        
-        if(isset($_POST['bouttonadd'])) {
-            $titre = $_POST['titrefilm'];
-            $path = $_POST['chemindd'];
-            $realisateur = $_POST['real'];
-            $anneesortie = $_POST['sortie'];
-            
-            $requete = "INSERT INTO films (titre, chemin, realisateur, anneesortie) VALUES ('".$titre."','".$path."','".$realisateur."','".$anneesortie."')";
-            $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
-            
-            if (mysqli_query($link, $requete)) {
-                echo "Film ajouté avec succès.";
-            }
-            else {
-                echo "Erreur dans l'ajout: " . mysqli_error($link)." Veuillez recommencer.";
-            }
-        }
-        
-        if(isset($_POST['bouttonsupr'])){
-            $titre = $_POST['titrefilm2']; // Notice: Use of undefined constant titrefilm2 - assumed 'titrefilm2' in /[...]pages/gerer_films.php on line 46 */
-            
-            $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
-            $requete2 = "DELETE FROM films WHERE titre = '".$titre."'";
-            mysqli_query($link, $requete2);
-            
-            if (mysqli_affected_rows($link) > 0) {
-                echo "Film supprimé avec succès.";
-            }
-            else {
-                echo "Erreur dans la supression: " . mysqli_error($link)." Veuillez recommencer.";
-            }
-        }
-        ?>
-        
-        
-        <!-- FORMULAIRE ------------------------------------------------>
-    
-        <h1>Chercher un film dans la base de données</h1><br/>
-        <form action="gerer_films.php" method="post">
-            Titre (exact) : <input type="text" name="titre"/><br/>
-            <input type="submit" value="Envoyer" name="bouttonsrch"/>
-        </form>
-        
-        
-        
-        <?php
+
+
+
         // RECHERCHE DANS LA BD ----------------------------------------
         
         $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
@@ -96,11 +52,59 @@
 			    echo "</table><br/>";
             }
         }
+        
+        
+        // MODIFICATION DE LA BD ---------------------------------------
+        if(isset($_POST['bouttonadd'])) { // AJOUT
+            $titre = $_POST['titrefilm'];
+            $path = $_POST['chemindd'];
+            $realisateur = $_POST['real'];
+            $anneesortie = $_POST['sortie'];
+            
+            $requete = "INSERT INTO films (titre, chemin, realisateur, anneesortie) VALUES ('".$titre."','".$path."','".$realisateur."','".$anneesortie."')";
+            $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
+            
+            if (mysqli_query($link, $requete)) {
+                echo "Film ajouté avec succès.";
+            }
+            else {
+                echo "Erreur dans l'ajout: " . mysqli_error($link)." Veuillez recommencer.";
+            }
+        }
+        
+        if(isset($_POST['bouttonsupr'])){ // SUPRESSION
+            $titre = $_POST['titrefilm2'];
+            
+            $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
+            $requete2 = "DELETE FROM films WHERE titre = '".$titre."'";
+            mysqli_query($link, $requete2);
+            
+            if (mysqli_affected_rows($link) > 0) {
+                echo "Film supprimé avec succès.";
+            }
+            else {
+                echo "Erreur dans la supression: " . mysqli_error($link)." Veuillez recommencer.";
+            }
+        }
         ?>
         
         
+    
+
         
-        <!-- Corps de la page -->
+        <!-- CORPS DE LA PAGE -->
+        <h1>Chercher un film dans la base de données</h1><br/>
+        <form action="gerer_films.php" method="post">
+            Titre (exact) : <input type="text" name="titre"/><br/>
+            <input type="submit" value="Envoyer" name="bouttonsrch"/>
+        </form>
+        
+        <h1>Mettre à jour la base de données</h1><br/>
+        
+        <form action="maj_bdd.php" method="post">
+            <input type="submit" name="maj_bdd" value="Go !">
+        </form>
+        
         <h1>Ajouter un film</h1><br/>
         <form action="gerer_films.php" method="post"><table>
             <tr><td>Titre* :</td>

@@ -19,7 +19,7 @@
     
     <body>
         <?php
-        if(isset($_POST['maj_bdd'])){
+            include('header.php');
             ////////////////////////////////////
             //CLASS vector , tableau dynamique//
             ////////////////////////////////////
@@ -126,14 +126,10 @@
 		            echo "</br> Ajout de : ".$nomFilm;
 	            }
             }
-        }
         ?>
         
         <h1>Rafraichissement de la base de données</h1>
-        
-        <form action="test.php" method="post">
-            <input type="submit" name="maj_bdd" value="Go !">
-        </form>
-        
+
+       <?php include('footer.html'); ?> 
     </body>
 </html>

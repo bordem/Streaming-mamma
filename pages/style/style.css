@@ -20,6 +20,7 @@ main {
 }
 
 p {
+    font-size: large;
     text-align: center;
     color: #000000;
 }

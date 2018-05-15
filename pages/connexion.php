@@ -2,12 +2,12 @@
 $_SESSION['login'] = "visiteur";
 $_SESSION['statut'] = "deconnecte";
 
-$_SESSION['link1'] = "borde";
-// $_SESSION['link1'] = "pi";
-$_SESSION['link2'] = "tougrise";
-// $_SESSION['link2'] = "raspberry";
-$_SESSION['link3'] = "site_martin";
-// $_SESSION['link3'] = "pi";
+//$_SESSION['link1'] = "borde";
+$_SESSION['link1'] = "pi";
+//$_SESSION['link2'] = "tougrise";
+$_SESSION['link2'] = "raspberry";
+//$_SESSION['link3'] = "site_martin";
+//$_SESSION['link3'] = "pi";
 
 
 $_SESSION['link'] = mysqli_connect("localhost","pi","raspberry","site_martin"); ?>
