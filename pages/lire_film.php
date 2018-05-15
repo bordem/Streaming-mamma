@@ -45,12 +45,13 @@
         <!-- On affiche le film -->
         <h1><?php echo $titre_du_film; ?></h1><br/>
         <?php //echo $chemin_du_film; ?>
-        <p><video width="50%" controls>
-            <source src="<?php echo $chemin_du_film; ?>" type="video/webm">
-            
-            Votre navigateur ne supporte pas la vidéo. Mettez le à jour ou utilisez un autre navigateur.
-        </video></p>
-    </body>
+        <p>
+        	<video id="video" height="240" width="360" autoplay controls> 
+        		<source src="<?php echo $chemin_du_film; ?>"> 
+        		<source src="<?php echo $chemin_du_film; ?>" type="video/webm"> 
+        		<source src="<?php echo $chemin_du_film; ?>" type="video/ogg"> 
+        	</video>
+        </p>
     
     
     <!-- Bas de page (mentions légales, ...) -->

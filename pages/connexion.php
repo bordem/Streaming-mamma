@@ -2,15 +2,15 @@
 $_SESSION['login'] = "visiteur";
 $_SESSION['statut'] = "deconnecte";
 
-$_SESSION['link1'] = "root";
+$_SESSION['link1'] = "borde";
 // $_SESSION['link1'] = "pi";
-$_SESSION['link2'] = "root";
+$_SESSION['link2'] = "tougrise";
 // $_SESSION['link2'] = "raspberry";
 $_SESSION['link3'] = "site_martin";
 // $_SESSION['link3'] = "pi";
 
 
-$_SESSION['link'] = mysqli_connect("localhost","root","root","site_martin"); ?>
+$_SESSION['link'] = mysqli_connect("localhost","pi","raspberry","site_martin"); ?>
 
 <!doctype html>
 <html>
@@ -25,10 +25,15 @@ if(isset($_POST['connexion'])) { // bouton connexion cliqué
             echo "Le champ Mot de passe est vide.";
         }
         else {
+			echo "Salut";
             $pseudo = $_POST['pseudo'];
+			echo "Salut";
             $pass = $_POST['password'];
+			echo "Salut";
             $link = mysqli_connect("localhost", $_SESSION['link1'], $_SESSION['link2'], $_SESSION['link3']);
-            $requete = mysqli_query($link, "SELECT * FROM utilisateurs WHERE login = '".$pseudo."' AND passwd = '".$pass."'") or die(mysql_error());
+			echo "Salut";            
+			$requete = mysqli_query($link, "SELECT * FROM utilisateurs WHERE login = '".$pseudo."' AND passwd = '".$pass."'") or die(mysql_error());
+			echo "Salut";
             if(mysqli_num_rows($requete) == 0) {
                 echo "L'identifiant ou le mot de passe est incorrect. Le compte n'a pas été trouvé.";
             }

@@ -52,10 +52,11 @@
             <p>
 			    <td>
 					<?php echo $row['titre']; ?></br>
-					<img src="../images/<?php echo $row['affiche']; ?>"><br/>
+					<a href=<?php echo "lire_film.php?idfilm=".$row['idfilm']; ?>>
+						<img src="../images/<?php echo $row['affiche']; ?>">
+					</a><br/>
 					Année de sortie : <?php echo $row['anneesortie']; ?><br/>
 					Réalisateur : <?php echo $row['realisateur']; ?><br/>
-					<a href=<?php echo "lire_film.php?idfilm=".$row['idfilm']; ?>>Voir !</a>
 				</td>
 			</p>
 			
