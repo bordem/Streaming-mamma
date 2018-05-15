@@ -44,13 +44,8 @@ if(isset($_POST['connexion'])) { // bouton connexion cliqué
 				}
 				
 				$_SESSION['statut'] = $stat;
-				
-                if ($stat == "admin")
-                    header("Location: menu_admin.php"); // Redirection du navigateur
-                else if ($stat == "user")
-                    header("Location: choix_film.php"); // Redirection du navigateur
+                header("Location: choix_film.php"); // Redirection du navigateur
                 mysqli_close($_SESSION['link']);
-                exit; //on affiche pas le reste de la page
             
             }
         }
