@@ -25,10 +25,12 @@
             ////////////////////////////////////
             class vector {
                 private $_arrayList=array();
+                private $_arrayList2=array();
                	private $_tailleTableau=0;
                
-                public function add($data) {
+                public function add($data,$data2) {
                     $this->_arrayList[$this->_tailleTableau]=$data;
+                    $this->_arrayList2[$this->_tailleTableau]=$data2;
                     $this->_tailleTableau++;
                 }
                 public function size(){
@@ -37,8 +39,11 @@
                 public function getTab(){
                 	return $this->_arrayList;
                 }
-                public function at($i){
+                public function at1($i){
                 	return $this->_arrayList[$i];
+                }
+                public function at2($i){
+                	return $this->_arrayList2[$i];
                 }
             } 
 
@@ -66,10 +71,15 @@
 			            //echo $value."\n";
 			            if(is_dir($dir."/".$value)){
 				            //echo $dir."/".$value;
+				            
 				            showDir($dir."/".$value,$nbTabulation+1,$vector);
 			            }
 			            else{
-				            $vector->add($value);
+			                $format=explode(".",$value);
+			                $format=$format[1];
+			                if ($format == "mp4" || $format == "ogv" || $format == "webm") {
+				                $vector->add($value,$dir);
+				            }
 			            }
 			            //echo $value;
 		            }
@@ -79,7 +89,11 @@
 
             //MAIN
             //Connexion a la base de données et récupération de la base de donnée
-            $link = mysqli_connect("localhost","pi","raspberry","site_martin");
+            $link1 = $_SESSION['link1'];
+            $link2 = $_SESSION['link2'];
+            $link3 = $_SESSION['link3'];
+
+            $link = mysqli_connect("localhost",$link1,$link2,$link3);
             $rqtAfficher = mysqli_query($link, "SELECT * FROM films") or die(mysql_error());
 
             //Initialisation de mes variables
@@ -105,30 +119,29 @@
             print("</br>Film dans la base de donnée :");
             while ($row = mysqli_fetch_assoc($rqtAfficher)) {
 	            $titre=$row["titre"];
-	            $vectorFilmBDD->add($titre);
+	            $chemin=$row["chemin"];
+	            $vectorFilmBDD->add($titre,$chemin);
 	            print(",".$titre);
             }
             //FIN Affichage sur la page !
 
-            //Insertion dasn la base de donnée si le film n'existe pas '
+            //Insertion dans la base de donnée si le film n'existe pas '
             for($i=0;$i<$vectorFilmUSB->size();$i++){
 	            $existeDeja=false;
-	            $nomFilm=explode(".",$vectorFilmUSB->at($i));
+	            $nomFilm=explode(".",$vectorFilmUSB->at1($i));
 	            $nomFilm=$nomFilm[0];
 	            for($j=0;$j<$vectorFilmBDD->size();$j++){
-		            if($nomFilm==$vectorFilmBDD->at($j)){
+		            if($nomFilm==$vectorFilmBDD->at1($j)){
 			            $existeDeja = true;
 			            echo "</br> Ce film existe deja : ".$nomFilm;
 		            }
 	            }
 	            if($existeDeja == false){
-		            $rqtInsertion = mysqli_query($link,"INSERT INTO `films`(`chemin`,`affiche`,`titre`) VALUES (\"".$dir."/".$vectorFilmUSB->at($i)."\",\"".$dirAffiche."/".$nomFilm.".jpg\",\"".$nomFilm."\")") or die(mysql_error());
+		            $rqtInsertion = mysqli_query($link,"INSERT INTO `films`(`chemin`,`affiche`,`titre`) VALUES (\"".$vectorFilmUSB->at2($i)."/".$vectorFilmUSB->at1($i)."\",\"".$dirAffiche."/".$nomFilm.".jpg\",\"".$nomFilm."\")") or die(mysql_error());
 		            echo "</br> Ajout de : ".$nomFilm;
 	            }
             }
         ?>
-        
-        <h1>Rafraichissement de la base de données</h1>
 
        <?php include('footer.html'); ?> 
     </body>

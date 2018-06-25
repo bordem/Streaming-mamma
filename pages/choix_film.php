@@ -9,10 +9,6 @@
         <title>Choix du film</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
-            <!--BOOTSTRAP-->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="style/style.css" />
     </head>
     
@@ -37,11 +33,22 @@
 
         
         <h1>Tous les films</h1> <br/>
+        <div id="searchbar">
+            <form action="filmRecherche.php" method="post">
+            	<input type="text" name="tagCherche" placeholder="Rechercher"/>
+                <input type="submit" value="OK" />    
+            </form>
+        </div>
         
         <!-- On affiche un tableau des films -->
-        <table cellspacing="0" border="1">
+        <table id="tableauFilms">
             <?php 
-            $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
+            $link1 = $_SESSION['link1'];
+            $link2 = $_SESSION['link2'];
+            $link3 = $_SESSION['link3'];
+            
+            $link = mysqli_connect("localhost",$link1,$link2,$link3);
+            
             $requete = mysqli_query($link, "SELECT * FROM films");
             $i=0;
             while ($row = mysqli_fetch_assoc($requete)) {
@@ -51,12 +58,12 @@
 				    
             <p>
 			    <td>
-					<?php echo $row['titre']; ?></br>
-					<a href=<?php echo "lire_film.php?idfilm=".$row['idfilm']; ?>>
-						<img src="../images/<?php echo $row['affiche']; ?>">
+			    	<a href=<?php echo "lire_film.php?idfilm=".$row['idfilm']; ?>>
+						<?php echo $row['titre']; ?></br>
+						<img src="<?php echo $row['affiche']; ?>">
 					</a><br/>
-					Année de sortie : <?php echo $row['anneesortie']; ?><br/>
-					Réalisateur : <?php echo $row['realisateur']; ?><br/>
+					<!-- <?php echo $row['anneesortie']; ?><br/>
+					<?php echo $row['realisateur']; ?><br/> -->
 				</td>
 			</p>
 			

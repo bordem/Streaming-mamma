@@ -10,16 +10,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
 		
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="style/style.css" />
     </head>
     
     <body>
     
         <?php include('header.php'); ?>
-        
+        <main class="gestion">
         
         
         <?php
@@ -43,7 +40,12 @@
             $pass = $_POST['password'];
             $stat = $_POST['statut'];
             
-            $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
+            $link1 = $_SESSION['link1'];
+            $link2 = $_SESSION['link2'];
+            $link3 = $_SESSION['link3'];
+            
+            $link = mysqli_connect("localhost",$link1,$link2,$link3);
+            
             $requete = "INSERT INTO utilisateurs (login, passwd, statut) VALUES ('".$pseudo."','".$pass."','".$stat."')";
             if (mysqli_query($link, $requete)) {
                 echo "Membre ajouté avec succès.";
@@ -56,7 +58,12 @@
         if(isset($_POST['supression'])) {
             $pseudo = $_POST['login2'];
             
-            $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
+            $link1 = $_SESSION['link1'];
+            $link2 = $_SESSION['link2'];
+            $link3 = $_SESSION['link3'];
+            
+            $link = mysqli_connect("localhost",$link1,$link2,$link3);
+            
             $requete2 = "DELETE FROM utilisateurs WHERE login = '".$pseudo."'";
 
             if (mysqli_query($link, $requete2)) {
@@ -73,7 +80,12 @@
 
             // TABLEAU DES MEMBRES -----------------------------------------------    
             
-            $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
+            $link1 = $_SESSION['link1'];
+            $link2 = $_SESSION['link2'];
+            $link3 = $_SESSION['link3'];
+            
+            $link = mysqli_connect("localhost",$link1,$link2,$link3);
+            
             $rqtAfficher = mysqli_query($link, "SELECT * FROM utilisateurs") or die(mysql_error());
             
             echo "<table cellspacing=\"0\" border=\"1\"><tr><th>Pseudo</th><th>Mot de passe</th><th>Statut</th></tr>";
@@ -113,7 +125,7 @@
         </form>
             
             
-            
+        </main>
         <?php include('footer.html'); ?>
     </body>
 </html>

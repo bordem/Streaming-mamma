@@ -5,14 +5,8 @@
     <head>
         <title>Films</title>
         <meta charset="utf-8"  />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
-        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        
         <link rel="stylesheet" href="style/style.css" />
     </head>
     
@@ -28,12 +22,15 @@
                 include('footer.html');
                 exit();
             }
-
-
-
-        // RECHERCHE DANS LA BD ----------------------------------------
-        
-        $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
+			// RECHERCHE DANS LA BD ----------------------------------------
+		?>
+        <main class="gestion">;
+        <?php
+        $link1 = $_SESSION['link1'];
+        $link2 = $_SESSION['link2'];
+        $link3 = $_SESSION['link3'];
+            
+        $link = mysqli_connect("localhost",$link1,$link2,$link3);
         
         if(isset($_POST['bouttonsrch'])){
             
@@ -55,22 +52,7 @@
         
         
         // MODIFICATION DE LA BD ---------------------------------------
-        if(isset($_POST['bouttonadd'])) { // AJOUT
-            $titre = $_POST['titrefilm'];
-            $path = $_POST['chemindd'];
-            $realisateur = $_POST['real'];
-            $anneesortie = $_POST['sortie'];
-            
-            $requete = "INSERT INTO films (titre, chemin, realisateur, anneesortie) VALUES ('".$titre."','".$path."','".$realisateur."','".$anneesortie."')";
-            $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
-            
-            if (mysqli_query($link, $requete)) {
-                echo "Film ajouté avec succès.";
-            }
-            else {
-                echo "Erreur dans l'ajout: " . mysqli_error($link)." Veuillez recommencer.";
-            }
-        }
+
         
         if(isset($_POST['bouttonsupr'])){ // SUPRESSION
             $titre = $_POST['titrefilm2'];
@@ -93,45 +75,47 @@
 
         
         <!-- CORPS DE LA PAGE -->
-        <h1>Chercher un film dans la base de données</h1><br/>
-        <form action="gerer_films.php" method="post">
-            Titre (exact) : <input type="text" name="titre"/><br/>
-            <input type="submit" value="Envoyer" name="bouttonsrch"/>
-        </form>
         
-        <h1>Mettre à jour la base de données</h1><br/>
-        
-        <form action="maj_bdd.php" method="post">
-            <input type="submit" name="maj_bdd" value="Go !">
-        </form>
-        
-        <h1>Ajouter un film</h1><br/>
-        <form action="gerer_films.php" method="post"><table>
-            <tr><td>Titre* :</td>
-                <td><input type="text" name="titrefilm"/></td>
-            </tr>
-            <tr>
-                <td>Chemin* :</td>
-                <td><input type="text" name="chemindd"/></td>
-            </tr>
-            <tr>
-                <td>Réalisateur :</td>
-                <td><input type="text" name="real"/></td>
-            </tr>
-            <tr>
-                <td>Année de sortie :</td>
-                <td><input type="text" name="sortie"/></td>
-            </tr>
-        </table>
-        <input type="submit" name="bouttonadd" value="Valider"/></form></center><br/>
-        
-        <h1>Supprimer un film</h1><br/>
-        <form action="gerer_films.php" method="post">
-            Titre : <input type="text" name="titrefilm2"/><br/>
-            <input type="submit" name="bouttonsupr" value="Valider"/>
-        </form>
-        <br/>
-        
+            <h1>Chercher un film dans la base de données</h1><br/>
+            <form action="gerer_films.php" method="post">
+                Titre (exact) : <input type="text" name="titre"/><br/>
+                <input type="submit" value="Envoyer" name="bouttonsrch"/>
+            </form>
+            
+            <h1>Mettre à jour la base de données</h1><br/>
+            
+            <form action="maj_bdd.php" method="post">
+                <input type="submit" name="maj_bdd" value="Go !">
+            </form>
+            
+            <h1>Ajouter un film</h1><br/>
+            <form action="upload_films.php" method="post" enctype="multipart/form-data">
+                Ajouter le film* :<input type="file" name="mvToUpload" id="mvToUpload" required /></br>
+                Titre* :<input type="text" name="titrefilm" required /></br>
+                
+                Catégorie* :
+                    
+                        <select name="categorie" required >
+                           <option value="Action">Action</option>
+                           <option value="Animes">Anime</option>
+                           <option value="Comedie">Comédie</option>
+                           <option value="Sciences_Fiction">SF</option>
+                           <option value="Autre">Autre</option>
+                        </select></br>
+                        
+                    Ajouter l'affiche du film :<input type="file" name="imgToUpload" id="imgToUpload" /></br>
+                    Réalisateur :<input type="text" name="real"/></br>
+					Année de sortie :<input type="text" name="sortie"/></br>
+					
+            <input type="submit" name="bouttonadd" value="Valider"/></form><br/>
+            
+            <h1>Supprimer un film</h1><br/>
+            <form action="gerer_films.php" method="post">
+                Titre : <input type="text" name="titrefilm2"/><br/>
+                <input type="submit" name="bouttonsupr" value="Valider"/>
+            </form>
+            <br/>
+        </main>
         <?php include('footer.html'); ?>
     </body>
 </html>
