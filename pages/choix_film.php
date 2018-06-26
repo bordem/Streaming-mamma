@@ -1,8 +1,11 @@
-<?php session_start(); ?>
+<?php
+
+session_start(); 
+include("db_connect.php");
+
+?>
 
 <!doctype html>
-
-
 <html>
     <head>
         <meta charset="utf-8" />
@@ -17,21 +20,15 @@
         <?php include('header.php'); ?>
         <main>
 
-
-
-        <!-- On refuse l'accès si le visiteur n'est pas connecté -->
         <?php
+        	// On refuse l'accès si le visiteur n'est pas connecté -->
             if ($_SESSION['statut'] != "admin" 
             && $_SESSION['statut'] != "user") {
-                echo("<p>Vous devez être connecté pour accéder à cette page.</p>");
+                echo("<p>Vous devez être connecté pour accéder à cette page.</p></main>");
                 include('footer.html');
                 exit();
             }
          ?>
-
-
-
-        
         <h1>Tous les films</h1> <br/>
         <div id="searchbar">
             <form action="filmRecherche.php" method="post">
@@ -40,14 +37,9 @@
             </form>
         </div>
         
-        <!-- On affiche un tableau des films -->
+        <!-- Tableau des films -->
         <table id="tableauFilms">
             <?php 
-            $link1 = $_SESSION['link1'];
-            $link2 = $_SESSION['link2'];
-            $link3 = $_SESSION['link3'];
-            
-            $link = mysqli_connect("localhost",$link1,$link2,$link3);
             
             $requete = mysqli_query($link, "SELECT * FROM films");
             $i=0;
@@ -55,8 +47,6 @@
                 if($i%3 == 0)
 				    echo "<tr>";
 			?>
-				    
-            <p>
 			    <td>
 			    	<a href=<?php echo "lire_film.php?idfilm=".$row['idfilm']; ?>>
 						<?php echo $row['titre']; ?></br>
@@ -65,8 +55,6 @@
 					<!-- <?php echo $row['anneesortie']; ?><br/>
 					<?php echo $row['realisateur']; ?><br/> -->
 				</td>
-			</p>
-			
 			<?php
 			if($i%3==2)
 			    echo "</tr>";
@@ -74,9 +62,8 @@
 			}
 		    ?>
 		</table>
-		
 		</main>
 		<!-- Bas de page (mentions légales, ...) -->
 		<?php include('footer.html'); ?>
     </body>
-</htlm>
+</html>

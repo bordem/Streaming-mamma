@@ -1,4 +1,7 @@
 <?php
+
+include("db_connect.php");
+
 echo "titre : ".$_POST['titrefilm']."<br/>";
 echo "categorie : ".$_POST['categorie']."<br/>";
 echo "real : ".$_POST['real']."<br/>";
@@ -48,10 +51,10 @@ if ($uploadOk == 0) {
             $realisateur = $_POST['real'];
             $anneesortie = $_POST['sortie'];
                 
-            $requete = "INSERT INTO films (titre, chemin, realisateur, anneesortie) VALUES ('".$titre."','".$path."','".$realisateur."','".$anneesortie."')";
-            $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
+			$requete = mysqli_prepare($link, "INSERT INTO films (titre, chemin, realisateur, anneesortie) VALUES ( ?, ?, ?)");
+			$requete->bind_param($titre,$path,$realisateur,$anneesortie);
             
-            if (mysqli_query($link, $requete)) {
+            if ($requete->execute()) {
                 echo "Film ajouté dans la BDD avec succès.";
             }
             else {

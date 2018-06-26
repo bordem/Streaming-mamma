@@ -40,43 +40,39 @@
             $link3 = $_SESSION['link3'];
             
             $link = mysqli_connect("localhost",$link1,$link2,$link3);
-           	$stringRequete = "SELECT `idTag` FROM `tags` WHERE `nomTag`= \"".$tagCherche."\"";
-            $requete = mysqli_query($link, $stringRequete);
-            //echo "</br>";
-            //echo "Requete 1: ".$stringRequete;
+			$requete = mysqli_prepare($link, "SELECT `idTag` FROM `tags` WHERE `nomTag`= ?");
+			$requete->bind_param("s",$tagCherche);
+			$requete->execute();
             while ($row = mysqli_fetch_assoc($requete)) {
                 $idTag=$row['idTag'];
-                //echo "</br>";
-                //echo "Id Tag :".$idTag;
-				$requete2 = mysqli_query($link, "SELECT `idFilm` FROM `occurenceTags` WHERE `idTag`= \"".$idTag."\"");
+				$requete2 = mysqli_prepare($link, "SELECT `idFilm` FROM `occurenceTags` WHERE `idTag`= ?");
+				$requete2->bind_param("s",$idTag);
+				$requete2->execute();
 				while ($row2 = mysqli_fetch_assoc($requete2)) {
 					$idFilms=$row2['idFilm'];
-					//echo "</br>";
-                	//echo "Id Film :".$idFilms;
-					//echo "</br>";
-            		$stringRequete="SELECT * FROM `films` WHERE `idfilm`= \"".$idFilms."\"";
-					//echo "Requete 3: ".$stringRequete;
-					$requete3 = mysqli_query($link,$stringRequete);
+					$requete3 = mysqli_prepare($link,"SELECT * FROM `films` WHERE `idfilm`= ?");
+					$requete3->bind_param("s",$idFilms);
+					$requete3->execute();
 					while ($row3 = mysqli_fetch_assoc($requete3)) {
 						if($i%3 == 0)
-				    echo "<tr>";
-					?>
+						    echo "<tr>";
+						?>
 						
-				    <p>
-						<td>
-							<a href=<?php echo "lire_film.php?idfilm=".$row3['idfilm']; ?>>
-								<?php echo $row3['titre']; ?></br>
-								<img src="../images/<?php echo $row3['affiche']; ?>">
-							</a><br/>
-							<?php echo $row3['anneesortie']; ?><br/>
-							<?php echo $row3['realisateur']; ?><br/>
-						</td>
-					</p>
+				    	<p>
+							<td>
+								<a href=<?php echo "lire_film.php?idfilm=".$row3['idfilm']; ?>>
+									<?php echo $row3['titre']; ?></br>
+									<img src="../images/<?php echo $row3['affiche']; ?>">
+								</a><br/>
+								<?php echo $row3['anneesortie']; ?><br/>
+								<?php echo $row3['realisateur']; ?><br/>
+							</td>
+						</p>
 			
-					<?php
-					if($i%3==2)
-						echo "</tr>";
-					$i=$i+1;				
+						<?php
+						if($i%3==2)
+							echo "</tr>";
+						$i=$i+1;				
 					}
 				
 				}

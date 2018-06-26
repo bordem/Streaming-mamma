@@ -1,5 +1,5 @@
 <header>
-    <!-- Titre cliquable si connecté -->
+	<!-- Titre cliquable si connecté -->
     <?php
         if ($_SESSION['statut'] != 'admin' && $_SESSION['statut'] != 'user') {
             echo "<a href=\"../pages/connexion.php\"><h1>Streaming Mamma</h1></a>";
@@ -24,13 +24,13 @@
     if ($_SESSION['statut'] == "user") {
         echo"
                 <div class=\"item1\"><a href= \"choix_film.php\">Tous les films</a></div>
-                <div class=\"item2\"><a href= \"../pages/connexion.php\">Déconnexion</a></div>";
+                <div class=\"item2\"><a href= \"connexion.php\">Déconnexion</a></div>";
     
     }
     if ($_SESSION['statut'] == "admin") {
        echo "
        			<div class=\"item1\"><a href= \"choix_film.php\">Tous les films</a></div>
-                <div class=\"item2\"><a href= \"../pages/connexion.php\">Déconnexion</a></div>
+                <div class=\"item2\"><a href= \"connexion.php\">Déconnexion</a></div>
                 <div class=\"item3\"><a href= \"gerer_membres.php\">Gérer les membres</a></div>
                 <div class=\"item4\"><a href= \"gerer_films.php\">Gérer les films</a></div>";
     }

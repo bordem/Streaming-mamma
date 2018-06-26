@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php
+session_start(); 
+include("db_connect.php");
+?>
 
 <!doctype html>
 <html>
@@ -26,24 +29,21 @@
 		?>
         <main class="gestion">;
         <?php
-        $link1 = $_SESSION['link1'];
-        $link2 = $_SESSION['link2'];
-        $link3 = $_SESSION['link3'];
-            
-        $link = mysqli_connect("localhost",$link1,$link2,$link3);
         
         if(isset($_POST['bouttonsrch'])){
             
             $titre = $_POST['titre'];
-            $requete3 = mysqli_query($link, "SELECT * FROM films WHERE titre = '".$titre."'") or die(mysql_error());
-
-            if(mysqli_num_rows($requete3) == 0) {
+			$requete = mysqli_prepare($link, "SELECT * FROM films WHERE titre = ?") or die(mysql_error($link));
+			$requete->bind_param("s",$titre);
+			$requete->execute();
+			
+            if(mysqli_num_rows($requete) == 0) {
                 echo "Le film \"".$titre."\" n'a pas été trouvé. Le titre exact est requis pour l'instant car je ne sais pas programmer !<br/>";
             }
             else {
                 echo "<table cellspacing=\"0\" border=\"1\"><tr><th>Titre</th><th>Chemin</th><th>Realisateur</th><th>Année de sortie</th></tr>";
                 
-                while ($row = mysqli_fetch_assoc($requete3)) {
+                while ($row = mysqli_fetch_assoc($requete)) {
 				    echo "<tr><td>".$row['titre']."</td><td>".$row['chemin']."</td><td>".$row['realisateur']."</td><td>".$row['anneesortie']."</td></tr>";
 			    }
 			    echo "</table><br/>";
@@ -58,8 +58,12 @@
             $titre = $_POST['titrefilm2'];
             
             $link = mysqli_connect("localhost",$_SESSION['link1'],$_SESSION['link2'],$_SESSION['link3']);
-            $requete2 = "DELETE FROM films WHERE titre = '".$titre."'";
-            mysqli_query($link, $requete2);
+			
+			
+            $requete2 = mysqli_prepare($link, "DELETE FROM films WHERE titre = ?");
+			$requete2->bind_param("s",$titre);
+			$requete2->execute();
+
             
             if (mysqli_affected_rows($link) > 0) {
                 echo "Film supprimé avec succès.";

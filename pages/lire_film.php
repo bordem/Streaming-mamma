@@ -1,4 +1,9 @@
-<?php session_start(); ?>
+<?php
+session_start();
+include("db_connect.php");
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+?>
 
 <html>
     <head>
@@ -11,94 +16,87 @@
 
     <body>
         <!-- Haut de page -->
-        <?php include('header.php'); ?>
+		<?php include('header.php'); ?>
         
         
         <main>
-            <!-- Ajout du tag dans la BDD -->
             <?php
-            
-            	$link1 = $_SESSION['link1'];
-                $link2 = $_SESSION['link2'];
-                $link3 = $_SESSION['link3'];
-                
-                $link = mysqli_connect("localhost",$link1,$link2,$link3);
-            
-            
-            	/*Ajout a l'historique du film regarder*/
-            	$loginUser=$_SESSION['login'];
-            	$idFilm=$_GET['idfilm'];
-                $requete1="SELECT idusr FROM utilisateurs WHERE login='".$loginUser."'";
-                $rqt = mysqli_query($link,$requete1) or die(mysql_error());
-            	while ($row = mysqli_fetch_assoc($rqt)) {                       
-                    $idUser = $row['idusr'];
-                }
-                date_default_timezone_set('UTC');
-                //echo date("Y-m-d");
-                $newRQT="INSERT INTO `historiqueFilms`(`idfilm`, `idusr`,`date`) VALUES (".$idFilm.",".$idUser.",NOW())";
-                //echo $newRQT;
-               	mysqli_query($link, $newRQT)or die(mysql_error());
-                
-                
-                /*Ajout des tags au film*/
-            if(isset($_POST['ajouttag'])){
-                // On cherche si le tag existe déjà dans la BDD
-                $tagAInserer=$_POST['nomtag'];
-                $requete1="SELECT nomTag FROM tags WHERE nomTag='".$tagAInserer."'";
-                $rqt = mysqli_query($link,$requete1) or die(mysql_error());
-                $num_rows = mysqli_num_rows($rqt);
-                // S'il n'existe pas, on ajoute le tag
-                if($num_rows==0){
-                        $requete2="INSERT INTO `tags`(`nomTag`) VALUES ('".$tagAInserer."')";
-                        if (mysqli_query($link, $requete2)) {
-                			//echo "Tags ajouter";
-            			}
-            			else {
-                			echo "Erreur dans l'ajout: " . mysqli_error($_SESSION['link'])." Veuillez recommencer.";
-            			}
-                }
-                else
-                {
-                	//echo "Ce tag existe deja";
-                }
-                
-                $rqt="SELECT idTag FROM tags WHERE nomTag='".$tagAInserer."'";
-                $rqt = mysqli_query($link,$rqt) or die(mysql_error());
-                while ($row = mysqli_fetch_assoc($rqt)) {
-                    $idTag = $row['idTag'];
-                }
-                $newRQT="INSERT INTO `occurenceTags`(`idFilm`, `idTag`) VALUES (".$idFilm.",".$idTag.")";
-                if (mysqli_query($link, $newRQT)) {
-                	//echo "Tags ajouter aux occurences";
-            	}
-            }
-            ?>
-        
-            <!-- On refuse l'accès si le visiteur n'est pas connecté -->
-            <?php
-                if ($_SESSION['statut'] != "admin" 
-                && $_SESSION['statut'] != "user") {
-                    echo("<p>Vous devez être connecté pour accéder à cette page.</p>");
+            	//On refuse l'accès si le visiteur n'est pas connecté
+                if ($_SESSION['statut'] != "admin" && $_SESSION['statut'] != "user") {
+					echo("<p>Vous devez être connecté pour accéder à cette page.</p>");
+					echo("<a href=\"connexion.php\">se connecter</a>");
                     include('footer.html');
                     exit();
                 }
-             ?>
-            
-            
-            <!-- On récupère le titre et le chemin du film -->
-            <?php
-            
-                $requete = mysqli_query($link, "SELECT * FROM films WHERE idfilm=".$_GET['idfilm']) or die(mysql_error());
-                while ($row = mysqli_fetch_assoc($requete)) {                       
-                    $titre_du_film = $row['titre'];
-                    $chemin_du_film = $row['chemin'];
-                }
-            ?>
+
+				//Ajout du tag dans la BDD
+            	/*Ajout a l'historique du film regarder*/
+				$loginUser=$_SESSION['login'];
+				$userId = $_SESSION['userId'];
+            	$idFilm=$_GET['idfilm'];
+
+                date_default_timezone_set('UTC');
+				$requete = mysqli_prepare($link,"INSERT INTO historiqueFilms (idfilm, idusr, date) 
+												VALUES (?, ?, NOW() )");// or die(mysqli_error($link));
+				$requete->bind_param("ii",$idFilm,$userId);
+                $requete->execute();
+                
+                /*Ajout des tags au film*/
+	            if(isset($_POST['ajouttag'])){
+    	            // On cherche si le tag existe déjà dans la BDD
+        	        $tagAInserer=$_POST['nomtag'];
+					$requete1=mysqli_prepare($link,"SELECT nomTag 
+													FROM tags 
+													WHERE nomTag= ?") or die(mysqli_error($link));
+					$requete1->bind_param("s",$tagAInserer);
+					$requete1->execute();
+					$requete1->bind_result($nomTag);
+					$requete1->fetch();
+				
+					// S'il n'existe pas, on ajoute le tag
+					if( empty($nomTag) ){
+						$requete2=mysqli_prepare($link,"INSERT INTO `tags`(`nomTag`) 
+														VALUES ( ? )") or die(mysqli_error($link));
+						$requete2->bind_param("s",$tagAInserer);
+						if ($requete2->execute()) {
+                			//echo "Tags ajoutés";
+            			}
+            			else {
+                			echo "Erreur dans l'ajout: " . mysqli_error($link)." Veuillez recommencer.";
+						}
+					}
+					else {
+	                	//echo "Ce tag existe deja";
+    	            }
+                
+					$rqt= mysqli_prepare($link,"SELECT idTag 
+												FROM tags 
+												WHERE nomTag= ?") or die(mysqli_error($link));
+					$rqt->bind_param("s",$tagAInserer);
+					$rqt->execute();
+					$rqt->bind_result($idTag);
+					$rqt->fetch();
+					$requete3=mysqli_prepare($link,"INSERT INTO `occurenceTags`(`idFilm`, `idTag`) 
+													VALUES (?,?)") or die(mysqli_error($link));
+					$requete3->bind_param("ii",$idFilm,$idTag);
+	                if ($requete3->execute()) {
+    	            	//echo "Tags ajouter aux occurences";
+        	    	}
+            	}
+	            //On récupère le titre et le chemin du film        
+				$requete = mysqli_prepare($link, "SELECT titre,chemin 
+												FROM films 
+												WHERE idfilm= ? ") or die(mysqli_error($link)); 
+				$requete->bind_param("i",$idFilm);
+				$requete->execute();
+				$requete->bind_result($titre_du_film, $chemin_du_film);
+				// il peut paraître étrange de récupérer les élément de la db dans une boucle, mais si ce n'est pas fait, la prochaine requete ( les tags ) échoue ( à cause d'une histoire de synchronisation avec le serveur mysql)
+				while ( $requete->fetch() );
+			?>
             
             
             <!-- On affiche le film -->
             <h1 class="titreFilm"><?php echo $titre_du_film; ?></h1><br/>
-            <?php //echo $chemin_du_film; ?>
             
             <video id="video" height="240" width="360" autoplay controls>
             	<source src="<?php echo $chemin_du_film; ?>" type="video/mp4">
@@ -108,22 +106,24 @@
             
             <!-- Affichage des tags attachés au film -->
             <div>
-                Tag : 
-                <?php
-                $requete = mysqli_query($link, "SELECT nomTag
-                                                FROM occurenceTags
-                                                NATURAL JOIN tags 
-                                                WHERE idFilm=".$_GET['idfilm']) or die(mysql_error());
-                while ($row = mysqli_fetch_assoc($requete)) {
-                    echo $row[nomTag]." ";
-                    
+                Tag :
+<?php
+				$requete = mysqli_prepare($link, "SELECT nomTag 
+												FROM occurenceTags 
+												JOIN tags using(idTag) 
+												WHERE idFilm=?") or mysqli_error($link);
+				$requete->bind_param("i",$idFilm); 
+				$requete->execute();
+				$requete->bind_result($nomTag);
+				while ( $requete->fetch() ) {
+                    echo $nomTag." ";
                 }
                 ?>
             </div>
             
             <!-- Ajout de tag -->
             <div>
-                <form action="lire_film.php?idfilm=<?php echo $_GET['idfilm']?>" method="post">
+                <form action="lire_film.php?idfilm=<?php echo $idFilm?>" method="post">
                     Ajouter un tag pour <?php echo $titre_du_film; ?> :
                     <input type="text" name="nomtag" placeholder="Votre tag" />
                     <input type="submit" name="ajouttag" value="Go !" />
@@ -132,10 +132,11 @@
             
             <!-- Vérification du statut d'aministrateur : ajout de l'affiche du film -->
             <?php
-            if($_SESSION['statut'] != "admin") {
-                include('footer.html');
-                exit();
-            }
+				if($_SESSION['statut'] != "admin") {
+					echo "</main>";
+                	include('footer.html');
+                	exit();
+            	}
             ?>
             <div>
                 <form action="upload_affiches.php" method="post" enctype="multipart/form-data">
@@ -143,7 +144,7 @@
                     <input type="file" name="fileToUpload" id="fileToUpload" />
                     <input type="submit" value="Go !" name="submit" />
                     <input type="hidden" value="<?php echo $titre_du_film; ?>" name="nom" />
-                    <input type="hidden" value="<?php echo $_GET['idfilm']; ?>" name="id" />
+                    <input type="hidden" value="<?php echo $idFilm; ?>" name="id" />
                 </form>
             </div>
             

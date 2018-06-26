@@ -229,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 --
 
 INSERT INTO `utilisateurs` (`idusr`, `login`, `passwd`, `prenom`, `nom`, `statut`) VALUES
-(4, 'root', 'toor', 'Martin', 'BORDE', 'admin'),
+(4, 'root', 'toor', '', '', 'admin'),
 (5, 'martin', 'nitram', 'Martin', 'BORDE', 'user'),
 (6, 'sara', '517xod87', 'Sara', 'CALAFURI', 'user'),
 (7, 'christian', 'christian', '', '', 'user');

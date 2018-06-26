@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php
+session_start();
+include("db_connect.php");
+?>
 
 <!doctype html>
 <html>
@@ -88,12 +91,6 @@
             }
 
             //MAIN
-            //Connexion a la base de données et récupération de la base de donnée
-            $link1 = $_SESSION['link1'];
-            $link2 = $_SESSION['link2'];
-            $link3 = $_SESSION['link3'];
-
-            $link = mysqli_connect("localhost",$link1,$link2,$link3);
             $rqtAfficher = mysqli_query($link, "SELECT * FROM films") or die(mysql_error());
 
             //Initialisation de mes variables
@@ -136,11 +133,17 @@
 			            echo "</br> Ce film existe deja : ".$nomFilm;
 		            }
 	            }
+				$rqtInsertion = mysqli_prepare($link,"INSERT INTO `films`(`chemin`,`affiche`,`titre`) 
+													VALUES ( ?, ?, ?)") or die(mysql_error());
 	            if($existeDeja == false){
-		            $rqtInsertion = mysqli_query($link,"INSERT INTO `films`(`chemin`,`affiche`,`titre`) VALUES (\"".$vectorFilmUSB->at2($i)."/".$vectorFilmUSB->at1($i)."\",\"".$dirAffiche."/".$nomFilm.".jpg\",\"".$nomFilm."\")") or die(mysql_error());
+					$cheminFilm = "\"".$vectorFilmUSB->at2($i)."/".$vectorFilmUSB->at1($i)."\"";
+					$cheminAffiche = "\"".$dirAffiche."/".$nomFilm.".jpg\"";
+					$rqtInsertion->bind_param("sss",$cheminFilm, $cheminAffiche, $nomFilm);
+					$rqtInsertion->execute();
 		            echo "</br> Ajout de : ".$nomFilm;
 	            }
-            }
+			}
+			// todo suprimer de la bdd les films qui ne sont plus sur le disque
         ?>
 
        <?php include('footer.html'); ?> 
