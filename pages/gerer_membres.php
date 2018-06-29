@@ -26,7 +26,7 @@ include("db_connect.php");
         // On vérifie le statut de l'utilisateur avant d'afficher la page
         
             if($_SESSION['statut'] != "admin") {
-                echo ("<p>Désolé, cette page est uniquement accessible aux comptes administrateurs !</p>");
+                echo ("<p class=\"error\">Désolé, cette page est uniquement accessible aux comptes administrateurs !</p>");
                 include('footer.html');
                 exit();
             }
@@ -42,27 +42,29 @@ include("db_connect.php");
             $pseudo = $_POST['login_add'];
             $pass = $_POST['password'];
             $stat = $_POST['statut'];
-            
-			$requete = mysqli_prepare($link, "INSERT INTO utilisateurs (login, passwd, statut) VALUES (? ,? ,?)") or die(mysqli_error($link));
-			$requete->bind_param("sss",$pseudo,$pass,$stat);
+
+			$requete = mysqli_prepare($link, "INSERT INTO utilisateurs (login, passwd, statut) VALUES (?, PASSWORD(?), ?)") or die(mysqli_error($link));
+			$requete->bind_param("sss",$pseudo, $pass, $stat);
             if (mysqli_execute($requete)) {
-                echo "Membre ajouté avec succès.";
+                echo "<span class=\"info\">Membre ajouté avec succès.</span>";
             }
             else {
-                echo "Erreur dans l'ajout: " . mysqli_error($_SESSION['link'])." Veuillez recommencer.";
+                echo "<span class=\"error\">Erreur dans l'ajout: " . mysqli_error($_SESSION['link'])." Veuillez recommencer.</span>";
             }
+			$requete->close();
         }
 
         if(isset($_POST['supression'])) {
             $pseudo = $_POST['login_sup'];
             
-			$requete2 = mysqli_prepare("DELETE FROM utilisateurs WHERE login = ?") or die(mysqli_error($link));
-			$requete2->bind_param($pseudo);
+			$requete2 = mysqli_prepare($link,"DELETE FROM utilisateurs WHERE login = ?") or die(mysqli_error($link));
+			$requete2->bind_param("s",$pseudo);
             if (mysqli_execute($requete2)) {
-                echo "Membre supprimé avec succès.";
+                echo "<span class=\"info\">Membre supprimé avec succès.</span>";
             } else {
-                echo "Erreur dans la supression: " . mysqli_error($link)." Veuillez recommencer.";
+                echo "<span class=\"error\">Erreur dans la supression: " . mysqli_error($link)." Veuillez recommencer.</span>";
             }
+			$requete2->close();
         }
         ?>
 
@@ -74,11 +76,13 @@ include("db_connect.php");
             
             $rqtAfficher = mysqli_query($link, "SELECT * FROM utilisateurs") or die(mysql_error());
             
-            echo "<table cellspacing=\"0\" border=\"1\"><tr><th>Pseudo</th><th>Mot de passe</th><th>Statut</th></tr>";
+            echo "<table cellspacing=\"0\" border=\"1\"><tr><th>Pseudo</th><th>Mot de passe</th><th>Statut</th><th>Prénom</th><th>Nom</th></tr>";
             while ($row = mysqli_fetch_assoc($rqtAfficher)) {
-		        echo "<tr><td>".$row["login"]."</td><td>" . $row["passwd"]. "</td><td>".$row["statut"]."</td></tr>";
+		        echo "<tr><td>".$row["login"]."</td><td>" . $row["passwd"]. "</td><td>".$row["statut"]."</td><td>".$row['prenom']."</td><td>".$row['nom']."</td></tr>";
 	        }
-	        echo"</table><br/>";
+			$rqtAfficher->close();
+			echo"</table><br/>";
+
         ?>
         
 

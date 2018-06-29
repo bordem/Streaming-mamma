@@ -218,9 +218,9 @@ INSERT INTO `tags` (`idTag`, `nomTag`) VALUES
 CREATE TABLE IF NOT EXISTS `utilisateurs` (
 `idusr` int(2) NOT NULL,
   `login` varchar(20) NOT NULL,
-  `passwd` varchar(20) NOT NULL,
-  `prenom` varchar(30) NOT NULL,
-  `nom` varchar(30) NOT NULL,
+  `passwd` char(41) NOT NULL,
+  `prenom` varchar(30),
+  `nom` varchar(30),
   `statut` varchar(10) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
@@ -229,10 +229,10 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 --
 
 INSERT INTO `utilisateurs` (`idusr`, `login`, `passwd`, `prenom`, `nom`, `statut`) VALUES
-(4, 'root', 'toor', '', '', 'admin'),
-(5, 'martin', 'nitram', 'Martin', 'BORDE', 'user'),
-(6, 'sara', '517xod87', 'Sara', 'CALAFURI', 'user'),
-(7, 'christian', 'christian', '', '', 'user');
+(4, 'root', PASSWORD('toor'), '', '', 'admin'),
+(5, 'martin', PASSWORD('nitram'), 'Martin', 'BORDE', 'user'),
+(6, 'sara', PASSWORD('517xod87'), 'Sara', 'CALAFURI', 'user'),
+(7, 'christian', PASSWORD('christian'), '', '', 'user');
 
 --
 -- Indexes for dumped tables

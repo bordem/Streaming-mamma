@@ -19,39 +19,10 @@ include("db_connect.php");
 	<main>
 	<?php 
 	
-		/*class vector {
-				private $_arrayList=array();
-			   	private $_tailleTableau=0;
-			   
-				public function add($data) {
-					$this->_arrayList[$this->_tailleTableau]=$data;
-					$this->_tailleTableau++;
-				}
-				public function size(){
-					return $this->_tailleTableau;
-				}
-				public function getTab(){
-					return $this->_arrayList;
-				}
-				public function at1($i){
-					return $this->_arrayList[$i];
-				}
-			} 
-		function verification($id,&$tab){
-			for($i=0;$i<$tab->size();$i++){
-				if($id == $tab[$i]){
-					return "false";
-					echo "echo le film y est deja";
-				}
-			}
-			return "true";
-			echo "Le film n'y est pas";
-		}*/
-		
 		// On refuse l'accès si le visiteur n'est pas connecté
 			if ($_SESSION['statut'] != "admin" 
 			&& $_SESSION['statut'] != "user") {
-				echo("<p>Vous devez être connecté pour accéder à cette page.</p></main>");
+				echo("<p class=\"error\">Vous devez être connecté pour accéder à cette page.</p></main>");
 				include('footer.html');
 				exit();
 			}
@@ -88,7 +59,7 @@ include("db_connect.php");
 					$requete_suppr->bind_param("i",$idusr);
 					$requete_suppr->execute();
 					$requete_suppr->fetch();
-					echo "Historique supprimé !";
+					echo "<span class=\"info\">Historique supprimé !</span>";
 				}
 ?>
 			</form>
@@ -96,7 +67,6 @@ include("db_connect.php");
 <?php	 
 				// On récupère les films regardés par cet utisateur
 				$rqt1="SELECT idfilm, titre, affiche FROM historiqueFilms JOIN films USING(idfilm) WHERE idusr= ? ORDER BY date DESC";
-//  mysqli_query($link, "SELECT titre, affiche FROM films WHERE idfilm=?") or die(mysqli_error($link));
 				$requete_films = mysqli_prepare($link, $rqt1) or die(mysqli_error($link));
 				$requete_films->bind_param("i",$idusr);
 				$requete_films->execute();

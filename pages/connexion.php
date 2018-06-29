@@ -25,22 +25,23 @@ $_SESSION['statut'] = "deconnecte";
 <?php
 if(isset($_POST['connexion'])) { // bouton connexion cliqué
     if(empty($_POST['pseudo'])) {
-        echo "<span class=\"error\">Le champ Identifiant est vide.</span>";
+        echo "<span class=\"error\">Le champ Identifiant est vide.</span><br />";
     }
 	else if(empty($_POST['password'])) {
-		echo "<span class=\"error\">Le champ Mot de passe est vide.</span>>";
+		echo "<span class=\"error\">Le champ Mot de passe est vide.</span><br />";
 	}
 	else {
 		$pseudo = $_POST['pseudo'];
 		$pass = $_POST['password'];
-		$requete = mysqli_prepare($link, "SELECT statut, idUsr FROM utilisateurs WHERE login = ? AND passwd = ? ") or die(mysqli_error($link));
+		$requete = mysqli_prepare($link, "SELECT statut, idUsr FROM utilisateurs WHERE login = ? AND passwd = PASSWORD(?)") or die(mysqli_error($link));
 		$requete->bind_param("ss", $pseudo, $pass);
 		$requete->execute();
 		$requete->bind_result($stat, $idusr);
 		$requete->fetch();
-		//if(mysqli_num_rows($requete) == 0) {
-		if(empty($stat) ){ //mysqli_num_rows($requete) == 0) {
-			echo "<span class=\"error\">L'identifiant ou le mot de passe est incorrect. Le compte n'a pas été trouvé.</span>";
+		$requete->close();
+
+		if( empty($stat) ){ 
+			echo "<span class=\"error\">L'identifiant ou le mote de passe est incorrect.</span><br/>";
 		}
 		else {
 			$_SESSION['login'] = $pseudo;
@@ -49,7 +50,6 @@ if(isset($_POST['connexion'])) { // bouton connexion cliqué
 			mysqli_close($link);
 			header("Location: choix_film.php"); // Redirection du navigateur
 		}
-		$requete->close();
 	}
 }
 ?>
