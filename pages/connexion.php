@@ -15,13 +15,13 @@ $_SESSION['statut'] = "deconnecte";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
     <link rel="stylesheet" href="style/style.css" />
+		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
 </head>
 <body>
     <?php include('header.php'); ?>
     <main>
         <div id="formulaireConnexion">
         <h1>On vous connait ?</h1>
-        <form action="connexion.php" method="post">
 <?php
 if(isset($_POST['connexion'])) { // bouton connexion cliqué
     if(empty($_POST['pseudo'])) {
@@ -53,7 +53,8 @@ if(isset($_POST['connexion'])) { // bouton connexion cliqué
 	}
 }
 ?>
-		<input type="text" name="pseudo" value="<?php echo (isset($_POST['pseudo']) ? $_POST['pseudo'] : ""); ?>"placeholder="Pseudo"/><br/> 
+        <form action="connexion.php" method="post">
+		<input type="text" name="pseudo" value="<?php echo (isset($_POST['pseudo']) ? $_POST['pseudo'] : ""); ?>" placeholder="Pseudo"/><br/> 
                 <input type="password" name="password" value="" placeholder="Mot de passe"/><br/>
             <input class ="boutton" type="submit" name="connexion" value="Connexion" />
         </form>

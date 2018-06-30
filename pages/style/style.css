@@ -120,13 +120,20 @@
 		background-repeat: no-repeat;
 		background-attachment: fixed;
 		color: #9d9d9d;
-		-webkit-background-size: 100%; 
+/*		-webkit-background-size: 100%; 
 		-moz-background-size: 100%; 
 		-o-background-size: 100%; 
 		background-size: 100%; 
 		-webkit-background-size: cover; 
 		-moz-background-size: cover; 
 		-o-background-size: cover; 
+ 
+/*		
+ 	La deuxième propriété prend le dessus sur la précédente, 
+	aussi la propriété estsupporté par la plupart des navigateurs 
+	depuis bien assez longtemps pour ne pas avoir besoin d'utiliser 
+	les extentions.
+ */
 		background-size: cover;
     }
     table thead{
@@ -142,4 +149,30 @@
     }
 }
 
+.info, .error{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	display: block;
+	text-align: center;
+	padding: 10px;
+	color: #ffffff;
+}
 
+.info {
+	background-color: #009688;
+}
+.error {
+	background-color: #e53935;
+}
+
+
+.closeBtn {
+	background-color: rgba(0,0,0,0.1);
+    border: none;
+    border-radius: 2px;
+    color: #ffffff;
+    float: right;
+    margin-right: 20px;
+}

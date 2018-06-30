@@ -12,6 +12,7 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
         <link rel="stylesheet" href="style/style.css" />
+		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
     </head>
 
     <body>
