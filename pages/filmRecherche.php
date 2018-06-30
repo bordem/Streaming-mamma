@@ -24,7 +24,7 @@
         <?php
             if ($_SESSION['statut'] != "admin" 
             && $_SESSION['statut'] != "user") {
-                echo("<p>Vous devez être connecté pour accéder à cette page.</p>");
+                echo("<div class=\"error\">Vous devez être connecté pour accéder à cette page.</div>");
                 include('footer.html');
                 exit();
             }
@@ -36,22 +36,18 @@
             <?php 
             $tagCherche = $_POST['tagCherche'];
             echo " <h1>Resultat de la recherche pour : ".$tagCherche."</h1>";
-            $link1 = $_SESSION['link1'];
-            $link2 = $_SESSION['link2'];
-            $link3 = $_SESSION['link3'];
-            
-            $link = mysqli_connect("localhost",$link1,$link2,$link3);
-			$requete = mysqli_prepare($link, "SELECT `idTag` FROM `tags` WHERE `nomTag`= ?");
+// TODO refractor this mess            
+			$requete = mysqli_prepare($link, "SELECT idTag FROM tags WHERE nomTag= ?");
 			$requete->bind_param("s",$tagCherche);
 			$requete->execute();
             while ($row = mysqli_fetch_assoc($requete)) {
                 $idTag=$row['idTag'];
-				$requete2 = mysqli_prepare($link, "SELECT `idFilm` FROM `occurenceTags` WHERE `idTag`= ?");
+				$requete2 = mysqli_prepare($link, "SELECT idFilm FROM occurenceTags WHERE idTag= ?");
 				$requete2->bind_param("s",$idTag);
 				$requete2->execute();
 				while ($row2 = mysqli_fetch_assoc($requete2)) {
 					$idFilms=$row2['idFilm'];
-					$requete3 = mysqli_prepare($link,"SELECT * FROM `films` WHERE `idfilm`= ?");
+					$requete3 = mysqli_prepare($link,"SELECT * FROM films WHERE idfilm= ?");
 					$requete3->bind_param("s",$idFilms);
 					$requete3->execute();
 					while ($row3 = mysqli_fetch_assoc($requete3)) {

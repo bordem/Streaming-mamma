@@ -22,31 +22,34 @@ include("db_connect.php");
         // On vérifie le statut de l'utilisateur avant d'afficher la page
         
             if($_SESSION['statut'] != "admin") {
-                echo ("<p>Désolé, cette page est uniquement accessible aux comptes administrateurs !</p>");
+                echo ("<div class=\"error\">Désolé, cette page est uniquement accessible aux comptes administrateurs !</div>");
                 include('footer.html');
                 exit();
             }
 			// RECHERCHE DANS LA BD ----------------------------------------
 		?>
-        <main class="gestion">;
+        <main class="gestion">
         <?php
         
         if(isset($_POST['bouttonsrch'])){
             
             $titre = $_POST['titre'];
-			$requete = mysqli_prepare($link, "SELECT * FROM films WHERE titre = ?") or die(mysql_error($link));
+			$requete = mysqli_prepare($link, "SELECT titre, chemin, realisateur, anneesortie FROM films WHERE titre = ?") or die(mysqli_error($link));
 			$requete->bind_param("s",$titre);
+
 			$requete->execute();
-			
-            if(mysqli_num_rows($requete) == 0) {
-                echo "Le film \"".$titre."\" n'a pas été trouvé. Le titre exact est requis pour l'instant car je ne sais pas programmer !<br/>";
+			$requete->bind_result($titreRes,$cheminRes, $realisateurRes, $anneeRes);
+			if (  $requete->fetch() == NULL){
+				echo "<div class=\"error\">";
+                echo "Le film \"".$titre."\" n'a pas été trouvé. Le titre exact est requis pour l'instant car je ne sais pas programmer !";
+				echo "</div>";
             }
             else {
                 echo "<table cellspacing=\"0\" border=\"1\"><tr><th>Titre</th><th>Chemin</th><th>Realisateur</th><th>Année de sortie</th></tr>";
                 
-                while ($row = mysqli_fetch_assoc($requete)) {
-				    echo "<tr><td>".$row['titre']."</td><td>".$row['chemin']."</td><td>".$row['realisateur']."</td><td>".$row['anneesortie']."</td></tr>";
-			    }
+                do {
+				    echo "<tr><td>".$titreRes."</td><td>".$cheminRes."</td><td>".$realisateurRes."</td><td>".$anneeRes."</td></tr>";
+			    } while($requete->fetch() );
 			    echo "</table><br/>";
             }
         }
@@ -67,17 +70,19 @@ include("db_connect.php");
 
             
             if (mysqli_affected_rows($link) > 0) {
+				echo "<div class=\"info\">";
                 echo "Film supprimé avec succès.";
+				echo "</div>";
             }
             else {
+				echo "<div class=\"error\">";
                 echo "Erreur dans la supression: " . mysqli_error($link)." Veuillez recommencer.";
+				echo "</div>";
             }
         }
         ?>
         
         
-    
-
         
         <!-- CORPS DE LA PAGE -->
         

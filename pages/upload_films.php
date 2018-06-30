@@ -1,7 +1,7 @@
 <?php
 
 include("db_connect.php");
-
+echo "<p>";
 echo "titre : ".$_POST['titrefilm']."<br/>";
 echo "categorie : ".$_POST['categorie']."<br/>";
 echo "real : ".$_POST['real']."<br/>";
@@ -13,36 +13,36 @@ echo "target directory : ".$target_dir_mv."<br/>";
 $target_file_mv = $target_dir_mv.basename($_FILES["mvToUpload"]["name"]);
 echo "target file : ".$target_file_mv."<br/>";
 
-$uploadOk = 1;
+$uploadOk = true;
 
 $movieFileType = strtolower(pathinfo($target_file_mv,PATHINFO_EXTENSION));
 echo "movie file type : ".$movieFileType."<br/>";
-
+echo "</p>";
 
 // Check if file already exists
 /** if (file_exists($target_file_img)) {
         echo "Sorry, file already exists.";
-        $uploadOk = 0;
+        $uploadOk = false;
     }
 **/
 
 
 // Allow certain file formats
 if($movieFileType != "mp4" && $movieFileType != "ogv" && $movieFileType != "webm") {
-    echo "Le film doit être au format MP4, OGV ou WEBM. ";
-    $uploadOk = 0;
+    echo "<div class=\"error\">Le film doit être au format MP4, OGV ou WEBM.</div>";
+    $uploadOk = false;
 }
 
 
-// Check if $uploadOk is set to 0 by an error
-if ($uploadOk == 0) {
-    echo "Désolé, le téléchargement n'a pas été effectué.";
+// Check if $uploadOk is false
+if (!$uploadOk) {
+    echo "<div class=\"error\">Désolé, le téléchargement n'a pas été effectué.</div>";
     
-// if everything is ok, try to upload file
+// if everything is ok, try to upload the file
 } else {
     if (move_uploaded_file($_FILES["mvToUpload"], $target_file_mv)) {
         rename($target_dir_mv.basename( $_FILES["mvToUpload"]["name"]), $target_dir_mv.$_POST["titrefilm"]."jpg");
-        echo "Le fichier a bien été uploadé.";
+        echo "<div class=\"info\">Le fichier a bien été uploadé.</div>";
         
         // ajout du film dans la bd
         if(isset($_POST['bouttonadd'])) {
@@ -55,15 +55,16 @@ if ($uploadOk == 0) {
 			$requete->bind_param($titre,$path,$realisateur,$anneesortie);
             
             if ($requete->execute()) {
-                echo "Film ajouté dans la BDD avec succès.";
+                echo "<div class=\"info\">Film ajouté dans la BDD avec succès.</div>";
             }
             else {
-                echo "Erreur dans l'ajout du film dans la BDD : " . mysqli_error($link)." Veuillez recommencer.";
-            }
+                echo "<div class=\"error\">Erreur dans l'ajout du film dans la BDD : " . mysqli_error($link)." Veuillez recommencer.</div>";
+			}
+			$requete->close();
         }
         
     } else {
-        echo "Désolé, il y a eu une erreur dans le téléchargement du fichier.";
+        echo "<div class=\"error\">Le déplacement du fichier a echoué.</div>";
     }
 }
 ?>

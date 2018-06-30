@@ -3,8 +3,6 @@ session_start();
 
 include("db_connect.php");
 
-$_SESSION['login'] = "visiteur";
-$_SESSION['statut'] = "deconnecte";
 
 ?>
 <!doctype html>

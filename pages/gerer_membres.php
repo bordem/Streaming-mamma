@@ -44,7 +44,7 @@ include("db_connect.php");
             $stat = $_POST['statut'];
 
 			$requete = mysqli_prepare($link, "INSERT INTO utilisateurs (login, passwd, statut) VALUES (?, PASSWORD(?), ?)") or die(mysqli_error($link));
-			$requete->bind_param("sss",$pseudo, $pass, $stat);
+			$requete->bind_param("sss", $pseudo, $pass, $stat);
             if (mysqli_execute($requete)) {
                 echo "<span class=\"info\">Membre ajouté avec succès.</span>";
             }

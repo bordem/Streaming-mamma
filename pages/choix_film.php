@@ -25,7 +25,7 @@ include("db_connect.php");
         	// On refuse l'accès si le visiteur n'est pas connecté -->
             if ($_SESSION['statut'] != "admin" 
             && $_SESSION['statut'] != "user") {
-                echo("<p>Vous devez être connecté pour accéder à cette page.</p></main>");
+                echo("<div class=\"error\">Vous devez être connecté pour accéder à cette page.</div></main>");
                 include('footer.html');
                 exit();
             }

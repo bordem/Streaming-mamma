@@ -1,7 +1,6 @@
 <?php
 session_start();
 include("db_connect.php");
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 ?>
 
@@ -24,8 +23,8 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
             <?php
             	//On refuse l'accès si le visiteur n'est pas connecté
                 if ($_SESSION['statut'] != "admin" && $_SESSION['statut'] != "user") {
-					echo("<p>Vous devez être connecté pour accéder à cette page.</p>");
-					echo("<a href=\"connexion.php\">se connecter</a>");
+					echo "<div class=\"error\">Vous devez être connecté pour accéder à cette page.
+						</div>";
                     include('footer.html');
                     exit();
                 }
@@ -38,10 +37,10 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
                 date_default_timezone_set('UTC');
 				$requete = mysqli_prepare($link,"INSERT INTO historiqueFilms (idfilm, idusr, date) 
-												VALUES (?, ?, NOW() )");// or die(mysqli_error($link));
+												VALUES (?, ?, NOW() )") or die(mysqli_error($link));
 				$requete->bind_param("ii",$idFilm,$userId);
                 $requete->execute();
-                
+				$requete->close();                
                 /*Ajout des tags au film*/
 	            if(isset($_POST['ajouttag'])){
     	            // On cherche si le tag existe déjà dans la BDD
@@ -53,23 +52,21 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 					$requete1->execute();
 					$requete1->bind_result($nomTag);
 					$requete1->fetch();
-				
+					$requete1->close();	
 					// S'il n'existe pas, on ajoute le tag
 					if( empty($nomTag) ){
-						$requete2=mysqli_prepare($link,"INSERT INTO `tags`(`nomTag`) 
+						$requete2=mysqli_prepare($link,"INSERT INTO tags(nomTag) 
 														VALUES ( ? )") or die(mysqli_error($link));
 						$requete2->bind_param("s",$tagAInserer);
-						if ($requete2->execute()) {
-                			//echo "Tags ajoutés";
-            			}
-            			else {
-                			echo "Erreur dans l'ajout: " . mysqli_error($link)." Veuillez recommencer.";
+						if (!$requete2->execute()) {
+							echo "<div class=\"error\">Erreur dans l'ajout: ".mysqli_error($link).
+								" Veuillez recommencer.</div>";
 						}
 					}
 					else {
-	                	//echo "Ce tag existe deja";
+	                	echo "<div class=\"info\">Ce tag existe deja.</div>";
     	            }
-                
+                	$requete2->close();
 					$rqt= mysqli_prepare($link,"SELECT idTag 
 												FROM tags 
 												WHERE nomTag= ?") or die(mysqli_error($link));
@@ -77,12 +74,14 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 					$rqt->execute();
 					$rqt->bind_result($idTag);
 					$rqt->fetch();
-					$requete3=mysqli_prepare($link,"INSERT INTO `occurenceTags`(`idFilm`, `idTag`) 
+					$rqt->close();
+					$requete3=mysqli_prepare($link,"INSERT INTO occurenceTags(idFilm, idTag) 
 													VALUES (?,?)") or die(mysqli_error($link));
 					$requete3->bind_param("ii",$idFilm,$idTag);
-	                if ($requete3->execute()) {
-    	            	//echo "Tags ajouter aux occurences";
-        	    	}
+	                if ( !$requete3->execute()) {
+    	            	echo "<div class=\"error\">Erreur dans l'ajout du tag.</div>";
+					}
+					$requete3->close();
             	}
 	            //On récupère le titre et le chemin du film        
 				$requete = mysqli_prepare($link, "SELECT titre,chemin 
@@ -91,8 +90,8 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 				$requete->bind_param("i",$idFilm);
 				$requete->execute();
 				$requete->bind_result($titre_du_film, $chemin_du_film);
-				// il peut paraître étrange de récupérer les élément de la db dans une boucle, mais si ce n'est pas fait, la prochaine requete ( les tags ) échoue ( à cause d'une histoire de synchronisation avec le serveur mysql)
-				while ( $requete->fetch() );
+				$requete->fetch();
+				$requete->close();
 			?>
             
             

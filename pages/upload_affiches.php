@@ -21,40 +21,50 @@
             <?php
             $target_dir = "../Films/affiche/";
             $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-            $uploadOk = 1;
+            $uploadOk = true;
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
             // Check if file already exists
             /** if (file_exists($target_file)) {
+					echo "<div class=\"error\">";
                     echo "Sorry, file already exists.";
-                    $uploadOk = 0;
+					echo "</div>";
+                    $uploadOk = false;
                 }
             **/
 
             // Check file size
             if ($_FILES["fileToUpload"]["size"] > 500000) {
-                echo "Le fichier ne doit pas excéder 500 Ko. ";
-                $uploadOk = 0;
+                echo "<div class=\"error\">Le fichier ne doit pas excéder 500 Ko.</div>";
+                $uploadOk = false;
             }
 
             // Allow certain file formats
             if($imageFileType != "jpg") {
+				echo "<div class=\"error\">";
                 echo "Seul le format JPG est autorisé. ";
-                $uploadOk = 0;
+				echo "</div>";
+                $uploadOk = false;
             }
 
-            // Check if $uploadOk is set to 0 by an error
-            if ($uploadOk == 0) {
+            // Check if $uploadOk is false
+            if (!$uploadOk) {
+				echo "<div class=\"error\">";
                 echo "Désolé, le téléchargement n'a pas été effectué.";
+				echo "</div>";
                 
-            // if everything is ok, try to upload file
+            // if everything is ok, put it in the db
             } else {
                 if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
                     rename("../Films/affiche/".basename( $_FILES["fileToUpload"]["name"]), "../Films/affiche/".$_POST["nom"].".jpg");
+					echo "<div class=\"info\">";
                     echo "Le fichier a bien été uploadé.<br/>";
+					echo "</div>";
                     
                 } else {
-                    echo "Désolé, il y a eu une erreur dans le téléchargement du fichier.<br/>";
+					echo "<div class=\"error\">";
+                    echo "Désolé, il y a eu une erreur dans le téléchargement du fichier.";
+					echo "</div>";
                 }
             }
             ?>

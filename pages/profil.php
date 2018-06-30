@@ -23,7 +23,8 @@ include("db_connect.php");
 		// On refuse l'accès si le visiteur n'est pas connecté
 			if ($_SESSION['statut'] != "admin" 
 			&& $_SESSION['statut'] != "user") {
-				echo("<p class=\"error\">Vous devez être connecté pour accéder à cette page.</p></main>");
+			echo("<p class=\"error\">Vous devez être connecté pour accéder à cette page.</p>
+				</main>");
 				include('footer.html');
 				exit();
 			}
@@ -34,13 +35,14 @@ include("db_connect.php");
 		<h1>Mon profil</h1>
 		<p>
 			<?php 
-			$rqt = "SELECT nom,prenom FROM utilisateurs WHERE idusr=?";
-			$requete_nomPrenom = mysqli_prepare($link, $rqt) or die(mysqli_error($link));
+			$requete_nomPrenom = mysqli_prepare($link, "SELECT nom, prenom 
+														FROM utilisateurs 
+														WHERE idusr=?") or die(mysqli_error($link));
 			$requete_nomPrenom->bind_param("i",$idusr);
 			$requete_nomPrenom->execute();
 			$requete_nomPrenom->bind_result($nom, $prenom);
-			while($requete_nomPrenom->fetch());
-
+			$requete_nomPrenom->fetch();
+			$requete_nomPrenom->close();
 			?>
 			Pseudo : <?php echo $_SESSION['login']; ?></br>
 			Nom : <?php echo $nom; ?></br>
@@ -56,10 +58,12 @@ include("db_connect.php");
 				
 			<?php 
 				if(isset($_POST['suppr_hist'])){
-					$requete_suppr = mysqli_prepare($link, "DELETE FROM historiqueFilms WHERE idusr= ?");
+					$requete_suppr = mysqli_prepare($link, "DELETE FROM historiqueFilms 
+															WHERE idusr=?") or die(mysqli_error($link);
 					$requete_suppr->bind_param("i",$idusr);
 					$requete_suppr->execute();
 					$requete_suppr->fetch();
+					$requete_suppr->close();
 					echo "<span class=\"info\">Historique supprimé !</span>";
 				}
 ?>
@@ -67,7 +71,9 @@ include("db_connect.php");
 		</div>
 <?php	 
 				// On récupère les films regardés par cet utisateur
-				$rqt1="SELECT idfilm, titre, affiche FROM historiqueFilms JOIN films USING(idfilm) WHERE idusr= ? ORDER BY date DESC";
+				$rqt1="SELECT idfilm, titre, affiche 
+					FROM historiqueFilms JOIN films USING(idfilm) 
+					WHERE idusr= ? ORDER BY date DESC";
 				$requete_films = mysqli_prepare($link, $rqt1) or die(mysqli_error($link));
 				$requete_films->bind_param("i",$idusr);
 				$requete_films->execute();
@@ -89,9 +95,10 @@ include("db_connect.php");
 							<img src=\"".$affiche."\">
 							</a><br/>
 							</td>";
-							$i = $i+1;
+							$i++;
 						}
 					}
+					$requete_films->close();
 					?>
 				</tr>
 			</table>

@@ -30,7 +30,7 @@
     if ($_SESSION['statut'] == "admin") {
        echo "
        			<div class=\"item1\"><a href= \"choix_film.php\">Tous les films</a></div>
-                <div class=\"item2\"><a href= \"connexion.php\">Déconnexion</a></div>
+                <div class=\"item2\"><a href= \"deconnexion.php\">Déconnexion</a></div>
                 <div class=\"item3\"><a href= \"gerer_membres.php\">Gérer les membres</a></div>
                 <div class=\"item4\"><a href= \"gerer_films.php\">Gérer les films</a></div>";
     }
