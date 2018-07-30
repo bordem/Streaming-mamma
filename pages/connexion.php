@@ -1,7 +1,7 @@
 <?php
-session_start();
-
-include("db_connect.php");
+	session_start();
+	$_SESSION['statut']='other';
+	include("db_connect.php");
 
 
 ?>

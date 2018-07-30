@@ -1,6 +1,6 @@
 <?php 
-session_start();
-include("db_connect.php");
+	session_start();
+	include("db_connect.php");
 ?>
 
 <!doctype html>
@@ -34,7 +34,7 @@ include("db_connect.php");
 			 
 		<h1>Mon profil</h1>
 		<p>
-			<?php 
+			<?php
 			$requete_nomPrenom = mysqli_prepare($link, "SELECT nom, prenom 
 														FROM utilisateurs 
 														WHERE idusr=?") or die(mysqli_error($link));
@@ -57,7 +57,7 @@ include("db_connect.php");
 				<input type="submit" value="Supprimer mon historique" name="suppr_hist" />
 				
 			<?php 
-				if(isset($_POST['suppr_hist'])){
+				/*if(isset($_POST['suppr_hist'])){
 					$requete_suppr = mysqli_prepare($link, "DELETE FROM historiqueFilms 
 															WHERE idusr=?") or die(mysqli_error($link);
 					$requete_suppr->bind_param("i",$idusr);
@@ -65,7 +65,7 @@ include("db_connect.php");
 					$requete_suppr->fetch();
 					$requete_suppr->close();
 					echo "<span class=\"info\">Historique supprimé !</span>";
-				}
+				}*/
 ?>
 			</form>
 		</div>
@@ -99,7 +99,7 @@ include("db_connect.php");
 						}
 					}
 					$requete_films->close();
-					?>
+				?>
 				</tr>
 			</table>
 			

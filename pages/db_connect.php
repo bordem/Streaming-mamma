@@ -1,10 +1,10 @@
 <?php
 /**/
 // Utilisateur chez nicolai
-$dbuser = "st_mamma";
+/*$dbuser = "st_mamma";
 $dbpasswd = "68badf1397604fd2a2fb66bc6d282c23";
 $dbname = "st_mamma";
-/*/
+*/
 // utilisateur de la pi
 $dbuser = "pi";
 $dbpasswd = "raspberry";
