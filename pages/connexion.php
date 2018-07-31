@@ -46,7 +46,7 @@ if(isset($_POST['connexion'])) { // bouton connexion cliqué
 			$_SESSION['statut'] = $stat;
 			$_SESSION['userId'] = $idusr;
 			mysqli_close($link);
-			header("Location: choix_film.php"); // Redirection du navigateur
+			header("Location: choix_film.php?pages=0"); // Redirection du navigateur
 		}
 	}
 }

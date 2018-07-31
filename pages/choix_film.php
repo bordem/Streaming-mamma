@@ -29,7 +29,9 @@ include("db_connect.php");
                 include('footer.html');
                 exit();
             }
+         $idpages=$_GET['pages'];
          ?>
+        
         <h1>Tous les films</h1> <br/>
         <div id="searchbar">
             <form action="filmRecherche.php" method="post">
@@ -38,13 +40,29 @@ include("db_connect.php");
             </form>
         </div>
         
+        <?php
+        
+        
+        	$rqt ="SELECT COUNT(*) FROM films";
+        	$requete = mysqli_query($link,$rqt);
+        	while ($row = mysqli_fetch_assoc($requete)) {
+        		$nbTotalFilms=$row['COUNT(*)'];
+        		//echo "Nombre de films au total : ".$nbTotalFilms;
+        	}
+        ?>
+        
+        
+        
         <!-- Tableau des films -->
         <table id="tableauFilms">
             <?php 
-            
-            $requete = mysqli_query($link, "SELECT * FROM films");
+            $nbfilmparpages=15;
+            $numeropages=0;
+            $requete = mysqli_query($link, "SELECT * FROM films LIMIT ".$nbfilmparpages." OFFSET ".$nbfilmparpages*$idpages );
             $i=0;
+            
             while ($row = mysqli_fetch_assoc($requete)) {
+               	
                 if($i%3 == 0)
 				    echo "<tr>";
 			?>
@@ -63,6 +81,16 @@ include("db_connect.php");
 			}
 		    ?>
 		</table>
+		<div class="pagination">
+		<?php
+		
+			$nbPages=$nbTotalFilms/$nbfilmparpages;
+			for($i=0;$i<$nbPages;$i++){
+				echo "<a href=\"choix_film.php?pages=".$i."\">".$i."</a>";
+			}
+		?>
+		</div>
+		
 		</main>
 		<!-- Bas de page (mentions légales, ...) -->
 		<?php include('footer.html'); ?>
