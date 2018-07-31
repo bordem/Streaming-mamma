@@ -36,7 +36,8 @@ include("db_connect.php");
 		
 		
 		<table id="tableauFilms">
-			<?php 
+			<?php
+			$i=0; 
 			$tagCherche = $_POST['tagCherche'];
 			echo " <h1>Resultat de la recherche pour : ".$tagCherche."</h1>";
 			$rqt = "SELECT films.idfilm,titre,anneesortie,realisateur, affiche
@@ -57,16 +58,33 @@ include("db_connect.php");
 								<?php echo $titre; ?></br>
 								<img src="../images/<?php echo $affiche; ?>">
 							</a><br/>
-							<?php echo $anneesortie; ?><br/>
-							<?php echo $realisateur; ?><br/>
+							<?php //echo $anneesortie; ?><br/>
+							<?php //echo $realisateur; ?><br/>
 						</td>
 			
 						<?php
 						if($i%3==2)
 							echo "</tr>";
 						$i++;				
-					}
-			?>
+				}
+					
+			$rqt2="SELECT * FROM films WHERE titre LIKE '%".$tagCherche."%'";
+			$requete2 = mysqli_query($link,$rqt2);
+			while ($row = mysqli_fetch_assoc($requete2)) {
+				if($i%3 == 0)
+					echo "<tr>";
+				?>			
+						<td>
+							<a href=<?php echo "lire_film.php?idfilm=".$row['idfilm']; ?>>
+								<?php echo $row['titre']; ?></br>
+								<img src="<?php echo $row['affiche'];?>"></br>
+							</a>
+						</td>
+			<?php 
+				if($i%3==2)
+					echo "</tr>";
+				$i++;
+			}?>
 		</table>
 		
 		</main>
