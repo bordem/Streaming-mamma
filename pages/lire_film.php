@@ -84,7 +84,7 @@ include("db_connect.php");
 					$requete3->close();
             	}
 	            //On récupère le titre et le chemin du film        
-				$requete = mysqli_prepare($link, "SELECT titre,chemin 
+				$requete = mysqli_prepare($link, "SELECT titre,chemin
 												FROM films 
 												WHERE idfilm= ? ") or die(mysqli_error($link)); 
 				$requete->bind_param("i",$idFilm);
@@ -103,6 +103,17 @@ include("db_connect.php");
             	<source src="<?php echo $chemin_du_film; ?>" type="video/webm"> 
             	<source src="<?php echo $chemin_du_film; ?>" type="video/ogg"> 
             </video>
+            
+            <!-- Affichage des données du film -->
+            <div>
+            	<?php 
+            	/*
+            		Intéger image, année et réalisateur
+            	
+            	*/
+            	?>
+            </div>
+            
             
             <!-- Affichage des tags attachés au film -->
             <div>

@@ -39,7 +39,7 @@ if(isset($_POST['connexion'])) { // bouton connexion cliqué
 		$requete->close();
 
 		if( empty($stat) ){ 
-			echo "<span class=\"error\">L'identifiant ou le mote de passe est incorrect.</span><br/>";
+			echo "<span class=\"error\">L'identifiant ou le mot de passe est incorrect.</span><br/>";
 		}
 		else {
 			$_SESSION['login'] = $pseudo;

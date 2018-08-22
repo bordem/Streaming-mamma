@@ -14,7 +14,7 @@
         <a href="profil.php">
             <div id="ongletUtilisateur">
             <?php echo $_SESSION['login'];?>
-		        <img src="../images/profil_photo_basique.jpg">
+		       	<img id="imageProfil" src="../images/profil_photo_basique.jpg">
 	        </div>
         </a>
     
@@ -30,9 +30,9 @@
     if ($_SESSION['statut'] == "admin") {
        echo "
        			<div class=\"item1\"><a href= \"choix_film.php?pages=0\">Tous les films</a></div>
-                <div class=\"item2\"><a href= \"connexion.php\">Déconnexion</a></div>
-                <div class=\"item3\"><a href= \"gerer_membres.php\">Gérer les membres</a></div>
-                <div class=\"item4\"><a href= \"gerer_films.php\">Gérer les films</a></div>";
+                <div class=\"item2\"><a href= \"gerer_membres.php\">Gérer les membres</a></div>
+                <div class=\"item3\"><a href= \"gerer_films.php\">Gérer les films</a></div>
+                <div class=\"item4\"><a href= \"connexion.php\">Déconnexion</a></div>";
     }
     echo "</nav>";
     ?>

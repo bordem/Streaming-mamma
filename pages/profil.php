@@ -30,6 +30,27 @@
 			}
 
 			$idusr=$_SESSION['userId'];
+
+			if(isset($_POST['profil'])) { // bouton connexion cliqué
+				if(!empty($_POST['pseudo'])) {
+					$nouveauPseudo=$_POST['pseudo'];
+					$requetePseudo = "UPDATE `utilisateurs` SET `login`= \"".$nouveauPseudo."\"  WHERE `idusr`=".$idusr."";
+					mysqli_query($link, $requetePseudo);
+    			}
+    			if(!empty($_POST['prenom'])) {
+					$nouveauPrenom=$_POST['prenom'];
+					$requetePrenom = "UPDATE `utilisateurs` SET `prenom`= \"".$nouveauPrenom."\"  WHERE `idusr`=".$idusr."";
+					mysqli_query($link, $requetePrenom);
+    			}
+    			if(!empty($_POST['nom'])) {
+					$nouveauNom=$_POST['nom'];
+					$requeteNom = "UPDATE `utilisateurs` SET `nom`= \"".$nouveauNom."\"  WHERE `idusr`=".$idusr."";
+					mysqli_query($link, $requeteNom);
+    			}
+			
+			}
+
+
 		 ?>
 			 
 		<h1>Mon profil</h1>
@@ -47,28 +68,24 @@
 			Pseudo : <?php echo $_SESSION['login']; ?></br>
 			Nom : <?php echo $nom; ?></br>
 			Prenom :<?php echo $prenom; ?></br>
+			</br>
+			<!-- Edition du profil avec changement de toutes les données -->
+			<div>
+				<form action="profil.php" method="post"><br />
+					Veuillez saisir votre surnom :
+					<input type="text" name="pseudo" value="" /><br />
+					Veuillez saisir votre prénom :
+					<input type="text" name="prenom" value="" /><br />
+					Veuillez saisir votre nom :
+					<input type="text" name="nom" value="" /><br />
+					
+					<input type="submit" value="Editer profil" name="profil" />
+				</form>
+			</div>
+			
 		</p>
 		
 		<h1>Derniers films regardés</h1>
-		
-		<!-- Supression des films vus dans la BDD -->
-		<div>
-			<form action="profil.php" method="post">
-				<input type="submit" value="Supprimer mon historique" name="suppr_hist" />
-				
-			<?php 
-				/*if(isset($_POST['suppr_hist'])){
-					$requete_suppr = mysqli_prepare($link, "DELETE FROM historiqueFilms 
-															WHERE idusr=?") or die(mysqli_error($link);
-					$requete_suppr->bind_param("i",$idusr);
-					$requete_suppr->execute();
-					$requete_suppr->fetch();
-					$requete_suppr->close();
-					echo "<span class=\"info\">Historique supprimé !</span>";
-				}*/
-?>
-			</form>
-		</div>
 <?php	 
 				// On récupère les films regardés par cet utisateur
 				$rqt1="SELECT idfilm, titre, affiche 
@@ -102,9 +119,30 @@
 				?>
 				</tr>
 			</table>
+
+			<!-- Supression des films vus dans la BDD -->
+			<div>
+				<form action="profil.php" method="post">
+					<input type="submit" value="Supprimer mon historique" name="suppr_hist" />
+					
+				<?php 
+					if(isset($_POST['suppr_hist']))
+					{
+						/*$requete_suppr = mysqli_prepare($link, "DELETE FROM historiqueFilms 
+																WHERE idusr=?") or die(mysqli_error($link);
+						$requete_suppr->bind_param("i",$idusr);
+						$requete_suppr->execute();
+						$requete_suppr->fetch();
+						$requete_suppr->close();
+						*/
+						echo "<span class=\"info\">Historique supprimé !</span>";
+					}
+				?>
+				</form>
+			</div>
 			
 			<h1>Films proposés</h1>
-			<!-- TODO --> 
+			<!-- TODO -->
 		
 	</main>
 	<?php include('footer.html'); ?>
