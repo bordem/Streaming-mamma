@@ -56,7 +56,14 @@ include("db_connect.php");
 						<td>
 							<a href=<?php echo "lire_film.php?idfilm=".$idfilm; ?>>
 								<?php echo $titre; ?></br>
-								<img src="../images/<?php echo $affiche; ?>">
+								<!--Verification que le film est une affiche importé sinon affichage de l'affiche par defaut-->
+								<?php if(is_file($row['affiche'])){ ?>
+									<img src="<?php echo $row['affiche']; ?>">
+								<?php 
+								}else{
+									echo "<img src=\"../images/unknown_poster.jpg\">";
+								}
+								?>
 							</a><br/>
 							<?php //echo $anneesortie; ?><br/>
 							<?php //echo $realisateur; ?><br/>
@@ -77,7 +84,14 @@ include("db_connect.php");
 						<td>
 							<a href=<?php echo "lire_film.php?idfilm=".$row['idfilm']; ?>>
 								<?php echo $row['titre']; ?></br>
-								<img src="<?php echo $row['affiche'];?>"></br>
+								<!--Verification que le film est une affiche importé sinon affichage de l'affiche par defaut-->
+								<?php if(is_file($row['affiche'])){ ?>
+									<img src="<?php echo $row['affiche']; ?>">
+								<?php 
+								}else{
+									echo "<img src=\"../images/unknown_poster.jpg\">";
+								}
+								?>
 							</a>
 						</td>
 			<?php 

@@ -86,6 +86,23 @@
 		</p>
 		
 		<h1>Derniers films regardés</h1>
+
+		<!-- Supression des films vus dans la BDD -->
+			<div id="buttonHistorique">
+				<form action="profil.php" method="post">
+					<input type="submit" value="Supprimer mon historique" name="suppr_hist" />
+					
+				<?php 
+					if(isset($_POST['suppr_hist']))
+					{
+						$rqtSuppression = "DELETE FROM historiqueFilms WHERE idusr=".$idusr;
+						mysqli_query($link, $rqtSuppression);
+						echo "<span class=\"info\">Historique supprimé !</span>";
+					}
+				?>
+				</form>
+			</div>
+
 <?php	 
 				// On récupère les films regardés par cet utisateur
 				$rqt1="SELECT idfilm, titre, affiche 
@@ -98,6 +115,8 @@
 
 			?>
 			
+			
+			
 			<!-- Affichage -->
 			<table id="historique">
 				<tr>
@@ -106,41 +125,33 @@
 					while ( $requete_films->fetch() ) { 
 						// On affiche les 5 derniers films disctincts
 						if ($i<=4) {
-							echo "<td>
-							<a href=lire_film.php?idfilm=".$idfilm.">".
-							$titre."</br>
-							<img src=\"".$affiche."\">
-							</a><br/>
-							</td>";
-							$i++;
+							?>	<td>
+										
+										<a href= "lire_film.php?idfilm= <?php echo $idfilm; ?>">
+											<?php echo $titre; ?>
+											<?php if(is_file($affiche)){ ?>
+												<img src="<?php echo $affiche; ?>">
+											<?php 
+											}else{
+												echo "<img src=\"../images/unknown_poster.jpg\">";
+											}
+											?>
+										</a>
+										<br/>
+									</td>
+							<?php $i++;
 						}
 					}
+					
+					
+								
+					
+					
+					
 					$requete_films->close();
 				?>
 				</tr>
-			</table>
-
-			<!-- Supression des films vus dans la BDD -->
-			<div>
-				<form action="profil.php" method="post">
-					<input type="submit" value="Supprimer mon historique" name="suppr_hist" />
-					
-				<?php 
-					if(isset($_POST['suppr_hist']))
-					{
-						/*$requete_suppr = mysqli_prepare($link, "DELETE FROM historiqueFilms 
-																WHERE idusr=?") or die(mysqli_error($link);
-						$requete_suppr->bind_param("i",$idusr);
-						$requete_suppr->execute();
-						$requete_suppr->fetch();
-						$requete_suppr->close();
-						*/
-						echo "<span class=\"info\">Historique supprimé !</span>";
-					}
-				?>
-				</form>
-			</div>
-			
+			</table>			
 			<h1>Films proposés</h1>
 			<!-- TODO -->
 		

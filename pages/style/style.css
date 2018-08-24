@@ -88,10 +88,6 @@
 		margin:0 auto 35px auto;
 	}
 
-	#searchbar{
-		text-align: right;
-	}
-
 	#ongletUtilisateur{
 		position:fixed;
 		top:10px;
@@ -109,7 +105,12 @@
 	#imageProfil{
 		border-radius:50%;
 	}
-
+	#searchbar{
+		text-align: right;
+	}
+	#buttonHistorique{
+		text-align: right;
+	}
 
 
 	/*Classe*/
@@ -123,6 +124,8 @@
 	.gestion{
 		margin-left:5%;
 	}
+	
+	
 }
 @media screen and (max-width: 480px){
     body
@@ -131,14 +134,6 @@
 		background-repeat: no-repeat;
 		background-attachment: fixed;
 		color: #9d9d9d;
-/*		-webkit-background-size: 100%; 
-		-moz-background-size: 100%; 
-		-o-background-size: 100%; 
-		background-size: 100%; 
-		-webkit-background-size: cover; 
-		-moz-background-size: cover; 
-		-o-background-size: cover; 
- 
 /*		
  	La deuxième propriété prend le dessus sur la précédente, 
 	aussi la propriété estsupporté par la plupart des navigateurs 
@@ -177,7 +172,6 @@
 .error {
 	background-color: #e53935;
 }
-
 
 .closeBtn {
 	background-color: rgba(0,0,0,0.1);
