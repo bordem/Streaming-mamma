@@ -112,8 +112,8 @@ include("db_connect.php");
             echo "\n";
             print("</br>Film dans la base de donnée :");
             while ($row = mysqli_fetch_assoc($rqtAfficher)) {
-	            $titre=$row["titre"];
-	            $chemin=$row["chemin"];
+	            $titre=$row['titre'];
+	            $chemin=$row['chemin'];
 	            $vectorFilmBDD->add($titre,$chemin);
 	            print(",".$titre);
             }
@@ -133,8 +133,8 @@ include("db_connect.php");
 				$rqtInsertion = mysqli_prepare($link,"INSERT INTO `films`(`chemin`,`affiche`,`titre`) 
 													VALUES ( ?, ?, ?)") or die(mysql_error());
 	            if($existeDeja == false){
-					$cheminFilm = "\"".$vectorFilmUSB->at2($i)."/".$vectorFilmUSB->at1($i)."\"";
-					$cheminAffiche = "\"".$dirAffiche."/".$nomFilm.".jpg\"";
+					$cheminFilm = $vectorFilmUSB->at2($i)."/".$vectorFilmUSB->at1($i);
+					$cheminAffiche = $dirAffiche."/".$nomFilm.".jpg";
 					$rqtInsertion->bind_param("sss",$cheminFilm, $cheminAffiche, $nomFilm);
 					$rqtInsertion->execute();
 		            echo "</br> Ajout de : ".$nomFilm;

@@ -151,7 +151,7 @@ include("db_connect.php");
             ?>
             <div>
                 <form action="upload_affiches.php" method="post" enctype="multipart/form-data">
-                    Ajouter une affiche : 
+                    Ajouter une affiche :
                     <input type="file" name="fileToUpload" id="fileToUpload" />
                     <input type="submit" value="Go !" name="submit" />
                     <input type="hidden" value="<?php echo $titre_du_film; ?>" name="nom" />
