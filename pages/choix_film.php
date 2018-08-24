@@ -49,9 +49,7 @@ include("db_connect.php");
         		$nbTotalFilms=$row['COUNT(*)'];
         		//echo "Nombre de films au total : ".$nbTotalFilms;
         	}
-        ?>
-        
-        
+        ?>        
         
         <!-- Tableau des films -->
         <table id="tableauFilms">
@@ -69,7 +67,14 @@ include("db_connect.php");
 			    <td>
 			    	<a href=<?php echo "lire_film.php?idfilm=".$row['idfilm']; ?>>
 						<?php echo $row['titre']; ?></br>
-						<img src="<?php echo $row['affiche']; ?>">
+						<?php if(is_file($row['affiche'])){ ?>
+							<img src="<?php echo $row['affiche']; ?>">
+						<?php 
+						}else{
+							echo "<img src=\"../images/unknown_poster.jpg\">";
+						}
+						?>										
+					
 					</a><br/>
 					<!-- <?php echo $row['anneesortie']; ?><br/>
 					<?php echo $row['realisateur']; ?><br/> -->
