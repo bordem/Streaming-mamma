@@ -18,7 +18,9 @@ include("db_connect.php");
     
     <body>
         <!-- Haut de page -->
-        <?php include('header.php'); ?>
+        <?php 	include('header.php'); 
+        		include('Cvector.php');
+        ?>
         <main>
 
         <?php
