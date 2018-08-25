@@ -159,22 +159,22 @@
 			$rqt->bind_result($idTag);
 			$rqt->execute();
 			while ( $rqt->fetch() ){
-				echo $idTag;
 				$TagExisteDeja=false;
 				for($i=0;$i<$vectorTag->size();$i++){
 					//Si le tag existe deja on incrémente son nombre de 1
-					if($vectorTag->at2($i) ==$idTag){
+					if ($vectorTag->at1($i) == $idTag){
 						$TagExisteDeja=true;
 						$vectorTag->set($i,$idTag,$vectorTag->at2($i)+1);
 					}
 				}
 				//sinon on crée un nouveau tag dans le tableau
-				if($TagExisteDeja==false){
+				if (!$TagExisteDeja){
 					$vectorTag->add($idTag,1);
 				}
 			}
 			$rqt->close();
 			echo "<pre>";
+			$vectorTag->sortBy(1);
 			var_dump($vectorTag);
 			echo "</pre>";
 			?>
