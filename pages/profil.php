@@ -1,10 +1,9 @@
 <?php 
 	session_start();
 	include("db_connect.php");
+	include("Cvector.php");
 ?>
-
 <!doctype html>
-
 <html>
 <head>
 	<meta charset="utf-8" />
@@ -14,19 +13,15 @@
 		<link rel="stylesheet" href="style/style.css" />
 		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
 </head>
-<body>
+
 	<?php 	include('header.php'); 
-			include('Cvector.php');
 	?>
-	
 	<main>
-	<?php 
-	
-		// On refuse l'accès si le visiteur n'est pas connecté
+		<?php 
+			// On refuse l'accès si le visiteur n'est pas connecté
 			if ($_SESSION['statut'] != "admin" 
 			&& $_SESSION['statut'] != "user") {
-			echo("<p class=\"error\">Vous devez être connecté pour accéder à cette page.</p>
-				</main>");
+				echo("<p class=\"error\">Vous devez être connecté pour accéder à cette page.</p></main>");
 				include('footer.html');
 				exit();
 			}
@@ -35,32 +30,33 @@
 
 			if(isset($_POST['profil'])) { // bouton connexion cliqué
 				if(!empty($_POST['pseudo'])) {
-					$nouveauPseudo=$_POST['pseudo'];
-					$requetePseudo = "UPDATE `utilisateurs` SET `login`= \"".$nouveauPseudo."\"  WHERE `idusr`=".$idusr."";
-					mysqli_query($link, $requetePseudo);
+					$rqt = mysqli_prepare($link, "UPDATE utilisateurs SET login=? WHERE idusr=?");
+					$rqt->bind_param("ss", $_POST['pseudo'], $idusr);
+					$rqt->execute();
+					$rqt->close();
+					$_SESSION['login']=$_POST['pseudo'];
 				}
 				if(!empty($_POST['prenom'])) {
-					$nouveauPrenom=$_POST['prenom'];
-					$requetePrenom = "UPDATE `utilisateurs` SET `prenom`= \"".$nouveauPrenom."\"  WHERE `idusr`=".$idusr."";
-					mysqli_query($link, $requetePrenom);
+					$rqt = mysqli_prepare($link,"UPDATE `utilisateurs` SET `prenom`=? WHERE `idusr`=?");
+					$rqt->bind_param("ss", $_POST['prenom'], $idusr);
+					$rqt->execute();
+					$rqt->close();
 				}
 				if(!empty($_POST['nom'])) {
-					$nouveauNom=$_POST['nom'];
-					$requeteNom = "UPDATE `utilisateurs` SET `nom`= \"".$nouveauNom."\"  WHERE `idusr`=".$idusr."";
-					mysqli_query($link, $requeteNom);
+					$rqt = mysqli_prepare($link,"UPDATE `utilisateurs` SET `nom`=?  WHERE `idusr`=?");
+					$rqt->bind_param("ss", $_POST['nom'], $idusr);
+					$rqt->execute();
+					$rqt->close();
 				}
-			
 			}
-
-
 		 ?>
-			 
+			
 		<h1>Mon profil</h1>
 		<p>
 			<?php
-			$requete_nomPrenom = mysqli_prepare($link, "SELECT nom, prenom 
-														FROM utilisateurs 
-														WHERE idusr=?") or die(mysqli_error($link));
+			($requete_nomPrenom = mysqli_prepare($link, "SELECT nom, prenom 
+		i							FROM utilisateurs 
+									WHERE idusr=?")) or die(mysqli_error($link));
 			$requete_nomPrenom->bind_param("i",$idusr);
 			$requete_nomPrenom->execute();
 			$requete_nomPrenom->bind_result($nom, $prenom);
@@ -97,8 +93,9 @@
 				<?php 
 					if(isset($_POST['suppr_hist']))
 					{
-						$rqtSuppression = "DELETE FROM historiqueFilms WHERE idusr=".$idusr;
-						mysqli_query($link, $rqtSuppression);
+						$rqt = mysqli_prepare($link,"DELETE FROM historiqueFilms WHERE idusr=?");
+						$rqt->bind_param("s",$idusr);
+						$rqt->execute();
 						echo "<span class=\"info\">Historique supprimé !</span>";
 					}
 				?>
@@ -144,12 +141,6 @@
 							<?php $i++;
 						}
 					}
-					
-					
-								
-					
-					
-					
 					$requete_films->close();
 				?>
 				</tr>
@@ -157,44 +148,23 @@
 			<h1>Films proposés</h1>
 			<!-- TODO -->
 			<?php
-			//echo "chier";
-			$vectorTag = new vector;
-			$tabFilm=array();
-			$k=0;
-			$rqtPredictionStr = "SELECT `idfilm` FROM `historiqueFilms` WHERE `idusr`=".$idusr;
-			//echo $rqtPredictionStr;
-			$rqtPrediction=mysqli_query($link, $rqtPredictionStr);
-			while ($row = mysqli_fetch_assoc($rqtPrediction))
-			{
-				$tabFilm[$k]=$IDfilm;
-				$k++;
-				$IDfilm=$row['idfilm'];
-				//echo "L'id du film : ".$IDfilm."</br>";
-				$rqtPredictionStr2 = "SELECT idTag FROM `occurenceTags` WHERE `idFilm`=".$IDfilm;
-				//echo $rqtPredictionStr2;
-				$rqtPrediction2=mysqli_query($link, $rqtPredictionStr2);
-				while ($row2 = mysqli_fetch_assoc($rqtPrediction2))
-				{
-					//echo "L'id du Tag : ".$row2['idTag']."</br>";
-					$TagExisteDeja=false;
-					for($i=0;$i<$vectorTag->size();$i++)
-					{
-						//Si le tag existe deja on incrémente son nombre de 1
-						$elementAComparer = $vectorTag->at1($i);
-						//echo "Element : ".$elementAComparer."</br>";
-						if($elementAComparer==$row2['idTag']){
-							$TagExisteDeja=true;
-							//echo "True </br>";
-							$vectorTag->set($i,$row2['idTag'],$vectorTag->at2($i)+1);
-							//echo "Le tag existe deja </br>";
-						}
+			$vectorTag=new vector;
+			$rqt = mysqli_prepare($link,"SELECT idTag FROM occurenceTags JOIN historiqueFilms using(idFilm) where historiqueFilms.idusr = ?");
+			$rqt->bind_param("s", $idusr);
+			$rqt->bind_result($idTag);
+			$rqt->execute();
+			while ( $rqt->fetch() ){
+				$TagExisteDeja=false;
+				for($i=0;$i<$vectorTag->size();$i++){
+					//Si le tag existe deja on incrémente son nombre de 1
+					if ($vectorTag->at1($i) == $idTag){
+						$TagExisteDeja=true;
+						$vectorTag->set($i,$idTag,$vectorTag->at2($i)+1);
 					}
-					//sinon on crée un nouveau tag dans le tableau
-					if($TagExisteDeja==false){
-						$vectorTag->add($row2['idTag'],1);
-						//echo "Le tag n'existe pas </br>";
-					}
-					
+				}
+				//sinon on crée un nouveau tag dans le tableau
+				if (!$TagExisteDeja){
+					$vectorTag->add($idTag,1);
 				}
 			}
 			//echo "Je sors de la boucle </br>";
@@ -227,6 +197,11 @@
 			for($i=0;$i<$vectorTag->size();$i++){
 				$rechercheSuggestion ="SELECT `idFilm` FROM `occurenceTags` WHERE `idTag`=";
 			}
+			$rqt->close();
+			echo "<pre>";
+			$vectorTag->sortBy(1);
+			var_dump($vectorTag);
+			echo "</pre>";
 			?>
 	</main>
 	<?php include('footer.html'); ?>
