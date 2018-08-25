@@ -15,7 +15,9 @@
 		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
 </head>
 <body>
-	<?php include('header.php'); ?>
+	<?php 	include('header.php'); 
+			include('Cvector.php');
+	?>
 	
 	<main>
 	<?php 
@@ -36,17 +38,17 @@
 					$nouveauPseudo=$_POST['pseudo'];
 					$requetePseudo = "UPDATE `utilisateurs` SET `login`= \"".$nouveauPseudo."\"  WHERE `idusr`=".$idusr."";
 					mysqli_query($link, $requetePseudo);
-    			}
-    			if(!empty($_POST['prenom'])) {
+				}
+				if(!empty($_POST['prenom'])) {
 					$nouveauPrenom=$_POST['prenom'];
 					$requetePrenom = "UPDATE `utilisateurs` SET `prenom`= \"".$nouveauPrenom."\"  WHERE `idusr`=".$idusr."";
 					mysqli_query($link, $requetePrenom);
-    			}
-    			if(!empty($_POST['nom'])) {
+				}
+				if(!empty($_POST['nom'])) {
 					$nouveauNom=$_POST['nom'];
 					$requeteNom = "UPDATE `utilisateurs` SET `nom`= \"".$nouveauNom."\"  WHERE `idusr`=".$idusr."";
 					mysqli_query($link, $requeteNom);
-    			}
+				}
 			
 			}
 
@@ -103,7 +105,7 @@
 				</form>
 			</div>
 
-<?php	 
+<?php
 				// On récupère les films regardés par cet utisateur
 				$rqt1="SELECT idfilm, titre, affiche 
 					FROM historiqueFilms JOIN films USING(idfilm) 
@@ -155,32 +157,75 @@
 			<h1>Films proposés</h1>
 			<!-- TODO -->
 			<?php
-			$vectorTag=new vector;
+			//echo "chier";
+			$vectorTag = new vector;
+			$tabFilm=array();
+			$k=0;
 			$rqtPredictionStr = "SELECT `idfilm` FROM `historiqueFilms` WHERE `idusr`=".$idusr;
 			//echo $rqtPredictionStr;
 			$rqtPrediction=mysqli_query($link, $rqtPredictionStr);
 			while ($row = mysqli_fetch_assoc($rqtPrediction))
 			{
+				$tabFilm[$k]=$IDfilm;
+				$k++;
 				$IDfilm=$row['idfilm'];
+				//echo "L'id du film : ".$IDfilm."</br>";
 				$rqtPredictionStr2 = "SELECT idTag FROM `occurenceTags` WHERE `idFilm`=".$IDfilm;
+				//echo $rqtPredictionStr2;
 				$rqtPrediction2=mysqli_query($link, $rqtPredictionStr2);
 				while ($row2 = mysqli_fetch_assoc($rqtPrediction2))
 				{
-					echo $row2['idTag'];
+					//echo "L'id du Tag : ".$row2['idTag']."</br>";
 					$TagExisteDeja=false;
 					for($i=0;$i<$vectorTag->size();$i++)
 					{
 						//Si le tag existe deja on incrémente son nombre de 1
-						if($vectorTag->at2==$row2['idTag']){
+						$elementAComparer = $vectorTag->at1($i);
+						//echo "Element : ".$elementAComparer."</br>";
+						if($elementAComparer==$row2['idTag']){
 							$TagExisteDeja=true;
-							$vectorTag->set($i,$idTag,$vectorTag->at2()+1);
+							//echo "True </br>";
+							$vectorTag->set($i,$row2['idTag'],$vectorTag->at2($i)+1);
+							//echo "Le tag existe deja </br>";
 						}
 					}
 					//sinon on crée un nouveau tag dans le tableau
 					if($TagExisteDeja==false){
-						$vectorTag->add($idTag,1);					
+						$vectorTag->add($row2['idTag'],1);
+						//echo "Le tag n'existe pas </br>";
+					}
+					
+				}
+			}
+			//echo "Je sors de la boucle </br>";
+			//Tri a bulle selon les tags les plus visionne
+			for($i=0;$i<$vectorTag->size();$i++){
+				//echo $i." ".$vectorTag->at1($i)." ".$vectorTag->at2($i)." </br>";
+				for($j=0;$j<$vectorTag->size()-1;$j++){
+					//echo " </br>".$vectorTag->at2($i).">".$vectorTag->at2($j);
+					//echo "</br>";
+					if($vectorTag->at2($j)>$vectorTag->at2($j+1))
+					{
+							$Switch=array();
+							$Switch2=array();
+							$Switch[0]=$vectorTag->at1($j+1);
+							$Switch2[0]=$vectorTag->at2($j+1);
+							$vectorTag->set($j+1,$vectorTag->at1($j),$vectorTag->at2($j));
+							$vectorTag->set($j,$Switch[0],$Switch2[0]);
 					}
 				}
+			}
+			//Verification du tri a bulle
+			/*for($i=0;$i<$vectorTag->size();$i++){
+				echo $i." ".$vectorTag->at1($i)." ".$vectorTag->at2($i)." </br>";
+			}*/
+			
+			
+			/*
+				Recherche du film avec les mêmes tags que ceux regarder par la personne
+			*/
+			for($i=0;$i<$vectorTag->size();$i++){
+				$rechercheSuggestion ="SELECT `idFilm` FROM `occurenceTags` WHERE `idTag`=";
 			}
 			?>
 	</main>
