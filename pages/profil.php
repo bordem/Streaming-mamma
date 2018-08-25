@@ -1,6 +1,7 @@
 <?php 
 	session_start();
 	include("db_connect.php");
+	include("Cvector.php");
 ?>
 <!doctype html>
 <html>
@@ -153,30 +154,23 @@
 			<!-- TODO -->
 			<?php
 			$vectorTag=new vector;
-			$rqtPredictionStr = "SELECT `idfilm` FROM `historiqueFilms` WHERE `idusr`=".$idusr;
-			//echo $rqtPredictionStr;
-			$rqtPrediction=mysqli_query($link, $rqtPredictionStr);
-			while ($row = mysqli_fetch_assoc($rqtPrediction))
-			{
-				$IDfilm=$row['idfilm'];
-				$rqtPredictionStr2 = "SELECT idTag FROM `occurenceTags` WHERE `idFilm`=".$IDfilm;
-				$rqtPrediction2=mysqli_query($link, $rqtPredictionStr2);
-				while ($row2 = mysqli_fetch_assoc($rqtPrediction2))
-				{
-					echo $row2['idTag'];
-					$TagExisteDeja=false;
-					for($i=0;$i<$vectorTag->size();$i++)
-					{
-						//Si le tag existe deja on incrémente son nombre de 1
-						if($vectorTag->at2==$row2['idTag']){
-							$TagExisteDeja=true;
-							$vectorTag->set($i,$idTag,$vectorTag->at2()+1);
-						}
+			$rqt = mysqli_prepare($link,"SELECT idTag FROM occurenceTags JOIN historiqueFilms using(idFilm) where historiqueFilms.idusr = ?");
+			$rqt->bind_param("s", $idusr);
+			$rqt->bind_result($idTag);
+			$rqt->execute();
+			while ( $rqt->fetch() ){
+				echo $idTag;
+				$TagExisteDeja=false;
+				for($i=0;$i<$vectorTag->size();$i++){
+					//Si le tag existe deja on incrémente son nombre de 1
+					if($vectorTag->at2==$idTag){
+						$TagExisteDeja=true;
+						$vectorTag->set($i,$idTag,$vectorTag->at2()+1);
 					}
-					//sinon on crée un nouveau tag dans le tableau
-					if($TagExisteDeja==false){
-						$vectorTag->add($idTag,1);					
-					}
+				}
+				//sinon on crée un nouveau tag dans le tableau
+				if($TagExisteDeja==false){
+					$vectorTag->add($idTag,1);					
 				}
 			}
 			?>
