@@ -2,9 +2,7 @@
 	session_start();
 	include("db_connect.php");
 ?>
-
 <!doctype html>
-
 <html>
 <head>
 	<meta charset="utf-8" />
@@ -16,15 +14,12 @@
 </head>
 <body>
 	<?php include('header.php'); ?>
-	
 	<main>
-	<?php 
-	
-		// On refuse l'accès si le visiteur n'est pas connecté
+		<?php 
+			// On refuse l'accès si le visiteur n'est pas connecté
 			if ($_SESSION['statut'] != "admin" 
 			&& $_SESSION['statut'] != "user") {
-			echo("<p class=\"error\">Vous devez être connecté pour accéder à cette page.</p>
-				</main>");
+				echo("<p class=\"error\">Vous devez être connecté pour accéder à cette page.</p></main>");
 				include('footer.html');
 				exit();
 			}
@@ -33,24 +28,25 @@
 
 			if(isset($_POST['profil'])) { // bouton connexion cliqué
 				if(!empty($_POST['pseudo'])) {
-					$nouveauPseudo=$_POST['pseudo'];
-					$requetePseudo = "UPDATE `utilisateurs` SET `login`= \"".$nouveauPseudo."\"  WHERE `idusr`=".$idusr."";
-					mysqli_query($link, $requetePseudo);
-    			}
-    			if(!empty($_POST['prenom'])) {
-					$nouveauPrenom=$_POST['prenom'];
-					$requetePrenom = "UPDATE `utilisateurs` SET `prenom`= \"".$nouveauPrenom."\"  WHERE `idusr`=".$idusr."";
-					mysqli_query($link, $requetePrenom);
-    			}
-    			if(!empty($_POST['nom'])) {
-					$nouveauNom=$_POST['nom'];
-					$requeteNom = "UPDATE `utilisateurs` SET `nom`= \"".$nouveauNom."\"  WHERE `idusr`=".$idusr."";
-					mysqli_query($link, $requeteNom);
-    			}
-			
+					$rqt = mysqli_prepare($link, "UPDATE utilisateurs SET login=? WHERE idusr=?");
+					$rqt->bind_param("ss", $_POST['pseudo'], $idusr);
+					$rqt->execute();
+					$rqt->close();
+					$_SESSION['login']=$_POST['pseudo'];
+				}
+				if(!empty($_POST['prenom'])) {
+					$rqt = mysqli_prepare($link,"UPDATE `utilisateurs` SET `prenom`=? WHERE `idusr`=?");
+					$rqt->bind_param("ss", $_POST['prenom'], $idusr);
+					$rqt->execute();
+					$rqt->close();
+				}
+				if(!empty($_POST['nom'])) {
+					$rqt = mysqli_prepare($link,"UPDATE `utilisateurs` SET `nom`=?  WHERE `idusr`=?");
+					$rqt->bind_param("ss", $_POST['nom'], $idusr);
+					$rqt->execute();
+					$rqt->close();
+				}
 			}
-
-
 		 ?>
 			 
 		<h1>Mon profil</h1>
@@ -95,8 +91,9 @@
 				<?php 
 					if(isset($_POST['suppr_hist']))
 					{
-						$rqtSuppression = "DELETE FROM historiqueFilms WHERE idusr=".$idusr;
-						mysqli_query($link, $rqtSuppression);
+						$rqt = mysqli_prepare($link,"DELETE FROM historiqueFilms WHERE idusr=?");
+						$rqt->bind_param("s",$idusr);
+						$rqt->execute();
 						echo "<span class=\"info\">Historique supprimé !</span>";
 					}
 				?>

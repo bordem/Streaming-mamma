@@ -75,18 +75,21 @@ include("db_connect.php");
 						$i++;				
 				}
 					
-			$rqt2="SELECT * FROM films WHERE titre LIKE '%".$tagCherche."%'";
-			$requete2 = mysqli_query($link,$rqt2);
-			while ($row = mysqli_fetch_assoc($requete2)) {
+			$rqt2=mysqli_prepare($link,"SELECT idfilm,titre,affiche FROM films WHERE titre LIKE ?");
+			$tagCherche = "%$tagCherche%";
+			$rqt2->bind_param("s",$tagCherche);
+			$rqt2->execute();
+			$rqt2->bind_result($idFilm, $titre, $affiche);
+			while ( $rqt2->fetch() ){
 				if($i%3 == 0)
 					echo "<tr>";
 				?>			
 						<td>
-							<a href=<?php echo "lire_film.php?idfilm=".$row['idfilm']; ?>>
-								<?php echo $row['titre']; ?></br>
+							<a href=<?php echo "lire_film.php?idfilm=".$idFilm; ?>>
+								<?php echo $titre; ?></br>
 								<!--Verification que le film est une affiche importé sinon affichage de l'affiche par defaut-->
-								<?php if(is_file($row['affiche'])){ ?>
-									<img src="<?php echo $row['affiche']; ?>">
+								<?php if(is_file($affiche)){ ?>
+									<img src="<?php echo $affiche; ?>">
 								<?php 
 								}else{
 									echo "<img src=\"../images/unknown_poster.jpg\">";
@@ -95,12 +98,13 @@ include("db_connect.php");
 							</a>
 						</td>
 			<?php 
-				if($i%3==2)
+				if($i%3==2){
 					echo "</tr>";
+				}
 				$i++;
 			}?>
 		</table>
-		
+		<?php $rqt2->close(); ?>
 		</main>
 		<!-- Bas de page (mentions légales, ...) -->
 		<?php include('footer.html'); ?>
