@@ -53,9 +53,9 @@
 		<h1>Mon profil</h1>
 		<p>
 			<?php
-			$requete_nomPrenom = mysqli_prepare($link, "SELECT nom, prenom 
-														FROM utilisateurs 
-														WHERE idusr=?") or die(mysqli_error($link));
+			($requete_nomPrenom = mysqli_prepare($link, "SELECT nom, prenom 
+		i							FROM utilisateurs 
+									WHERE idusr=?")) or die(mysqli_error($link));
 			$requete_nomPrenom->bind_param("i",$idusr);
 			$requete_nomPrenom->execute();
 			$requete_nomPrenom->bind_result($nom, $prenom);
@@ -163,16 +163,20 @@
 				$TagExisteDeja=false;
 				for($i=0;$i<$vectorTag->size();$i++){
 					//Si le tag existe deja on incrémente son nombre de 1
-					if($vectorTag->at2==$idTag){
+					if($vectorTag->at2($i) ==$idTag){
 						$TagExisteDeja=true;
-						$vectorTag->set($i,$idTag,$vectorTag->at2()+1);
+						$vectorTag->set($i,$idTag,$vectorTag->at2($i)+1);
 					}
 				}
 				//sinon on crée un nouveau tag dans le tableau
 				if($TagExisteDeja==false){
-					$vectorTag->add($idTag,1);					
+					$vectorTag->add($idTag,1);
 				}
 			}
+			$rqt->close();
+			echo "<pre>";
+			var_dump($vectorTag);
+			echo "</pre>";
 			?>
 	</main>
 	<?php include('footer.html'); ?>
