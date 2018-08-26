@@ -124,11 +124,11 @@
 					while ( $requete_films->fetch() ) { 
 						// On affiche les 5 derniers films disctincts
 						if ($i<=4) {
-							?>	<td>
+							?>	<td class="cellule">
 										
 									<a href= "lire_film.php?idfilm= <?php echo $idfilm; ?>">
 										<?php 
-										echo $titre;
+										echo "<div class=\"filmListe\">".$titre."</div>";
 										 if(is_file($affiche)){
 											echo "<img src=\"$affiche\">";
 										}else{
@@ -147,6 +147,9 @@
 			</table>			
 			<h1>Films proposés</h1>
 			<!-- TODO -->
+			<!-- Affichage -->
+			<table id="historique">
+				<tr>
 			<?php
 			$vectorTag=new vector;
 			$rqt = mysqli_prepare($link,"SELECT idTag FROM occurenceTags JOIN historiqueFilms using(idFilm) where historiqueFilms.idusr = ?");
@@ -176,17 +179,26 @@
 			/*
 				Recherche du film avec les mêmes tags que ceux regarder par la personne
 			*/
-			$rechercheSuggestion = mysqli_prepare($link,"SELECT `idFilm`, titre, affiche FROM `occurenceTags` JOIN films using(idFilm) WHERE `idTag`=?");
-			$rechercheSuggestion->bind_result($idFilm, $titre, $affiche);
+			$rechercheSuggestion = mysqli_prepare($link,"SELECT `idfilm`, titre, affiche FROM `occurenceTags` JOIN films using(idFilm) WHERE `idTag`=?");
+			$rechercheSuggestion->bind_result($idfilm, $titre, $affiche);
 			$idTag=NULL;
 			$rechercheSuggestion->bind_param("d",$idTag);
 			for($i=0;$i<$vectorTag->size();$i++){
 				$idTag=$vectorTag->at1($i);
 				$rechercheSuggestion->execute();
 				$rechercheSuggestion->fetch();
-				echo "$idFilm $titre $affiche<br/>";
+				echo "<td class=\"cellule\"><a href=\"lire_film.php?idfilm=".$idfilm."\"><div=\"filmListe\">".$titre;
+						 if(is_file($affiche)){
+							echo "<img src=\"$affiche\">";
+						}else{
+							echo "<img src=\"../images/unknown_poster.jpg\">";
+						}
+				"</a></td>";
 			}
+			$rechercheSuggestion->close();
 			?>
+			</tr>
+			</table>
 	</main>
 	<?php include('footer.html'); ?>
 </body>
