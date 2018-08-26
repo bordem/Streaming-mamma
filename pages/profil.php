@@ -126,18 +126,18 @@
 						if ($i<=4) {
 							?>	<td>
 										
-										<a href= "lire_film.php?idfilm= <?php echo $idfilm; ?>">
-											<?php echo $titre; ?>
-											<?php if(is_file($affiche)){ ?>
-												<img src="<?php echo $affiche; ?>">
-											<?php 
-											}else{
-												echo "<img src=\"../images/unknown_poster.jpg\">";
-											}
-											?>
-										</a>
-										<br/>
-									</td>
+									<a href= "lire_film.php?idfilm= <?php echo $idfilm; ?>">
+										<?php 
+										echo $titre;
+										 if(is_file($affiche)){
+											echo "<img src=\"$affiche\">";
+										}else{
+											echo "<img src=\"../images/unknown_poster.jpg\">";
+										}
+										?>
+									</a>
+									<br/>
+								</td>
 							<?php $i++;
 						}
 					}
@@ -167,41 +167,25 @@
 					$vectorTag->add($idTag,1);
 				}
 			}
-			//echo "Je sors de la boucle </br>";
+			$rqt->close();
 			//Tri a bulle selon les tags les plus visionne
-			for($i=0;$i<$vectorTag->size();$i++){
-				//echo $i." ".$vectorTag->at1($i)." ".$vectorTag->at2($i)." </br>";
-				for($j=0;$j<$vectorTag->size()-1;$j++){
-					//echo " </br>".$vectorTag->at2($i).">".$vectorTag->at2($j);
-					//echo "</br>";
-					if($vectorTag->at2($j)>$vectorTag->at2($j+1))
-					{
-							$Switch=array();
-							$Switch2=array();
-							$Switch[0]=$vectorTag->at1($j+1);
-							$Switch2[0]=$vectorTag->at2($j+1);
-							$vectorTag->set($j+1,$vectorTag->at1($j),$vectorTag->at2($j));
-							$vectorTag->set($j,$Switch[0],$Switch2[0]);
-					}
-				}
-			}
-			//Verification du tri a bulle
-			/*for($i=0;$i<$vectorTag->size();$i++){
-				echo $i." ".$vectorTag->at1($i)." ".$vectorTag->at2($i)." </br>";
-			}*/
-			
-			
+			$vectorTag->sortBy(1);
+			//echo "<pre>";
+			//var_dump($vectorTag);
+			//echo "</pre>";
 			/*
 				Recherche du film avec les mêmes tags que ceux regarder par la personne
 			*/
+			$rechercheSuggestion = mysqli_prepare($link,"SELECT `idFilm`, titre, affiche FROM `occurenceTags` JOIN films using(idFilm) WHERE `idTag`=?");
+			$rechercheSuggestion->bind_result($idFilm, $titre, $affiche);
+			$idTag=NULL;
+			$rechercheSuggestion->bind_param("d",$idTag);
 			for($i=0;$i<$vectorTag->size();$i++){
-				$rechercheSuggestion ="SELECT `idFilm` FROM `occurenceTags` WHERE `idTag`=";
+				$idTag=$vectorTag->at1($i);
+				$rechercheSuggestion->execute();
+				$rechercheSuggestion->fetch();
+				echo "$idFilm $titre $affiche<br/>";
 			}
-			$rqt->close();
-			echo "<pre>";
-			$vectorTag->sortBy(1);
-			var_dump($vectorTag);
-			echo "</pre>";
 			?>
 	</main>
 	<?php include('footer.html'); ?>

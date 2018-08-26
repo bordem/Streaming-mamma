@@ -9,8 +9,6 @@
 		private $_tailleTableau=0;
 	   
 		public function add($data,$data2) {
-		//	$this->_arrayList[$this->_tailleTableau]=$data;
-		//	$this->_arrayList2[$this->_tailleTableau]=$data2;
 			$this->_data[$this->_tailleTableau]=[$data, $data2];
 			$this->_tailleTableau++;
 		}
@@ -20,6 +18,9 @@
 		public function getTab(){
 			return $this->_data;
 		}
+		public function at($i){
+			return $this->_data[$i];
+		}
 		public function at1($i){
 			return $this->_data[$i][0];
 		}
@@ -27,20 +28,21 @@
 			return $this->_data[$i][1];
 		}
 		public function set($i,$data,$data2){
-		//	$this->_arrayList[$i]=$data;
-		//	$this->_arrayList2[$i]=$data2;
 			$this->_data[$i]=[$data,$data2];
 		}
 		public function sortBy($col){
-			for ($i=$this->_tailleTableau-1; $i>0; $i--){
-				echo "i=$i</br>";
-				for ($j=$this->_tailleTableau-1; $j>1; $j--){
-					echo "j=$j</br>";
-					if ($this->_data[$j][$col] > $this_data[$j-1][$col]){
-						[$this->_data[$j], $this->_data[$j-1]] = [$this->_data[$j-1], $this->_data[$j]];
+			$it=0;
+			do { // Tant que le tableau n'est pas trie on continue
+				$sorted=true;
+				for ($i=0; $i < $this->_tailleTableau-1-$it; $i++){ // on amene le plus petit elevment à la fin du tableau
+					// À chaque tour de boucle, le dernier element est bien place donc on peut ne plus les verifier
+					if ($this->_data[$i][$col] < $this->_data[$i+1][$col]){
+						$sorted=false; // le tableau n'est pas trie si on a fait un echange ( c'est une aproximation suffisante)
+						[$this->_data[$i], $this->_data[$i+1]] = [$this->_data[$i+1], $this->_data[$i]]; // swap rapide
 					}
 				}
-			}
+			$it++;
+			}while ( !$sorted );
 		}
 	}
 ?>
