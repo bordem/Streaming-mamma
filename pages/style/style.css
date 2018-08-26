@@ -123,22 +123,20 @@
 		margin-left:5%;
 		margin-right:5%;
 	}
-	.cellule{
+	td{
 		width:20%;
 	}
-	
 	.historique{
-	text-align:center;
-	padding-left:5%;
-	width:89%;
-	padding-right:5%;
-	border-collapse: separate;
-	border-spacing: 5px 8px;
+		text-align:center;
+		padding-left:5%;
+		width:89%;
+		padding-right:5%;
+		border-collapse: separate;
+		border-spacing: 5px 8px;
 	}
 }
 @media screen and (max-width: 480px){
-    body
-    {
+    body{
         background-image:url("../../images/phone-background.jpg");
 		background-repeat: no-repeat;
 		background-attachment: fixed;
@@ -154,8 +152,7 @@
     table thead{
     	display:none 
     }
-    table tr
-    {
+    table tr{
 		display:flex;
 		flex-wrap:wrap;
     }

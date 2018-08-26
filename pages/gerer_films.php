@@ -50,7 +50,7 @@ include("db_connect.php");
                 do {
 				    echo "<tr><td>".$titreRes."</td><td>".$cheminRes."</td><td>".$realisateurRes."</td><td>".$anneeRes."</td></tr>";
 			    } while($requete->fetch() );
-			    echo "</table><br/>";
+			    echo "</table><br />";
             }
         }
         
@@ -86,22 +86,22 @@ include("db_connect.php");
         
         <!-- CORPS DE LA PAGE -->
         
-            <h1>Chercher un film dans la base de données</h1><br/>
+            <h1>Chercher un film dans la base de données</h1><br />
             <form action="gerer_films.php" method="post">
-                Titre (exact) : <input type="text" name="titre"/><br/>
+                Titre (exact) : <input type="text" name="titre"/><br />
                 <input type="submit" value="Envoyer" name="bouttonsrch"/>
             </form>
             
-            <h1>Mettre à jour la base de données</h1><br/>
+            <h1>Mettre à jour la base de données</h1><br />
             
             <form action="maj_bdd.php" method="post">
                 <input type="submit" name="maj_bdd" value="Go !">
             </form>
             
-            <h1>Ajouter un film</h1><br/>
+            <h1>Ajouter un film</h1><br />
             <form action="upload_films.php" method="post" enctype="multipart/form-data">
-                Ajouter le film* :<input type="file" name="mvToUpload" id="mvToUpload" required /></br>
-                Titre* :<input type="text" name="titrefilm" required /></br>
+                Ajouter le film* :<input type="file" name="mvToUpload" id="mvToUpload" required /><br />
+                Titre* :<input type="text" name="titrefilm" required /><br />
                 
                 Catégorie* :
                     
@@ -111,20 +111,20 @@ include("db_connect.php");
                            <option value="Comedie">Comédie</option>
                            <option value="Sciences_Fiction">SF</option>
                            <option value="Autre">Autre</option>
-                        </select></br>
+                        </select><br />
                         
-                    Ajouter l'affiche du film :<input type="file" name="imgToUpload" id="imgToUpload" /></br>
-                    Réalisateur :<input type="text" name="real"/></br>
-					Année de sortie :<input type="text" name="sortie"/></br>
+                    Ajouter l'affiche du film :<input type="file" name="imgToUpload" id="imgToUpload" /><br />
+                    Réalisateur :<input type="text" name="real"/><br />
+					Année de sortie :<input type="text" name="sortie"/><br />
 					
-            <input type="submit" name="bouttonadd" value="Valider"/></form><br/>
+            <input type="submit" name="bouttonadd" value="Valider"/></form><br />
             
-            <h1>Supprimer un film</h1><br/>
+            <h1>Supprimer un film</h1><br />
             <form action="gerer_films.php" method="post">
-                Titre : <input type="text" name="titrefilm2"/><br/>
+                Titre : <input type="text" name="titrefilm2"/><br />
                 <input type="submit" name="bouttonsupr" value="Valider"/>
             </form>
-            <br/>
+            <br />
         </main>
         <?php include('footer.html'); ?>
     </body>

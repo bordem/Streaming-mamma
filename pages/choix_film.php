@@ -32,7 +32,7 @@ include("db_connect.php");
          $idpages=$_GET['pages'];
          ?>
         
-        <h1>Tous les films</h1> <br/>
+        <h1>Tous les films</h1> <br />
         <div id="searchbar">
             <form action="filmRecherche.php" method="post">
             	<input type="text" name="tagCherche" placeholder="Rechercher"/>
@@ -67,16 +67,16 @@ include("db_connect.php");
 					<td>
 						<?php
 							echo "<a href=\"lire_film.php?idfilm=$idfilm\">";
-							echo "$titre</br>";
+							echo "$titre<br />";
 							// Verification que le film est une affiche importé sinon affichage de l'affiche par defaut
 							if (is_file($affiche)){
 								echo "<img src=\"$affiche\">";
 							}else{
 								echo '<img src="../images/unknown_poster.jpg"';
 							}
-							echo "</a><br/>";
-							//echo "$anneesortie<br/>";
-							//echo "$realisateur<br/>";
+							echo "</a><br />";
+							//echo "$anneesortie<br />";
+							//echo "$realisateur<br />";
 						?>
 					</td>
 				<?php

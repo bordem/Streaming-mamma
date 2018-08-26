@@ -52,7 +52,7 @@
 		 ?>
 			
 		<h1>Mon profil</h1>
-		<p>
+		<div>
 			<?php
 			($requete_nomPrenom = mysqli_prepare($link, "SELECT nom, prenom 
 		i							FROM utilisateurs 
@@ -63,25 +63,23 @@
 			$requete_nomPrenom->fetch();
 			$requete_nomPrenom->close();
 			?>
-			Pseudo : <?php echo $_SESSION['login']; ?></br>
-			Nom : <?php echo $nom; ?></br>
-			Prenom :<?php echo $prenom; ?></br>
-			</br>
+			Pseudo : <?php echo $_SESSION['login']; ?><br />
+			Nom : <?php echo $nom; ?><br />
+			Prenom :<?php echo $prenom; ?><br />
+			<br />
 			<!-- Edition du profil avec changement de toutes les données -->
-			<div>
-				<form action="profil.php" method="post"><br />
-					Veuillez saisir votre surnom :
-					<input type="text" name="pseudo" value="" /><br />
-					Veuillez saisir votre prénom :
-					<input type="text" name="prenom" value="" /><br />
-					Veuillez saisir votre nom :
-					<input type="text" name="nom" value="" /><br />
-					
-					<input type="submit" value="Editer profil" name="profil" />
-				</form>
-			</div>
+			<form action="profil.php" method="post"><br />
+				Veuillez saisir votre surnom :
+				<input type="text" name="pseudo" value="" /><br />
+				Veuillez saisir votre prénom :
+				<input type="text" name="prenom" value="" /><br />
+				Veuillez saisir votre nom :
+				<input type="text" name="nom" value="" /><br />
+				
+				<input type="submit" value="Editer profil" name="profil" />
+			</form>
+		</div>
 			
-		</p>
 		
 		<h1>Derniers films regardés</h1>
 
@@ -136,7 +134,7 @@
 										}
 										?>
 									</a>
-									<br/>
+									<br />
 								</td>
 							<?php $i++;
 						}
@@ -152,7 +150,8 @@
 				<tr>
 			<?php
 			$vectorTag=new vector;
-			$rqt = mysqli_prepare($link,"SELECT idTag FROM occurenceTags JOIN historiqueFilms using(idFilm) where historiqueFilms.idusr = ?");
+			//On selectione les id des tags de l'historique 
+			$rqt = mysqli_prepare($link,"SELECT idTag FROM occurenceTags JOIN historiqueFilms USING(idFilm) WHERE historiqueFilms.idusr = ?");
 			$rqt->bind_param("s", $idusr);
 			$rqt->bind_result($idTag);
 			$rqt->execute();
@@ -179,6 +178,7 @@
 			/*
 				Recherche du film avec les mêmes tags que ceux regarder par la personne
 			*/
+			// on 
 			$rechercheSuggestion = mysqli_prepare($link,"SELECT `idfilm`, titre, affiche FROM `occurenceTags` JOIN films using(idFilm) WHERE `idTag`=?");
 			$rechercheSuggestion->bind_result($idfilm, $titre, $affiche);
 			$idTag=NULL;
@@ -187,13 +187,13 @@
 				$idTag=$vectorTag->at1($i);
 				$rechercheSuggestion->execute();
 				$rechercheSuggestion->fetch();
-				echo "<td class=\"cellule\"><a href=\"lire_film.php?idfilm=".$idfilm."\"><div=\"filmListe\">".$titre;
-						 if(is_file($affiche)){
-							echo "<img src=\"$affiche\">";
-						}else{
-							echo "<img src=\"../images/unknown_poster.jpg\">";
-						}
-				"</a></td>";
+				echo "<td><a href=\"lire_film.php?idfilm=$idfilm\"><span class=\"filmListe\">".$titre;
+				if(is_file($affiche)){
+					echo "<img src=\"$affiche\">";
+				}else{
+					echo "<img src=\"../images/unknown_poster.jpg\">";
+				}
+				echo "</span></a></td>";
 			}
 			$rechercheSuggestion->close();
 			?>

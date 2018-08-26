@@ -18,8 +18,8 @@
         <main>
         	<h2>/!\ Développement en cours ! </h2>
         	<section>
-        		<strong>Streaming mamma </strong>est un site de streaming en local qui permet de lire les vidéos stockés sur le disque dur de Martin BORDE </br>
-        		Il est hébergé sur une Raspberry Pi 3.</br>
+        		<strong>Streaming mamma </strong>est un site de streaming en local qui permet de lire les vidéos stockés sur le disque dur de Martin BORDE <br />
+        		Il est hébergé sur une Raspberry Pi 3.<br />
         		
 				Pour concevoir le site , nous avons utilisé différents langages :
 				<ul>
@@ -28,14 +28,14 @@
 					<li>PHP5</li>
 					<li>MySQL</li>
 				</ul>
-				</br>
+				<br />
 				Les vidéos qui peuvent être incluses sur le site doivent être au format suivant :
 				<ul>
 					<li>.mp4</li>
 					<li>.ogv</li>
 					<li>.webm</li>
 				</ul>
-				</br>
+				<br />
 				Le format des affiches 
 				<ul>
 					<li>Type d'image jpeg(JPEG)</li>

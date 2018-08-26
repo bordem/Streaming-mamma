@@ -78,14 +78,14 @@ include("db_connect.php");
 
 
             //Affichage sur la page !
-            print("</br>Film sur le disque :");
+            print("<br />Film sur le disque :");
             $films = $vectorFilmUSB->getTab();
             for($i=0;$i<count($films);$i++)
             {
-	            echo "</br>".$films[$i];
+	            echo "<br />".$films[$i];
             }
             echo "\n";
-            print("</br>Film dans la base de donnée :");
+            print("<br />Film dans la base de donnée :");
             while ($row = mysqli_fetch_assoc($rqtAfficher)) {
 	            $titre=$row['titre'];
 	            $chemin=$row['chemin'];
@@ -102,7 +102,7 @@ include("db_connect.php");
 	            for($j=0;$j<$vectorFilmBDD->size();$j++){
 		            if($nomFilm==$vectorFilmBDD->at1($j)){
 			            $existeDeja = true;
-			            echo "</br> Ce film existe deja : ".$nomFilm;
+			            echo "<br /> Ce film existe deja : ".$nomFilm;
 		            }
 	            }
 				$rqtInsertion = mysqli_prepare($link,"INSERT INTO `films`(`chemin`,`affiche`,`titre`) 
@@ -112,7 +112,7 @@ include("db_connect.php");
 					$cheminAffiche = $dirAffiche."/".$nomFilm.".jpg";
 					$rqtInsertion->bind_param("sss",$cheminFilm, $cheminAffiche, $nomFilm);
 					$rqtInsertion->execute();
-		            echo "</br> Ajout de : ".$nomFilm;
+		            echo "<br /> Ajout de : ".$nomFilm;
 	            }
 			}
 			// todo suprimer de la bdd les films qui ne sont plus sur le disque
