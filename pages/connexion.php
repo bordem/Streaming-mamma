@@ -7,15 +7,16 @@
 ?>
 <!doctype html>
 <html>
-<head>
-    <title>Connexion</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
-    <link rel="stylesheet" href="style/style.css" />
+	<head>
+    	<title>Connexion</title>
+    	<meta charset="utf-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
+        <link rel="stylesheet" href="style/largeScreen/style.css" />
+        <link rel="stylesheet" href="style/mobile/style.css" />
 		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
-</head>
-<body>
+	</head>
+	<body>
     <?php include('header.php'); ?>
     <main>
         <div id="formulaireConnexion">
