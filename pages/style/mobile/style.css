@@ -33,7 +33,8 @@
 		padding-bottom:10%;
 	}
 	img {
-	  vertical-align:middle;
+		margin-left: auto;
+		margin-right: auto;
 	}
 	ul{
 		list-style-type: circle;
@@ -120,8 +121,7 @@
 		margin-left:5%;
 	}
 	.filmListe{
-		margin-left:5%;
-		margin-right:5%;
+		text-align:center;
 	}
 	td{
 		width:20%;

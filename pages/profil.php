@@ -177,7 +177,7 @@
 			//var_dump($vectorTag);
 			//echo "</pre>";
 			/*
-				Recherche du film avec les mêmes tags que ceux regarder par la personne
+				Recherche du film avec les mêmes tags que ceux regardes par la personne
 			*/
 			// on 
 			$rechercheSuggestion = mysqli_prepare($link,"SELECT `idfilm`, titre, affiche FROM `occurenceTags` JOIN films using(idFilm) WHERE `idTag`=?");
