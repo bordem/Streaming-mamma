@@ -113,22 +113,21 @@
 				$requete_films->bind_result($idfilm,$titre,$affiche);
 
 			?>
-			
-			
-			
 			<!-- Affichage -->
 			<table id="historique">
 				<tr>
 					<?php
 					$i = 0;
+					$tablauFilmVu = new vector;
 					while ( $requete_films->fetch() ) { 
 						// On affiche les 5 derniers films disctincts
+						$tablauFilmVu->add($idfilm,0);
 						if ($i<=4) {
 							?>	<td>
 										
 									<a href= "lire_film.php?idfilm= <?php echo $idfilm; ?>">
 										<?php 
-										echo "<div class=\"filmListe\">".$titre."</div>";
+										echo "<div>".$titre."</div>";
 										 if(is_file($affiche)){
 											echo "<img src=\"$affiche\">";
 										}else{
@@ -177,10 +176,13 @@
 			//echo "<pre>";
 			//var_dump($vectorTag);
 			//echo "</pre>";
+			//Suppression des films vu par l'utilisateur
+			
 			/*
 				Recherche du film avec les mêmes tags que ceux regardes par la personne
 			*/
 			// on 
+			$k=0;
 			$rechercheSuggestion = mysqli_prepare($link,"SELECT `idfilm`, titre, affiche FROM `occurenceTags` JOIN films using(idFilm) WHERE `idTag`=?");
 			$rechercheSuggestion->bind_result($idfilm, $titre, $affiche);
 			$idTag=NULL;
@@ -188,14 +190,32 @@
 			for($i=0;$i<$vectorTag->size();$i++){
 				$idTag=$vectorTag->at1($i);
 				$rechercheSuggestion->execute();
-				$rechercheSuggestion->fetch();
-				echo "<td><a href=\"lire_film.php?idfilm=$idfilm\"><span class=\"filmListe\">".$titre;
-				if(is_file($affiche)){
-					echo "<img src=\"$affiche\">";
-				}else{
-					echo "<img src=\"../images/unknown_poster.jpg\">";
+				while($rechercheSuggestion->fetch()){
+					$existeDeja=false;
+					/*
+						On verifie si le film existe deja dans l'historique 
+						Si oui le film n'est pas integrer au suggestion
+						Sinon on ajoute le film dans limite de 5 
+					*/
+					for($j=0;$j<$tablauFilmVu->size();$j++){
+						if($idfilm==$tablauFilmVu->at1($j)){
+							$existeDeja=true;
+						}
+					}
+					if($existeDeja==false){
+						if($k<5)
+						{
+							echo "<td><a href=\"lire_film.php?idfilm=$idfilm\"><div>".$titre."</div>";
+							if(is_file($affiche)){
+								echo "<img src=\"$affiche\">";
+							}else{
+								echo "<img src=\"../images/unknown_poster.jpg\">";
+							}
+							echo "</span></a></td>";
+							$k=$k+1;
+						}
+					}
 				}
-				echo "</span></a></td>";
 			}
 			$rechercheSuggestion->close();
 			?>

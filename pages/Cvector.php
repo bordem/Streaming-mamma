@@ -5,7 +5,7 @@
 	class vector {
 		//private $_arrayList=array();
 		//private $_arrayList2=array();
-		private $_data=array();		   	
+		private $_data=array();
 		private $_tailleTableau=0;
 	   
 		public function add($data,$data2) {
