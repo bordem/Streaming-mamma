@@ -129,7 +129,7 @@ include("db_connect.php");
 					if (is_file($affiche)){
 						echo "<img src=\"$affiche\">";
 					}else{
-						echo '<img src="../images/unknown_poster.jpg"';
+						echo "<img src=\"../images/unknown_poster.jpg\">";
 					}
 					$requete->close();
 				?>
