@@ -183,6 +183,7 @@
 			*/
 			// on 
 			$k=0;
+			$affichage=new vector();
 			$rechercheSuggestion = mysqli_prepare($link,"SELECT `idfilm`, titre, affiche FROM `occurenceTags` JOIN films using(idFilm) WHERE `idTag`=?");
 			$rechercheSuggestion->bind_result($idfilm, $titre, $affiche);
 			$idTag=NULL;
@@ -202,9 +203,14 @@
 							$existeDeja=true;
 						}
 					}
+					for($j=0;$j<$affichage->size();$j++){
+						if($idfilm==$affichage->at1($j)){
+							$existeDeja=true;
+						}
+					}
 					if($existeDeja==false){
-						if($k<5)
-						{
+						if($k<5){
+							$affichage->add($idfilm,0);
 							echo "<td><a href=\"lire_film.php?idfilm=$idfilm\"><div>".$titre."</div>";
 							if(is_file($affiche)){
 								echo "<img src=\"$affiche\">";
