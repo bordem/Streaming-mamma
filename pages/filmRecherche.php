@@ -41,7 +41,7 @@ include("db_connect.php");
 			$i=0; 
 			$tagCherche = $_POST['tagCherche'];
 			echo " <h1>Resultat de la recherche pour : ".$tagCherche."</h1>";
-			$rqt = "SELECT films.idfilm,titre,anneesortie,realisateur, affiche
+			$rqt = "SELECT films.idfilm,titre,anneesortie,realisateur,affiche
 					FROM films JOIN occurenceTags on films.idfilm=occurenceTags.idFilm 
 					JOIN tags USING(idTag)
 					WHERE nomTag=?";
@@ -58,8 +58,8 @@ include("db_connect.php");
 							<a href=<?php echo "lire_film.php?idfilm=".$idfilm; ?>>
 								<?php echo $titre; ?><br />
 								<!--Verification que le film est une affiche importé sinon affichage de l'affiche par defaut-->
-								<?php if(is_file($row['affiche'])){ ?>
-									<img src="<?php echo $row['affiche']; ?>">
+								<?php if(is_file($affiche)){ ?>
+									<img src="<?php echo $affiche; ?>">
 								<?php 
 								}else{
 									echo "<img src=\"../images/unknown_poster.jpg\">";

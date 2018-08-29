@@ -97,29 +97,47 @@ include("db_connect.php");
             
             
             <!-- On affiche le film -->
-            <h1 class="titreFilm"><?php echo $titre_du_film; ?></h1><br/>
+            <h1><?php echo $titre_du_film; ?></h1><br/>
             
-            <video id="video" height="240" width="360" autoplay controls>
+            <video height="240" width="360" autoplay controls>
             	<source src="<?php echo $chemin_du_film; ?>" type="video/mp4">
             	<source src="<?php echo $chemin_du_film; ?>" type="video/webm"> 
             	<source src="<?php echo $chemin_du_film; ?>" type="video/ogg"> 
             </video>
             
             <!-- Affichage des données du film -->
-            <div>
+            <div id="infoFilm">
+            	<h2>Info:</h2>
             	<?php 
-            	/*
-            		Intéger image, année et réalisateur
-            	
-            	*/
-            	?>
-            </div>
-            
-            
+		        	/*Intégrer image, année et réalisateur*/
+		        	$requete = mysqli_prepare($link, "SELECT `affiche`,`titre`,`realisateur`,`anneesortie` FROM `films` WHERE `idfilm`=?") or mysqli_error($link);
+					$requete->bind_param("i",$idFilm); 
+					$requete->execute();
+					$requete->bind_result($affiche,$titre,$realisateur,$annee);
+					$requete->fetch();
+					echo "Titre : ".$titre."<br/>";
+					if ($annee<>""){
+						echo "Annee de sortie : ".$annee."<br/>";
+					}else{
+						echo "Annee de sortie : Inconnu <br/>";
+					}
+					if ($realisateur<>""){
+						echo "Realisateur : ".$realisateur."<br/>";
+					}else{
+						echo "Realisateur : Inconnu <br/>";
+					}
+					if (is_file($affiche)){
+						echo "<img src=\"$affiche\">";
+					}else{
+						echo '<img src="../images/unknown_poster.jpg"';
+					}
+					$requete->close();
+				?>
+			</div>
             <!-- Affichage des tags attachés au film -->
             <div>
                 Tag :
-<?php
+				<?php
 				$requete = mysqli_prepare($link, "SELECT nomTag 
 												FROM occurenceTags 
 												JOIN tags using(idTag) 
@@ -128,7 +146,7 @@ include("db_connect.php");
 				$requete->execute();
 				$requete->bind_result($nomTag);
 				while ( $requete->fetch() ) {
-                    echo $nomTag." ";
+                    echo "<a href=\"\">".$nomTag."</a> ";
                 }
                 ?>
             </div>
