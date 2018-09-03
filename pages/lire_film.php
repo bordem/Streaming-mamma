@@ -67,7 +67,7 @@ include("db_connect.php");
 					else {
 	                	echo "<div class=\"info\">Ce tag existe deja.</div>";
     	            }
-                	$requete2->close();
+                	$requete1->close();
 					$rqt= mysqli_prepare($link,"SELECT idTag 
 												FROM tags 
 												WHERE nomTag= ?") or die(mysqli_error($link));
