@@ -2,9 +2,9 @@
 	<!-- Titre cliquable si connecté -->
     <?php
         if ($_SESSION['statut'] != 'admin' && $_SESSION['statut'] != 'user') {
-            echo "<a href=\"../pages/connexion.php\"> <img id=\"logo\" src=\"../images/logo.jpg\"><h1 id=\"banniere\"> Streaming Mamma</h1></a>";
+            echo "<a href=\"../pages/connexion.php\"> <img id=\"logo\" src=\"../images/logo.svg\"><h1 id=\"banniere\"> Streaming Mamma</h1></a>";
         } else {
-            echo "<a href=\"choix_film.php\"><img id=\"logo\" src=\"../images/logo.jpg\"><h1 id=\"banniere\">Streaming Mamma</h1></a>";
+            echo "<a href=\"choix_film.php\"><img id=\"logo\" src=\"../images/logo.svg\"><h1 id=\"banniere\">Streaming Mamma</h1></a>";
         }
     ?>
     
