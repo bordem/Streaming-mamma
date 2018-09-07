@@ -33,8 +33,13 @@
 
             // Check file size
             if ($_FILES["fileToUpload"]["size"] > 500000) {
-                echo "<div class=\"error\">Le fichier ne doit pas excéder 500 Ko.</div>";
+                echo "<div class=\"error\">";
+                echo "Le fichier ne doit pas excéder 500 Ko.";
+                echo "</div>";
                 $uploadOk = false;
+            }
+            else{
+            	echo "Le fichier est d'une taille acceptable";
             }
 
             // Allow certain file formats
@@ -53,8 +58,10 @@
                 
             // if everything is ok, put it in the db
             } else {
-                if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-                    rename("../Films/affiche/".basename( $_FILES["fileToUpload"]["name"]), "../Films/affiche/".$_POST["nom"].".jpg");
+				echo $_FILES["fileToUpload"]["tmp_name"];
+				$result=move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+                if ($result) {
+                    rename($target_file, "../Films/affiche/".$_POST["nom"].".jpg");
 					echo "<div class=\"info\">";
                     echo "Le fichier a bien été uploadé.<br/>";
 					echo "</div>";
@@ -67,7 +74,13 @@
             }
             ?>
             
-            <a href="lire_film.php?idfilm=<?php echo $_POST['id'] ?>">Revenir au film</a>
+            <a href="lire_film.php?idfilm=<?php echo $_POST["id"] ?>">Revenir au film</a>
+            <br/>
+            <?php
+           		echo $_FILES['fileToUpload']['type'];
+           		echo $_FILES['fileToUpload']['name'];
+            ?>
+            
         </main>
         
         <!-- Bas de page (mentions légales, ...) -->

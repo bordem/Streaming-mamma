@@ -1,16 +1,9 @@
 @media screen and (max-width: 480px){
     body{
-        background-image:url("../../../images/phone-background.jpg");
+        background-image:url("../../../images/grey.svg");
 		background-repeat: no-repeat;
+		background-size: cover
 		background-attachment: fixed;
-		color: #9d9d9d;
-/*		
- 	La deuxième propriété prend le dessus sur la précédente, 
-	aussi la propriété estsupporté par la plupart des navigateurs 
-	depuis bien assez longtemps pour ne pas avoir besoin d'utiliser 
-	les extentions.
- */
-		background-size: cover;
     }
     table thead{
     	display:none 
