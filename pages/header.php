@@ -13,8 +13,20 @@
     if ($_SESSION['statut'] == 'admin' || $_SESSION['statut'] == 'user') {?>
         <a href="profil.php">
             <div id="ongletUtilisateur">
-            <?php echo $_SESSION['login'];?>
-		       	<img id="imageProfil" src="../images/profil_photo_basique.jpg">
+            <?php 
+            	echo $_SESSION['login'];
+            	
+            	//Changement
+            	/*$requete = mysqli_prepare($link, "SELECT imagePath 
+												FROM utilisateurs 
+												WHERE idusr=?") or mysqli_error($link);
+				$requete->bind_param("s",$_SESSION['login']); 
+				$requete->execute();
+				$requete->bind_result($path);
+				$requete->fetch();
+				echo $path;*/?>
+				<img id="imageProfil" src="../images/profil_photo_basique.jpg">
+		       	
 	        </div>
         </a>
     

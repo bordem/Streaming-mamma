@@ -53,7 +53,7 @@
             // Check if $uploadOk is false
             if (!$uploadOk) {
 				echo "<div class=\"error\">";
-                echo "Désolé, le téléchargement n'a pas été effectué.";
+                echo "Désolé, le téléchargement ne peut pas être effectué.";
 				echo "</div>";
                 
             // if everything is ok, put it in the db

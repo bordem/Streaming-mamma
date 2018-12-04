@@ -48,7 +48,20 @@ include("db_connect.php");
 				$nbTotalFilms=$row['COUNT(*)'];
 				//echo "Nombre de films au total : ".$nbTotalFilms;
 			}
-		?>		
+		?>
+		<ul id ="Categorie">
+		<h3>Catégorie</h3>
+			<li><a href="filmRecherche.php?tag=action">Action</a></li>
+			<li><a href="filmRecherche.php?tag=anime">Animation</a></li>
+			<li><a href="filmRecherche.php?tag=comedie">Comedie</a></li>
+			<li><a href="filmRecherche.php?tag=documentaire">Documentaire</a></li>
+			<li><a href="filmRecherche.php?tag=policier">Policier</a></li>
+			<li><a href="filmRecherche.php?tag=sciencesFiction">Sciences-fiction</a></li>
+			<li><a href="filmRecherche.php?tag=western">Western</a></li>
+
+		</ul>
+		
+		
 		<!-- Tableau des films -->
 		<table id="tableauFilms">
 			<?php 

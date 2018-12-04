@@ -36,11 +36,17 @@ include("db_connect.php");
 		<!-- On affiche un tableau des films -->
 		
 		
-		<table id="tableauFilms">
+		<table id="tableauFilmsRecherche">
 			<?php
 			$i=0; 
+			$GETTAG = $_GET['tag'];
 			$tagCherche = $_POST['tagCherche'];
+			if($tagCherche == ""){
+				$tagCherche = $GETTAG;
+			}
+				
 			echo " <h1>Resultat de la recherche pour : ".$tagCherche."</h1>";
+
 			$rqt = "SELECT films.idfilm,titre,anneesortie,realisateur,affiche
 					FROM films JOIN occurenceTags on films.idfilm=occurenceTags.idFilm 
 					JOIN tags USING(idTag)

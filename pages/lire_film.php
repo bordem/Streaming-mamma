@@ -137,7 +137,7 @@ include("db_connect.php");
 				?>
 			</div>
 			<!-- Affichage des tags attachés au film -->
-			<div>
+			<div id="LotDeTags">
 				Tag :
 				<?php
 				$requete = mysqli_prepare($link, "SELECT nomTag 
@@ -148,7 +148,7 @@ include("db_connect.php");
 				$requete->execute();
 				$requete->bind_result($nomTag);
 				while ( $requete->fetch() ) {
-					echo "<a href=\"\">".$nomTag."</a> ";
+					echo "<a class=\"tagIndividuelle\" href=\"filmRecherche.php?tag=".$nomTag."\">".$nomTag."</a> ";
 				}
 				?>
 			</div>

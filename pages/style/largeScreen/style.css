@@ -5,7 +5,8 @@
 		padding:0;
 	}
 	body{
-		background-image:url("../../../images/grey.svg");
+/*		background-image:url("../../../images/grey.svg");*/
+		background-color:#444444;
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-attachment: fixed;
@@ -39,8 +40,23 @@
 		margin-right: auto;
 		vertical-align:middle;
 	}
-	ul{
-		list-style-type: circle;
+	h1{
+		display: block;
+	}
+	h3{
+		border-style:solid;
+		margin-top:0px;
+		margin-bottom:0px;
+		background-color:#000000;
+		color:#eeeeec;
+		border-color:#000000;
+		
+	}
+	li{
+		border-style : solid;
+		border-width: 1px;
+		padding-left:10px;
+		padding-right:10px;
 	}
 	video{
 		height:60%; 
@@ -77,12 +93,23 @@
 	}
 
 	#tableauFilms {
+		min-height:60%;
+		float: right;
 		border:1px;
 		text-align:center;
-		padding-left:20%;
-		padding-right:20%;
+		margin-right : 10%;
 		border-collapse: separate;
-	   	border-spacing: 5px 8px;
+		border-spacing: 5px 8px;
+		font-size:medium;
+	}
+	#tableauFilmsRecherche {
+		min-height:80%;
+		margin-left:auto;
+		margin-right:auto;
+		border:1px;
+		text-align:center;
+		border-collapse: separate;
+		border-spacing: 50px 15px;
 	}
 	#infoFilm{
 		margin-left:75%;
@@ -106,7 +133,17 @@
 		border-radius:50%;
 	}
 	#searchbar{
-		text-align: right;
+		float: right;
+		margin-right:5%;
+	}
+	#Categorie{
+		float: left;
+		list-style: none;
+		border-style:solid;
+		padding-left:0px;
+	}
+	#LotDeTags{
+		margin-bottom:25px;
 	}
 
 
@@ -154,8 +191,9 @@
 
 .pagination {
     display: inline-block;
-    margin-left: 25%;
     margin-top: 50px;
+	margin-left: 40%;
+	margin-bottom:50px;
 }
 
 .pagination a {
@@ -164,4 +202,10 @@
     text-decoration: none;
     border: 1px solid #ddd; /* Gray */
 }
-
+.tagIndividuelle {
+	border-style: solid;
+	background-color: black;
+	border-radius : 15px;
+	padding:5px;
+	border-width:2px;
+}

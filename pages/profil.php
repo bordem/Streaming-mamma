@@ -50,6 +50,13 @@
 					$rqt->execute();
 					$rqt->close();
 				}
+				if(!empty($_POST['profilToUpload'])) {
+					/*$path="../user/"+$_FILES["fileToUpload"]["tmp_name"];
+					$rqt = mysqli_prepare($link,"UPDATE `utilisateurs` SET `imagePath`=?  WHERE `idusr`=?");
+					$rqt->bind_param("ss",$path, $idusr);
+					$rqt->execute();
+					$rqt->close();*/
+				}
 			}
 		 ?>
 			
@@ -70,13 +77,15 @@
 			Prenom :<?php echo $prenom; ?><br />
 			<br />
 			<!-- Edition du profil avec changement de toutes les données -->
-			<form action="profil.php" method="post"><br />
+			<form action="profil.php" method="post" enctype="multipart/form-data"><br />
 				Veuillez saisir votre surnom :
 				<input type="text" name="pseudo" value="" /><br />
 				Veuillez saisir votre prénom :
 				<input type="text" name="prenom" value="" /><br />
 				Veuillez saisir votre nom :
 				<input type="text" name="nom" value="" /><br />
+				Veuillez choisir votre nouvelle image de profil :
+				<input type="file" name="profilToUpload" id="fileToUpload" /></br>
 				
 				<input type="submit" value="Editer profil" name="profil" />
 			</form>
@@ -114,7 +123,7 @@
 
 			?>
 			<!-- Affichage -->
-			<table id="historique">
+			<table class="historique">
 				<tr>
 					<?php
 					$i = 0;
@@ -147,7 +156,7 @@
 			<h1>Films proposés</h1>
 			<!-- TODO -->
 			<!-- Affichage -->
-			<table id="historique">
+			<table class="historique">
 				<tr>
 			<?php
 			$vectorTag=new vector;
