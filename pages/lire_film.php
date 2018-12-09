@@ -150,6 +150,7 @@ include("db_connect.php");
 				while ( $requete->fetch() ) {
 					echo "<a class=\"tagIndividuelle\" href=\"filmRecherche.php?tag=".$nomTag."\">".$nomTag."</a> ";
 				}
+				$requete->close();
 				?>
 			</div>
 			

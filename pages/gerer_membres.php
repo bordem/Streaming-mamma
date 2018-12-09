@@ -43,9 +43,11 @@ include("db_connect.php");
             $pseudo = $_POST['login_add'];
             $pass = $_POST['password'];
             $stat = $_POST['statut'];
+            $nom = $_POST['nom_add'];
+            $prenom = $_POST['prenom_add'];
 
-			$requete = mysqli_prepare($link, "INSERT INTO utilisateurs (login, passwd, statut) VALUES (?, PASSWORD(?), ?)") or die(mysqli_error($link));
-			$requete->bind_param("sss", $pseudo, $pass, $stat);
+			$requete = mysqli_prepare($link, "INSERT INTO utilisateurs (login, passwd, prenom, nom, statut) VALUES (?, PASSWORD(?),?,?,?)") or die(mysqli_error($link));
+			$requete->bind_param("sssss", $pseudo, $pass, $nom, $prenom, $stat);
             if (mysqli_execute($requete)) {
                 echo "<span class=\"info\">Membre ajouté avec succès.</span>";
             }
@@ -77,9 +79,9 @@ include("db_connect.php");
             
             $rqtAfficher = mysqli_query($link, "SELECT * FROM utilisateurs") or die(mysql_error());
             
-            echo "<table cellspacing=\"0\" border=\"1\"><tr><th>Pseudo</th><th>Mot de passe</th><th>Statut</th><th>Prénom</th><th>Nom</th></tr>";
+            echo "<table cellspacing=\"0\" border=\"1\"><tr><th>Pseudo</th><th>Statut</th><th>Prénom</th><th>Nom</th></tr>";
             while ($row = mysqli_fetch_assoc($rqtAfficher)) {
-		        echo "<tr><td>".$row["login"]."</td><td>" . $row["passwd"]. "</td><td>".$row["statut"]."</td><td>".$row['prenom']."</td><td>".$row['nom']."</td></tr>";
+		        echo "<tr><td>".$row["login"]."</td><td>".$row["statut"]."</td><td>".$row['prenom']."</td><td>".$row['nom']."</td></tr>";
 	        }
 			$rqtAfficher->close();
 			echo"</table><br/>";
@@ -92,12 +94,19 @@ include("db_connect.php");
        
         <h1>Ajouter un membre</h1><br/>
             
-        <form action="gerer_membres.php" method="post"><table>
+        <form action="gerer_membres.php" method="post">
+        <table>
             <tr><td>Login :</td>
                 <td><input name="login_add" type="text"></td></tr>
                 
             <tr><td>Mot de passe :</td>
                 <td><input name="password" type="text"></td></tr>
+                
+            <tr><td>Nom :</td>
+                <td><input name="nom_add" type="text"></td></tr>
+                
+            <tr><td>Prenom :</td>
+                <td><input name="prenom_add" type="text"></td></tr>
                 
             <tr><td>Statut :</td>
                 <td><input type="radio" id ="statutAdmin" name="statut" value="admin">
@@ -111,7 +120,7 @@ include("db_connect.php");
         <h1>Supprimer un membre</h1><br/>
             
         <form action="gerer_membres.php" method="post">
-            Login : <input name="login_sup" type="text"><br/>
+            Login : <input name="login_sup" type="text">
             <input type="submit" name="supression" value="Valider"/>
         </form>
             

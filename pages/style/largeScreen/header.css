@@ -1,0 +1,32 @@
+@media screen{
+	header{
+		background-color:#101010;
+		color: #9d9d9d;
+		position:fixed;
+		top:0px;
+		left:0px;
+		width:100%;
+		padding-left:5%;
+	}
+	
+	#ongletUtilisateur{
+		position:fixed;
+		top:10px;
+		left:90%;
+		width:20%;
+		font-size:large;
+	}
+	#ongletUtilisateur::first-letter {
+		text-transform: uppercase;
+	}
+	#logo{
+		width: 10%;
+		float: left;
+	}
+	#banniere{
+		width: 1000px;
+	}
+	#imageProfil{
+		border-radius:50%;
+	}
+}

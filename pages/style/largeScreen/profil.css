@@ -9,6 +9,11 @@
 		border-collapse: separate;
 		border-spacing: 5px 8px;
 	}
+	#alignement{
+		display:grid;
+		grid-template-columns: auto auto auto;
+		width:40%;
+	}
 	
 	#buttonHistorique{
 		text-align: right;

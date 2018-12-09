@@ -34,7 +34,7 @@
 			$it=0;
 			do { // Tant que le tableau n'est pas trie on continue
 				$sorted=true;
-				for ($i=0; $i < $this->_tailleTableau-1-$it; $i++){ // on amene le plus petit elevment à la fin du tableau
+				for ($i=0; $i < $this->_tailleTableau-1-$it; $i++){ // on amene le plus petit element à la fin du tableau
 					// À chaque tour de boucle, le dernier element est bien place donc on peut ne plus les verifier
 					if ($this->_data[$i][$col] < $this->_data[$i+1][$col]){
 						$sorted=false; // le tableau n'est pas trie si on a fait un echange ( c'est une aproximation suffisante)

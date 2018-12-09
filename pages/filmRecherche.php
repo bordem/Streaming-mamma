@@ -38,9 +38,12 @@ include("db_connect.php");
 		
 		<table id="tableauFilmsRecherche">
 			<?php
+			$tagCherche = "";
 			$i=0; 
 			$GETTAG = $_GET['tag'];
-			$tagCherche = $_POST['tagCherche'];
+			if(isset($_POST['tagCherche'])){
+				$tagCherche = $_POST['tagCherche'];
+			}
 			if($tagCherche == ""){
 				$tagCherche = $GETTAG;
 			}
@@ -61,7 +64,7 @@ include("db_connect.php");
 						?>
 						
 						<td>
-							<a href=<?php echo "lire_film.php?idfilm=".$idfilm; ?>>
+							<a href=<?php echo "lire_film.php?idfilm=".$idFilm; ?>>
 								<?php echo $titre; ?><br />
 								<!--Verification que le film est une affiche importé sinon affichage de l'affiche par defaut-->
 								<?php if(is_file($affiche)){ ?>

@@ -78,14 +78,19 @@
 			<br />
 			<!-- Edition du profil avec changement de toutes les données -->
 			<form action="profil.php" method="post" enctype="multipart/form-data"><br />
-				Veuillez saisir votre surnom :
-				<input type="text" name="pseudo" value="" /><br />
-				Veuillez saisir votre prénom :
-				<input type="text" name="prenom" value="" /><br />
-				Veuillez saisir votre nom :
-				<input type="text" name="nom" value="" /><br />
-				Veuillez choisir votre nouvelle image de profil :
-				<input type="file" name="profilToUpload" id="fileToUpload" /></br>
+				<div id="alignement">
+					<label for="pseudo" class="LegendeForm">Veuillez saisir votre surnom :</label>
+					<input type="text" id="pseudo" name="pseudo" value="" /><br />
+					
+					<label for="prenom" class="LegendeForm">Veuillez saisir votre prénom :</label>
+					<input type="text" id="prenom" name="prenom" value="" /><br />
+					
+					<label for="nom" class="LegendeForm">Veuillez saisir votre nom :</label>
+					<input type="text" id="nom" name="nom" value="" /><br />
+				</div>
+				<br />
+				<label for="image" class="LegendeForm">Veuillez choisir votre nouvelle image de profil :</label>
+				<input type="file" id="image" name="profilToUpload" id="fileToUpload" /></br>
 				
 				<input type="submit" value="Editer profil" name="profil" />
 			</form>
