@@ -85,6 +85,10 @@
 		border-spacing: 5px 8px;
 		font-size:medium;
 	}
+	#tableauFilms img{
+		height:290px;
+		width:215px;
+	}
 	#tableauFilmsRecherche {
 		min-height:80%;
 		margin-left:auto;

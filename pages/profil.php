@@ -51,6 +51,8 @@
 					$rqt->close();
 				}
 				if(!empty($_POST['profilToUpload'])) {
+					//TODO Deplacer le fichier avant de l'enregister sur le DD et d'enregistrer son chemin  dans la base de données
+					//TODO Effacer l'ancienne image avant de mettre la nouvelle , sauf l'image de base
 					/*$path="../user/"+$_FILES["fileToUpload"]["tmp_name"];
 					$rqt = mysqli_prepare($link,"UPDATE `utilisateurs` SET `imagePath`=?  WHERE `idusr`=?");
 					$rqt->bind_param("ss",$path, $idusr);
@@ -90,7 +92,7 @@
 				</div>
 				<br />
 				<label for="image" class="LegendeForm">Veuillez choisir votre nouvelle image de profil :</label>
-				<input type="file" id="image" name="profilToUpload" id="fileToUpload" /></br>
+				<input type="file" name="fileToUpload" id="fileToUpload" /></br>
 				
 				<input type="submit" value="Editer profil" name="profil" />
 			</form>

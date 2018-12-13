@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.12deb2+deb8u2
--- http://www.phpmyadmin.net
+-- version 4.6.6deb5
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Jun 25, 2018 at 10:46 AM
--- Server version: 5.5.59-0+deb8u1
--- PHP Version: 5.6.33-0+deb8u1
+-- Client :  localhost:3306
+-- Généré le :  Jeu 13 Décembre 2018 à 20:37
+-- Version du serveur :  5.7.23-0ubuntu0.18.04.1
+-- Version de PHP :  7.2.10-0ubuntu0.18.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,121 +14,55 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `pi`
+-- Base de données :  `pi`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `films`
+-- Structure de la table `films`
 --
 
-CREATE TABLE IF NOT EXISTS `films` (
-`idfilm` int(6) NOT NULL,
+CREATE TABLE `films` (
+  `idfilm` int(6) NOT NULL,
   `chemin` varchar(125) NOT NULL,
   `affiche` varchar(75) DEFAULT NULL,
   `titre` varchar(75) NOT NULL,
   `realisateur` varchar(30) DEFAULT NULL,
   `anneesortie` varchar(4) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `films`
+-- Contenu de la table `films`
 --
 
 INSERT INTO `films` (`idfilm`, `chemin`, `affiche`, `titre`, `realisateur`, `anneesortie`) VALUES
-(1, '../Films/Action/Leon.mp4', '../Films/affiche/Leon.jpg', 'Leon', 'Besson', '2000'),
-(2, '../Films/Comedie/Asterix Et Obelix Mission Cleopatre.mp4', '../Films/affiche/Asterix Et Obelix Mission Cleopatre.jpg', 'Asterix Et Obelix Mission Cleopatre', NULL, NULL),
-(3, '../Films/Comedie/La Folle Histoire de Max et Leon.mp4', '../Films/affiche/la folle histoire de max et leon.jpg', 'La Folle Histoire de Max et Leon', NULL, NULL),
-(4, '../Films/Sciences_Fiction/King Kong.mp4', '../Films/affiche/king kong.jpg', 'King Kong', NULL, NULL),
-(5, '../Films/Sciences_Fiction/Le village.mp4', '../Films/affiche/Le village.jpg', 'Le village', NULL, NULL),
-(6, '../Films/Sciences_Fiction/Marvel/SpiderMan.mp4', '../Films/affiche/SpiderMan.jpg', 'SpiderMan', NULL, NULL),
-(10, '../Films/Sciences_Fiction/Seigneur des anneaux/hobbit/The Hobbit 3 - Battle of the five armies.mp4', '../Films/affiche/The Hobbit 3 - Battle of the five armies.jpg', 'The Hobbit 3 - Battle of the five armies', NULL, NULL),
-(11, '../Films/Comedie/OSS 117/OSS 117 - Rio ne repond plus.mp4', '../Films/affiche/OSS 117 - Rio ne repond plus.jpg', 'OSS 117 - Rio ne repond plus', NULL, NULL),
-(12, '../Films/Comedie/OSS 117/OSS 117 Le Caire Nid d''Espions.mp4', '../Films/affiche/OSS 117 Le Caire Nid d''Espions.jpg', 'OSS 117 Le Caire Nid d''Espions', NULL, NULL),
-(13, '../Films/Comedie/The Mask.mp4', '../Films/affiche/The Mask.jpg', 'The Mask', NULL, NULL),
-(14, '../Films/Sciences_Fiction/Marvel/Captain America/Captain America - First Avenger.mp4', '../Films/affiche/Captain America - First Avenger.jpg', 'Captain America - First Avenger', NULL, NULL),
-(15, '../Films/Sciences_Fiction/Marvel/Captain America/Captain America - Le soldat de l hiver.mp4', '../Films/affiche/Captain America - Le soldat de l hiver.jpg', 'Captain America - Le soldat de l hiver', NULL, NULL),
-(16, '../Films/Sciences_Fiction/Marvel/Iron Man/Iron Man 2.mp4', '../Films/affiche/Iron Man 2.jpg', 'Iron Man 2', NULL, NULL),
-(17, '../Films/Animes/myazaki/Le chateau ambulant.mp4', '../Films/affiche/Le chateau ambulant.jpg', 'Le chateau ambulant', NULL, NULL),
-(18, '../Films/Animes/myazaki/Princesse Mononoke.mp4', '../Films/affiche/Princesse Mononoke.jpg', 'Princesse Mononoke', NULL, NULL),
-(19, '../Films/Action/Fight Club.mp4', '../Films/affiche/Fight Club.jpg', 'Fight Club', NULL, NULL),
-(20, '../Films/Action/Hannibal Lecter - Les Origines Du Mal.mp4', '../Films/affiche/Hannibal Lecter - Les Origines Du Mal.jpg', 'Hannibal Lecter - Les Origines Du Mal', NULL, NULL),
-(21, '../Films/Animes/Walt disney/Lilo Et Stitch.mp4', '../Films/affiche/Lilo Et Stitch.jpg', 'Lilo Et Stitch', NULL, NULL),
-(22, '../Films/Comedie/The Wolf Of Wall Street.mp4', '../Films/affiche/The Wolf Of Wall Street.jpg', 'The Wolf Of Wall Street', NULL, NULL),
-(23, '../Films/Sciences_Fiction/Marvel/Thor.mp4', '../Films/affiche/Thor.jpg', 'Thor', NULL, NULL);
+(82, '../Films/Action/Iron man.ogv', '../Films/affiche/Iron man.jpg', 'Iron man', NULL, NULL),
+(83, '../Films/BigBuckBunny.mp4', '../Films/affiche/BigBuckBunny.jpg', 'BigBuckBunny', NULL, NULL),
+(84, '../Films/disque.mp4', '../Films/affiche/disque.jpg', 'disque', NULL, NULL),
+(85, '../Films/output.ogv', '../Films/affiche/output.jpg', 'output', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `historiqueFilms`
+-- Structure de la table `historiqueFilms`
 --
 
-CREATE TABLE IF NOT EXISTS `historiqueFilms` (
-`idhistorique` int(11) NOT NULL,
+CREATE TABLE `historiqueFilms` (
+  `idhistorique` int(11) NOT NULL,
   `idfilm` int(11) NOT NULL,
   `idusr` smallint(6) NOT NULL,
   `date` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `historiqueFilms`
+-- Contenu de la table `historiqueFilms`
 --
 
 INSERT INTO `historiqueFilms` (`idhistorique`, `idfilm`, `idusr`, `date`) VALUES
-(51, 1, 5, '2018-06-15 11:53:19'),
-(52, 1, 5, '2018-06-15 11:58:10'),
-(53, 15, 5, '2018-06-15 12:38:57'),
-(54, 15, 5, '2018-06-15 12:39:12'),
-(55, 14, 5, '2018-06-15 12:39:19'),
-(56, 14, 5, '2018-06-15 12:39:25'),
-(57, 16, 5, '2018-06-15 12:39:33'),
-(58, 16, 5, '2018-06-15 12:39:40'),
-(59, 2, 5, '2018-06-15 12:40:11'),
-(60, 2, 5, '2018-06-15 12:40:19'),
-(61, 10, 5, '2018-06-15 12:43:43'),
-(62, 10, 5, '2018-06-15 12:43:48'),
-(63, 11, 5, '2018-06-15 12:46:59'),
-(64, 12, 5, '2018-06-15 12:47:04'),
-(84, 3, 5, '2018-06-15 13:35:21'),
-(98, 3, 5, '2018-06-15 13:39:59'),
-(99, 3, 5, '2018-06-15 13:40:10'),
-(102, 19, 4, '2018-06-15 13:41:37'),
-(103, 23, 4, '2018-06-15 13:41:42'),
-(104, 20, 4, '2018-06-15 13:42:17'),
-(105, 22, 4, '2018-06-15 13:42:43'),
-(106, 21, 4, '2018-06-15 13:43:07'),
-(107, 23, 4, '2018-06-15 13:43:20'),
-(108, 23, 4, '2018-06-15 13:43:26'),
-(109, 18, 4, '2018-06-15 13:43:59'),
-(110, 21, 4, '2018-06-15 13:44:01'),
-(111, 21, 4, '2018-06-15 13:44:06'),
-(115, 3, 4, '2018-06-15 13:56:08'),
-(116, 21, 4, '2018-06-15 14:01:43'),
-(117, 1, 4, '2018-06-15 14:13:19'),
-(118, 1, 4, '2018-06-15 14:13:20'),
-(119, 2, 4, '2018-06-15 14:13:21'),
-(120, 3, 4, '2018-06-15 14:26:43'),
-(121, 11, 4, '2018-06-15 14:26:47'),
-(123, 10, 4, '2018-06-15 14:38:03'),
-(124, 21, 4, '2018-06-15 14:41:21'),
-(133, 2, 5, '2018-06-15 22:30:10'),
-(134, 23, 4, '2018-06-17 23:00:35'),
-(135, 3, 4, '2018-06-18 20:54:07'),
-(136, 21, 5, '2018-06-20 00:34:09'),
-(137, 13, 5, '2018-06-23 10:15:03'),
-(138, 23, 5, '2018-06-23 11:35:53'),
-(139, 23, 5, '2018-06-23 11:37:05'),
-(140, 23, 5, '2018-06-23 12:50:28'),
-(141, 5, 5, '2018-06-24 11:41:53'),
-(142, 5, 5, '2018-06-24 11:41:53'),
-(143, 1, 5, '2018-06-24 12:02:48'),
-(144, 1, 5, '2018-06-24 12:02:56'),
-(145, 22, 5, '2018-06-24 12:09:42'),
-(146, 10, 5, '2018-06-24 12:16:49'),
 (147, 5, 7, '2018-06-24 13:15:26'),
 (148, 5, 7, '2018-06-24 13:20:39'),
 (149, 5, 7, '2018-06-24 13:20:39'),
@@ -136,22 +70,72 @@ INSERT INTO `historiqueFilms` (`idhistorique`, `idfilm`, `idusr`, `date`) VALUES
 (151, 6, 6, '2018-06-24 23:48:15'),
 (152, 1, 6, '2018-06-24 23:48:33'),
 (153, 1, 6, '2018-06-24 23:48:39'),
-(154, 1, 5, '2018-06-24 23:49:31');
+(386, 11, 4, '2018-09-17 15:49:07'),
+(387, 6, 4, '2018-09-17 15:50:52'),
+(388, 3, 4, '2018-09-17 15:53:37'),
+(389, 26, 4, '2018-09-17 15:53:57'),
+(390, 25, 4, '2018-09-17 15:54:39'),
+(391, 24, 4, '2018-09-17 15:55:06'),
+(407, 1, 5, '2018-12-06 00:00:30'),
+(408, 6, 5, '2018-12-06 00:00:40'),
+(409, 24, 5, '2018-12-06 00:01:04'),
+(410, 27, 4, '2018-12-09 01:51:05'),
+(411, 27, 4, '2018-12-09 01:51:30'),
+(412, 28, 4, '2018-12-09 01:57:34'),
+(413, 31, 4, '2018-12-09 02:35:35'),
+(414, 77, 4, '2018-12-09 13:32:39'),
+(415, 80, 4, '2018-12-09 14:19:48'),
+(416, 80, 4, '2018-12-09 14:19:56'),
+(417, 80, 4, '2018-12-09 14:26:59'),
+(418, 77, 4, '2018-12-09 14:33:47'),
+(419, 80, 4, '2018-12-09 14:46:57'),
+(420, 78, 4, '2018-12-09 14:47:14'),
+(421, 80, 4, '2018-12-09 14:47:43'),
+(422, 80, 4, '2018-12-09 14:57:41'),
+(423, 79, 5, '2018-12-09 16:19:21'),
+(424, 79, 5, '2018-12-09 16:19:50'),
+(425, 79, 5, '2018-12-09 18:45:40'),
+(426, 79, 4, '2018-12-09 18:45:55'),
+(427, 79, 4, '2018-12-09 18:46:20'),
+(428, 80, 4, '2018-12-09 18:47:13'),
+(429, 77, 5, '2018-12-09 18:57:16'),
+(430, 77, 4, '2018-12-09 18:57:29'),
+(431, 77, 4, '2018-12-09 18:57:41'),
+(432, 80, 5, '2018-12-09 22:31:14'),
+(433, 80, 4, '2018-12-09 22:32:24'),
+(434, 81, 4, '2018-12-09 22:34:27'),
+(435, 79, 4, '2018-12-09 22:34:45'),
+(436, 82, 4, '2018-12-09 22:36:20'),
+(437, 82, 5, '2018-12-12 00:23:36'),
+(438, 83, 5, '2018-12-13 19:28:11');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `occurenceTags`
+-- Structure de la table `notes`
 --
 
-CREATE TABLE IF NOT EXISTS `occurenceTags` (
-`idOccurence` int(11) NOT NULL,
+CREATE TABLE `notes` (
+  `idNote` int(11) NOT NULL,
+  `idFilm` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `note` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `occurenceTags`
+--
+
+CREATE TABLE `occurenceTags` (
+  `idOccurence` int(11) NOT NULL,
   `idFilm` int(11) NOT NULL,
   `idTag` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `occurenceTags`
+-- Contenu de la table `occurenceTags`
 --
 
 INSERT INTO `occurenceTags` (`idOccurence`, `idFilm`, `idTag`) VALUES
@@ -172,21 +156,24 @@ INSERT INTO `occurenceTags` (`idOccurence`, `idFilm`, `idTag`) VALUES
 (16, 2, 32),
 (17, 10, 12),
 (18, 23, 1),
-(19, 21, 29);
+(19, 21, 29),
+(20, 1, 4),
+(21, 3, 5),
+(22, 80, 4);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tags`
+-- Structure de la table `tags`
 --
 
-CREATE TABLE IF NOT EXISTS `tags` (
-`idTag` int(11) NOT NULL,
+CREATE TABLE `tags` (
+  `idTag` int(11) NOT NULL,
   `nomTag` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tags`
+-- Contenu de la table `tags`
 --
 
 INSERT INTO `tags` (`idTag`, `nomTag`) VALUES
@@ -212,91 +199,92 @@ INSERT INTO `tags` (`idTag`, `nomTag`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `utilisateurs`
+-- Structure de la table `utilisateurs`
 --
 
-CREATE TABLE IF NOT EXISTS `utilisateurs` (
-`idusr` int(2) NOT NULL,
+CREATE TABLE `utilisateurs` (
+  `idusr` int(2) NOT NULL,
   `login` varchar(20) NOT NULL,
-  `passwd` char(41) NOT NULL,
-  `prenom` varchar(30),
-  `nom` varchar(30),
-  `statut` varchar(10) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+  `passwd` varchar(75) NOT NULL,
+  `prenom` varchar(30) DEFAULT NULL,
+  `nom` varchar(30) DEFAULT NULL,
+  `statut` varchar(10) NOT NULL DEFAULT 'user',
+  `imagePath` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `utilisateurs`
+-- Contenu de la table `utilisateurs`
 --
 
-INSERT INTO `utilisateurs` (`idusr`, `login`, `passwd`, `prenom`, `nom`, `statut`) VALUES
-(4, 'root', PASSWORD('toor'), '', '', 'admin'),
-(5, 'martin', PASSWORD('nitram'), 'Martin', 'BORDE', 'user'),
-(6, 'sara', PASSWORD('517xod87'), 'Sara', 'CALAFURI', 'user'),
-(7, 'christian', PASSWORD('christian'), '', '', 'user');
+INSERT INTO `utilisateurs` (`idusr`, `login`, `passwd`, `prenom`, `nom`, `statut`, `imagePath`) VALUES
+(4, 'root', '*9CFBBC772F3F6C106020035386DA5BBBF1249A11', '', '', 'admin', ''),
+(5, 'martin', '*055872A86A14E1368C812ACF51011419D0D2D70F', 'martin', 'BORDE', 'user', '1.jpg'),
+(6, 'sara', '*05643D3B94B8EBF172C01E96A70FB0EE8B452AD4', 'Sara', 'CALAFURI', 'user', '');
 
 --
--- Indexes for dumped tables
+-- Index pour les tables exportées
 --
 
 --
--- Indexes for table `films`
+-- Index pour la table `films`
 --
 ALTER TABLE `films`
- ADD PRIMARY KEY (`idfilm`);
+  ADD PRIMARY KEY (`idfilm`);
 
 --
--- Indexes for table `historiqueFilms`
+-- Index pour la table `historiqueFilms`
 --
 ALTER TABLE `historiqueFilms`
- ADD PRIMARY KEY (`idhistorique`);
+  ADD PRIMARY KEY (`idhistorique`);
 
 --
--- Indexes for table `occurenceTags`
+-- Index pour la table `occurenceTags`
 --
 ALTER TABLE `occurenceTags`
- ADD PRIMARY KEY (`idOccurence`);
+  ADD PRIMARY KEY (`idOccurence`);
 
 --
--- Indexes for table `tags`
+-- Index pour la table `tags`
 --
 ALTER TABLE `tags`
- ADD PRIMARY KEY (`idTag`);
+  ADD PRIMARY KEY (`idTag`);
 
 --
--- Indexes for table `utilisateurs`
+-- Index pour la table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
- ADD PRIMARY KEY (`idusr`), ADD UNIQUE KEY `login` (`login`);
+  ADD PRIMARY KEY (`idusr`),
+  ADD UNIQUE KEY `login` (`login`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables exportées
 --
 
 --
--- AUTO_INCREMENT for table `films`
+-- AUTO_INCREMENT pour la table `films`
 --
 ALTER TABLE `films`
-MODIFY `idfilm` int(6) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=24;
+  MODIFY `idfilm` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 --
--- AUTO_INCREMENT for table `historiqueFilms`
+-- AUTO_INCREMENT pour la table `historiqueFilms`
 --
 ALTER TABLE `historiqueFilms`
-MODIFY `idhistorique` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=155;
+  MODIFY `idhistorique` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=439;
 --
--- AUTO_INCREMENT for table `occurenceTags`
+-- AUTO_INCREMENT pour la table `occurenceTags`
 --
 ALTER TABLE `occurenceTags`
-MODIFY `idOccurence` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
+  MODIFY `idOccurence` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
--- AUTO_INCREMENT for table `tags`
+-- AUTO_INCREMENT pour la table `tags`
 --
 ALTER TABLE `tags`
-MODIFY `idTag` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
+  MODIFY `idTag` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
--- AUTO_INCREMENT for table `utilisateurs`
+-- AUTO_INCREMENT pour la table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
-MODIFY `idusr` int(2) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `idusr` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
