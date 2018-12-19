@@ -77,10 +77,11 @@
 	#tableauFilms {
 		min-height:60%;
 		min-width:60%;
+		max-width:60%;
 		float: right;
 		border:1px;
 		text-align:center;
-		margin-right : 20%;
+		margin-right : 15%;
 		border-collapse: separate;
 		border-spacing: 5px 8px;
 		font-size:medium;

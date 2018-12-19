@@ -66,8 +66,8 @@
 		<div>
 			<?php
 			($requete_nomPrenom = mysqli_prepare($link, "SELECT nom, prenom 
-		i							FROM utilisateurs 
-									WHERE idusr=?")) or die(mysqli_error($link));
+														FROM utilisateurs 
+														WHERE idusr=?")) or die(mysqli_error($link));
 			$requete_nomPrenom->bind_param("i",$idusr);
 			$requete_nomPrenom->execute();
 			$requete_nomPrenom->bind_result($nom, $prenom);
@@ -194,9 +194,8 @@
 			//echo "</pre>";
 			//Suppression des films vu par l'utilisateur
 			
-			/*
-				Recherche du film avec les mêmes tags que ceux regardes par la personne
-			*/
+			//	Recherche du film avec les mêmes tags que ceux regardes par la personne
+			
 			// on 
 			$k=0;
 			$affichage=new vector();
@@ -209,11 +208,11 @@
 				$rechercheSuggestion->execute();
 				while($rechercheSuggestion->fetch()){
 					$existeDeja=false;
-					/*
-						On verifie si le film existe deja dans l'historique 
-						Si oui le film n'est pas integrer au suggestion
-						Sinon on ajoute le film dans limite de 5 
-					*/
+					
+					//	On verifie si le film existe deja dans l'historique 
+					//	Si oui le film n'est pas integrer au suggestion
+					//	Sinon on ajoute le film dans limite de 5 
+					
 					for($j=0;$j<$tablauFilmVu->size();$j++){
 						if($idfilm==$tablauFilmVu->at1($j)){
 							$existeDeja=true;
