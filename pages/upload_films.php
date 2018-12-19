@@ -71,6 +71,35 @@ if (!$uploadOk) {
 			
 			if ($requete->execute()) {
 				echo "<div class=\"info\">Film ajouté dans la BDD avec succès.</div>";
+					//TODO L'insertion ne marche pas
+					//Recuperer l'id du film
+					$requete1 = mysqli_prepare($link, "SELECT `idfilm` FROM `films` WHERE `titre`= ?");
+					$requete1->bind_param("s",$titre);
+					$requete1->execute();
+					$requete1->bind_result($idFilm);
+					$requete1->fetch();
+					$requete1->close();
+					
+					//Le tag doit deja exister
+					$rqt= mysqli_prepare($link,"SELECT idTag 
+												FROM tags 
+												WHERE nomTag= ?") or die(mysqli_error($link));
+					$categorie = strtolower($categorie);
+					$rqt->bind_param("s",$categorie);
+					$rqt->execute();
+					$rqt->bind_result($idTag);
+					$rqt->fetch();
+					$rqt->close();
+					
+					echo "ID FILM : ".$idFilm;
+					echo "ID TAG : ".$idTag;
+					
+					$requete3=mysqli_prepare($link,"INSERT INTO occurenceTags(idFilm, idTag) VALUES (?,?)") or die(mysqli_error($link));
+					$requete3->bind_param("ii",$idFilm,$idTag);
+					if ( $requete3->execute()){
+						echo "<div class=\"error\">Ajout du tag réalisé avec succès.</div>";
+					}
+					$requete3->close();
 			}
 			else {
 				echo "<div class=\"error\">Erreur dans l'ajout du film dans la BDD : " . mysqli_error($link)." Veuillez recommencer.</div>";
@@ -81,7 +110,7 @@ if (!$uploadOk) {
 		echo "<div class=\"error\">Le déplacement du film a echoué.</div>";
 	}
 }
-	header('Location:gerer_films.php');
+	//header('Location:gerer_films.php');
 	exit();
 
 ?>

@@ -1,6 +1,10 @@
 	td{
 		width:20%;
 	}
+	.historique img{
+		height:290px;
+		width:215px;
+	}
 	.historique{
 		text-align:center;
 		padding-left:5%;

@@ -64,16 +64,29 @@ include("db_connect.php");
 		
 		if(isset($_POST['bouttonsupr'])){ // SUPRESSION
 			$titre = $_POST['titrefilm2'];
+			$requete0 = mysqli_prepare($link, "SELECT `idfilm` FROM `films` WHERE `titre`= ?");
+			$requete0->bind_param("s",$titre);
+			$requete0->execute();
+			$requete0->bind_result($id);
+			$requete0->close();
 			
-			$requete2 = mysqli_prepare($link, "DELETE FROM films WHERE titre = ?");
-			$requete2->bind_param("s",$titre);
-			$requete2->execute();
+			$requete1 = mysqli_prepare($link, "DELETE FROM films WHERE titre = ?");
+			$requete1->bind_param("s",$titre);
+			$requete1->execute();
 
 			
 			if (mysqli_affected_rows($link) > 0) {
 				echo "<div class=\"info\">";
 				echo "Film supprimé avec succès.";
 				echo "</div>";
+				//Supprimer aussi 
+				$requete2 = mysqli_prepare($link, "DELETE FROM `historiqueFilms` WHERE `idfilm`= ?");
+				$requete2->bind_param("s",$id);
+				$requete2->execute();
+				
+				$requete3 = mysqli_prepare($link, "DELETE FROM `occurenceTags` WHERE `idFilm`= ?");
+				$requete3->bind_param("s",$id);
+				$requete3->execute();
 			}
 			else {
 				echo "<div class=\"error\">";
