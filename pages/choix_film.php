@@ -30,8 +30,23 @@ include("db_connect.php");
 				include('footer.html');
 				exit();
 			}
-		 $idpages=$_GET['pages'];
-		 ?>
+			$rqt ="SELECT COUNT(*) FROM films";
+			$requete = mysqli_query($link,$rqt);
+			while ($row = mysqli_fetch_assoc($requete)) {
+				$nbTotalFilms=$row['COUNT(*)'];
+				//echo "Nombre de films au total : ".$nbTotalFilms;
+			}
+			$nbfilmparpages=15;
+			$nbPages=((int)($nbTotalFilms/$nbfilmparpages));
+			$idpages=$_GET['pages'];
+			if($idpages<0){
+				header('Location:choix_film.php?pages=0');
+			}
+			else if($idpages > $nbPages ){
+				header('Location:choix_film.php?pages='.$nbPages.'');
+			}
+		//var_dump($_GET['pages']);
+		?>
 		
 		<h1>Tous les films</h1> <br />
 		<div id="searchbar">
@@ -67,14 +82,7 @@ include("db_connect.php");
 			/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
 			autocomplete(document.getElementById("completion"), tabFilms);
 		</script> 
-		<?php
-			$rqt ="SELECT COUNT(*) FROM films";
-			$requete = mysqli_query($link,$rqt);
-			while ($row = mysqli_fetch_assoc($requete)) {
-				$nbTotalFilms=$row['COUNT(*)'];
-				//echo "Nombre de films au total : ".$nbTotalFilms;
-			}
-		?>
+		
 		<ul id ="Categorie">
 		<h3>Catégorie</h3>
 			<li><a href="filmRecherche.php?tag=action">Action</a></li>
@@ -91,7 +99,6 @@ include("db_connect.php");
 		<!-- Tableau des films -->
 		<table id="tableauFilms">
 			<?php 
-				$nbfilmparpages=15;
 				$numeropages=0;
 				$requete = mysqli_prepare($link, "SELECT idfilm, titre, affiche, anneesortie, realisateur FROM films LIMIT ? OFFSET ?");
 				$prod=$nbfilmparpages*$idpages;
@@ -130,12 +137,12 @@ include("db_connect.php");
 		<?php $requete->close() ?>
 		<div class="pagination">
 		<?php
-		
-			$nbPages=$nbTotalFilms/$nbfilmparpages;
-			for($i=0;$i<$nbPages;$i++){
-				$affichage = $i+1;
-				echo "<a href=\"choix_film.php?pages=$i\">$affichage</a>";
-			}
+			$n=0;
+			echo "<a title=\" -5 \" href=\"choix_film.php?pages=".$n = -5.0+$idpages."\">&lt;&lt;</a>";
+			echo "<a title=\" -1 \"href=\"choix_film.php?pages=".$n = -1.0+$idpages."\">&lt;</a>";
+			echo "<a href=\"choix_film.php?pages=".$n = $idpages     ."\">".$n = $idpages+1.0 ."</a>";
+			echo "<a title=\" +1 \"href=\"choix_film.php?pages=".$n = 1.0+$idpages ."\">&gt;</a>";
+			echo "<a title=\" +5 \"href=\"choix_film.php?pages=".$n = 5.0+$idpages."\">&gt;&gt;</a>";
 		?>
 		</div>
 		

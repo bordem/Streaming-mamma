@@ -110,7 +110,7 @@ if (!$uploadOk) {
 		echo "<div class=\"error\">Le déplacement du film a echoué.</div>";
 	}
 }
-	//header('Location:gerer_films.php');
+	header('Location:gerer_films.php');
 	exit();
 
 ?>

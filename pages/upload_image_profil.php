@@ -56,9 +56,6 @@
 				}
 				if(!empty($file)) {
 					echo "Bonjour";
-					//TODO Deplacer le fichier avant de l'enregister sur le DD et d'enregistrer son chemin dans la base de données
-					//TODO Effacer l'ancienne image avant de mettre la nouvelle , sauf l'image de base
-					
 					$target_dir = "../Films/profil/";
 					$target_file = $target_dir.$idusr.".jpg";
 					echo $target_file;
@@ -138,7 +135,7 @@
 			?>
 			
 		</main>
-		
+		<?php header('Location:profil.php');?>
 		<!-- Bas de page (mentions légales, ...) -->
 		<?php include('footer.html'); ?>
 	</body>
