@@ -125,15 +125,7 @@
 			}
 			
 			?>
-			Saloperie
-			<!--<a href="lire_film.php?idfilm=<?php echo $_POST["id"] ?>">Revenir au film</a>-->
 			<br/>
-			<?php
-				//echo $_FILES['fileToUpload']['type'];
-				//echo $_FILES['fileToUpload']['name'];
-				
-			?>
-			
 		</main>
 		<?php header('Location:profil.php');?>
 		<!-- Bas de page (mentions légales, ...) -->
