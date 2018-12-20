@@ -26,6 +26,14 @@
 			$idusr=$_SESSION['userId'];
 			echo " ".$idusr;
 			$file = $_FILES['fileToUpload'];
+			
+			if(isset($_POST['defaut'])) {
+				$rqt = mysqli_prepare($link, "UPDATE utilisateurs SET imagePath=\"\" WHERE idusr=?");
+				$rqt->bind_param("s", $idusr);
+				$rqt->execute();
+				$rqt->close();
+			}
+			
 			if(isset($_POST['profil'])) { // bouton connexion cliqué
 				if(!empty($_POST['pseudo'])) {
 					$rqt = mysqli_prepare($link, "UPDATE utilisateurs SET login=? WHERE idusr=?");

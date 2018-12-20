@@ -85,6 +85,27 @@ include("db_connect.php");
 					}
 					$requete3->close();
 				}
+				
+				
+				if(isset($_POST['supprtag'])){
+					$tagAInserer=$_POST['nomtag'];
+					//echo $tagAInserer;
+					$requete=mysqli_prepare($link,"SELECT idTag 
+													FROM tags 
+													WHERE nomTag= ?") or die(mysqli_error($link));
+					$requete->bind_param("s",$tagAInserer);
+					$requete->execute();
+					$requete->bind_result($idTag);
+					$requete->fetch();
+					$requete->close();
+					
+					$requete1=mysqli_prepare($link,"DELETE FROM `occurenceTags` 
+													WHERE `idFilm`= ? AND `idTag`= ?") or die(mysqli_error($link));
+					$requete1->bind_param("ii",$idFilm,$idTag);
+					$requete1->execute();
+					$requete1->close();	
+				}
+				
 				//On récupère le titre et le chemin du film		
 				$requete = mysqli_prepare($link, "SELECT titre,chemin
 												FROM films 
@@ -158,7 +179,7 @@ include("db_connect.php");
 				<form autocomplete="off" action="lire_film.php?idfilm=<?php echo $idFilm?>" method="post">
 					Ajouter un tag pour <?php echo $titre_du_film; ?> :
 					<div class="autocomplete">
-						<input id="completion" type="text" name="nomtag" placeholder="Votre tag" />
+						<input id="completion1" type="text" name="nomtag" placeholder="Votre tag" />
 					</div>
 					<input type="submit" name="ajouttag" value="Go !" />
 				</form>
@@ -177,7 +198,7 @@ include("db_connect.php");
 				?>
 			];
 			/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
-			autocomplete(document.getElementById("completion"), tabFilms);
+			autocomplete(document.getElementById("completion1"), tabFilms);
 		</script> 
 			
 			
@@ -198,6 +219,36 @@ include("db_connect.php");
 					<input type="hidden" value="<?php echo $idFilm; ?>" name="id" />
 				</form>
 			</div>
+			<!-- Suppression de tag -->
+			<div>
+				<form autocomplete="off" action="lire_film.php?idfilm=<?php echo $idFilm?>" method="post">
+					Supprimer un tag pour <?php echo $titre_du_film; ?> :
+					<div class="autocomplete">
+						<input id="completion" type="text" name="nomtag" placeholder="Votre tag" />
+					</div>
+					<input type="submit" name="supprtag" value="Go !" />
+				</form>
+			</div>
+			<script>
+				/*An array containing all the country names in the world:*/
+				var tabFilms = [
+				<?php
+					$requete = mysqli_prepare($link, "SELECT nomTag 
+												FROM occurenceTags 
+												JOIN tags using(idTag) 
+												WHERE idFilm=?");
+					$requete->bind_param("i",$idFilm); 
+					$requete->execute();
+					$requete->bind_result($tag);
+					while ($requete->fetch()){
+						echo "\"".$tag."\",";
+					}
+					$requete->close();
+				?>
+				];
+				/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+				autocomplete(document.getElementById("completion"), tabFilms);
+			</script> 
 			
 			
 			

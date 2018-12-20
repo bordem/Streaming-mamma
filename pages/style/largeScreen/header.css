@@ -3,6 +3,7 @@
 		background-color:#101010;
 		color: #9d9d9d;
 		position:fixed;
+		z-index:4;
 		top:0px;
 		left:0px;
 		right:0px;

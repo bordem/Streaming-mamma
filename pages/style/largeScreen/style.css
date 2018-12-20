@@ -105,6 +105,8 @@
 	#searchbar{
 		float: right;
 		margin-right:5%;
+		position: relative;
+		z-index:2;
 	}
 	#Categorie{
 		float: left;

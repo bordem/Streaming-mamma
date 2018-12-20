@@ -14,7 +14,8 @@ include("db_connect.php");
 		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
 		<link rel="stylesheet" href="style/largeScreen/style.css" />
 		<link rel="stylesheet" href="style/mobile/style.css" />
-		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
+		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>
+		<script src="../scripts/autoCompletion.js" type="text/javascript"></script>
 	</head>
 	
 	<body>
@@ -32,12 +33,6 @@ include("db_connect.php");
 				include('footer.html');
 				exit();
 			}
-		 ?>		
-		<!-- On affiche un tableau des films -->
-		
-		
-		<table id="tableauFilmsRecherche">
-			<?php
 			$tagCherche = "";
 			$i=0;
 			$GETTAG = $_GET['tag'];
@@ -49,6 +44,47 @@ include("db_connect.php");
 			}
 				
 			echo " <h1>Resultat de la recherche pour : ".$tagCherche."</h1>";
+		 ?>
+		 
+		 
+		 <div id="searchbar">
+			<form autocomplete="off" action="filmRecherche.php" method="post">
+				<div class="autocomplete">
+					<input id="completion" type="text" name="tagCherche" placeholder="Rechercher"/>
+				</div>
+				<input type="submit" value="OK" />	
+			</form>
+		</div>
+		
+		<script>
+			/*An array containing all the country names in the world:*/
+			var tabFilms = [
+				<?php
+					$requete = mysqli_prepare($link, "SELECT titre FROM films WHERE 1");
+					$requete->execute();
+					$requete->bind_result($titre);
+					while ($requete->fetch()) {
+						echo "\"".$titre."\",";
+					}
+					$requete->close();
+					
+					$requete = mysqli_prepare($link, "SELECT nomTag FROM tags WHERE 1");
+					$requete->execute();
+					$requete->bind_result($tag);
+					while ($requete->fetch()) {
+						echo "\"".$tag."\",";
+					}
+					$requete->close();
+				?>
+			];
+			/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+			autocomplete(document.getElementById("completion"), tabFilms);
+		</script> 
+		<!-- On affiche un tableau des films -->
+		
+		
+		<table id="tableauFilmsRecherche">
+			<?php
 
 			$rqt = "SELECT films.idfilm,titre,anneesortie,realisateur,affiche
 					FROM films JOIN occurenceTags on films.idfilm=occurenceTags.idFilm 

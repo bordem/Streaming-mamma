@@ -64,6 +64,9 @@
 				
 				<input type="submit" value="Editer profil" name="profil" />
 			</form>
+			<form action="upload_image_profil.php" method="post">
+				<input type="submit" name=defaut value="Image par defaut">
+			</form>
 		</div>
 			
 		
@@ -105,14 +108,23 @@
 					$tablauFilmVu = new vector;
 					while ( $requete_films->fetch() ) { 
 						// On affiche les 5 derniers films disctincts
-						$tablauFilmVu->add($idfilm,0);
-						if ($i<=4) {
+						$existeDeja=false;
+						for($k=0;$k<$tablauFilmVu->size();$k++){
+							if($idfilm==$tablauFilmVu->at1($k))
+							{
+								$existeDeja=true;
+							}
+						}
+						if($existeDeja==false){
+							//echo "Le film n'existe pas";
+							$tablauFilmVu->add($idfilm,0);
+							if ($i<=4) {
 							?>	<td>
 										
 									<a href= "lire_film.php?idfilm= <?php echo $idfilm; ?>">
 										<?php 
 										echo "<div>".$titre."</div>";
-										 if(is_file($affiche)){
+										if(is_file($affiche)){
 											echo "<img src=\"$affiche\">";
 										}else{
 											echo "<img src=\"../images/unknown_poster.jpg\">";
@@ -122,6 +134,7 @@
 									<br />
 								</td>
 							<?php $i++;
+							}
 						}
 					}
 					$requete_films->close();
@@ -161,9 +174,7 @@
 			//echo "</pre>";
 			//Suppression des films vu par l'utilisateur
 			
-			//	Recherche du film avec les mêmes tags que ceux regardes par la personne
-			
-			// on 
+			//Recherche du film avec les mêmes tags que ceux regardes par la personne
 			$k=0;
 			$affichage=new vector();
 			$rechercheSuggestion = mysqli_prepare($link,"SELECT `idfilm`, titre, affiche FROM `occurenceTags` JOIN films using(idFilm) WHERE `idTag`=?");
