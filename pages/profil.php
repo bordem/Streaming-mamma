@@ -27,40 +27,8 @@
 				include('footer.html');
 				exit();
 			}
-
 			$idusr=$_SESSION['userId'];
-
-			if(isset($_POST['profil'])) { // bouton connexion cliqué
-				if(!empty($_POST['pseudo'])) {
-					$rqt = mysqli_prepare($link, "UPDATE utilisateurs SET login=? WHERE idusr=?");
-					$rqt->bind_param("ss", $_POST['pseudo'], $idusr);
-					$rqt->execute();
-					$rqt->close();
-					$_SESSION['login']=$_POST['pseudo'];
-				}
-				if(!empty($_POST['prenom'])) {
-					$rqt = mysqli_prepare($link,"UPDATE `utilisateurs` SET `prenom`=? WHERE `idusr`=?");
-					$rqt->bind_param("ss", $_POST['prenom'], $idusr);
-					$rqt->execute();
-					$rqt->close();
-				}
-				if(!empty($_POST['nom'])) {
-					$rqt = mysqli_prepare($link,"UPDATE `utilisateurs` SET `nom`=?  WHERE `idusr`=?");
-					$rqt->bind_param("ss", $_POST['nom'], $idusr);
-					$rqt->execute();
-					$rqt->close();
-				}
-				if(!empty($_POST['profilToUpload'])) {
-					//TODO Deplacer le fichier avant de l'enregister sur le DD et d'enregistrer son chemin  dans la base de données
-					//TODO Effacer l'ancienne image avant de mettre la nouvelle , sauf l'image de base
-					/*$path="../user/"+$_FILES["fileToUpload"]["tmp_name"];
-					$rqt = mysqli_prepare($link,"UPDATE `utilisateurs` SET `imagePath`=?  WHERE `idusr`=?");
-					$rqt->bind_param("ss",$path, $idusr);
-					$rqt->execute();
-					$rqt->close();*/
-				}
-			}
-		 ?>
+		?>
 			
 		<h1>Mon profil</h1>
 		<div>
@@ -79,7 +47,7 @@
 			Prenom :<?php echo $prenom; ?><br />
 			<br />
 			<!-- Edition du profil avec changement de toutes les données -->
-			<form action="profil.php" method="post" enctype="multipart/form-data"><br />
+			<form action="upload_image_profil.php" method="post" enctype="multipart/form-data"><br />
 				<div id="alignement">
 					<label for="pseudo" class="LegendeForm">Veuillez saisir votre surnom :</label>
 					<input type="text" id="pseudo" name="pseudo" value="" /><br />
@@ -161,7 +129,6 @@
 				</tr>
 			</table>			
 			<h1>Films proposés</h1>
-			<!-- TODO -->
 			<!-- Affichage -->
 			<table class="historique">
 				<tr>

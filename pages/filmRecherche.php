@@ -39,7 +39,7 @@ include("db_connect.php");
 		<table id="tableauFilmsRecherche">
 			<?php
 			$tagCherche = "";
-			$i=0; 
+			$i=0;
 			$GETTAG = $_GET['tag'];
 			if(isset($_POST['tagCherche'])){
 				$tagCherche = $_POST['tagCherche'];

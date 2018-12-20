@@ -12,7 +12,8 @@ include("db_connect.php");
 		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
 		<link rel="stylesheet" href="style/largeScreen/style.css" />
 		<link rel="stylesheet" href="style/mobile/style.css" />
-		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
+		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>
+		<script src="../scripts/autoCompletion.js" type="text/javascript"></script>
 	</head>
 
 	<body>
@@ -154,12 +155,31 @@ include("db_connect.php");
 			
 			<!-- Ajout de tag -->
 			<div>
-				<form action="lire_film.php?idfilm=<?php echo $idFilm?>" method="post">
+				<form autocomplete="off" action="lire_film.php?idfilm=<?php echo $idFilm?>" method="post">
 					Ajouter un tag pour <?php echo $titre_du_film; ?> :
-					<input type="text" name="nomtag" placeholder="Votre tag" />
+					<div class="autocomplete">
+						<input id="completion" type="text" name="nomtag" placeholder="Votre tag" />
+					</div>
 					<input type="submit" name="ajouttag" value="Go !" />
 				</form>
 			</div>
+			<script>
+			/*An array containing all the country names in the world:*/
+			var tabFilms = [
+				<?php
+					$requete = mysqli_prepare($link, "SELECT nomTag FROM tags WHERE 1");
+					$requete->execute();
+					$requete->bind_result($tag);
+					while ($requete->fetch()) {
+						echo "\"".$tag."\",";
+					}
+					$requete->close();
+				?>
+			];
+			/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+			autocomplete(document.getElementById("completion"), tabFilms);
+		</script> 
+			
 			
 			<!-- Vérification du statut d'aministrateur : ajout de l'affiche du film -->
 			<?php

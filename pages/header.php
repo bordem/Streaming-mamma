@@ -20,15 +20,24 @@
 			<?php 
 				echo "<div dir=\"rtl\" id=\"loginProfil\">".$_SESSION['login']."</div>";
 				//Changement
-				/*$requete = mysqli_prepare($link, "SELECT imagePath 
+				$path="";
+				$requete = mysqli_prepare($link, "SELECT imagePath 
 												FROM utilisateurs 
 												WHERE idusr=?") or mysqli_error($link);
-				$requete->bind_param("s",$_SESSION['login']); 
+				$requete->bind_param("s",$_SESSION['userId']); 
 				$requete->execute();
 				$requete->bind_result($path);
 				$requete->fetch();
-				echo $path;*/?>
-				<img id="imageProfil" src="../images/profil_photo_basique.jpg">
+				$requete->close();
+				//echo $path;
+				if($path == ""){?>
+					<img id="imageProfil" src="../images/profil_photo_basique.jpg">
+			<?php
+				}else{?>
+					<img id="imageProfil" src="<?php echo $path;?>">
+				<?php
+				}
+			?>
 			</div>
 		</a>
 	
