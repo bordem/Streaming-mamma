@@ -21,7 +21,6 @@
 		<main>
 		<br />
 		<br />
-		Hello
 			<?php
 			$idusr=$_SESSION['userId'];
 			echo " ".$idusr;
@@ -125,7 +124,6 @@
 			}
 			
 			?>
-			Saloperie
 			<!--<a href="lire_film.php?idfilm=<?php echo $_POST["id"] ?>">Revenir au film</a>-->
 			<br/>
 			<?php
