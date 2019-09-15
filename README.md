@@ -1,5 +1,4 @@
 # streaming-mamma
-Le prolétariat vaincra !
 
 Ajout des films
 
