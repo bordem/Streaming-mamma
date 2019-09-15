@@ -12,10 +12,10 @@
 		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
 		<link rel="stylesheet" href="style/largeScreen/style.css" />
 		<link rel="stylesheet" href="style/largeScreen/profil.css" />
+		<link rel="stylesheet" href="style/mobile/profil.css" />
         <link rel="stylesheet" href="style/mobile/style.css" />
 		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>
 </head>
-
 	<?php 	include('header.php'); 
 	?>
 	<main>

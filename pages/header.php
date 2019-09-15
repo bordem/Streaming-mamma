@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="style/largeScreen/header.css" />
+<link rel="stylesheet" href="style/mobile/header.css" />
 <header>
 	<!-- Titre cliquable si connecté -->
 	<?php

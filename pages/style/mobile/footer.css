@@ -1,0 +1,11 @@
+@media screen and (max-device-width:480px){
+	footer{
+		background-color:#101010;
+		color: #9d9d9d;
+		position:fixed;
+		bottom:0px;
+		left:0px;
+		width:98%;
+		text-align:center;
+	}
+}
