@@ -86,6 +86,29 @@ include("db_connect.php");
 					$requete3->close();
 				}
 				
+				if(isset($_POST['changeMetadata'])){
+					$nouvelleDate=$_POST['newdate'];
+					$requete=mysqli_prepare($link,	"UPDATE `films` 
+													SET `anneesortie`= ? 
+													WHERE `idfilm`= ?") or die(mysqli_error($link));
+					$requete->bind_param("ii",$nouvelleDate,$idFilm);
+					$requete->execute();
+					$requete->close();
+					
+					$requete=mysqli_prepare($link,	"SELECT chemin
+													FROM films 
+													WHERE idfilm= ? ") or die(mysqli_error($link));
+					$requete->bind_param("i",$idFilm);
+					$requete->execute();
+					$requete->bind_result($chemin_du_film);
+					$requete->fetch();
+					$requete->close();
+					
+					$commande = "exiftool -createdate=\"".$nouvelleDate.":00:00 00:00:00\" ".$chemin_du_film;
+					exec($commande);
+				}
+				
+				
 				
 				if(isset($_POST['supprtag'])){
 					$tagAInserer=$_POST['nomtag'];
@@ -184,6 +207,16 @@ include("db_connect.php");
 					<input type="submit" name="ajouttag" value="Go !" />
 				</form>
 			</div>
+			<!-- Suppression de tag -->
+			<div>
+				<form autocomplete="off" action="lire_film.php?idfilm=<?php echo $idFilm?>" method="post">
+					Supprimer un tag pour <?php echo $titre_du_film; ?> :
+					<div class="autocomplete">
+						<input id="completion" type="text" name="nomtag" placeholder="Votre tag" />
+					</div>
+					<input type="submit" name="supprtag" value="Go !" />
+				</form>
+			</div>
 			<script>
 			/*An array containing all the country names in the world:*/
 			var tabFilms = [
@@ -200,7 +233,6 @@ include("db_connect.php");
 			/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
 			autocomplete(document.getElementById("completion1"), tabFilms);
 		</script> 
-			
 			
 			<!-- Vérification du statut d'aministrateur : ajout de l'affiche du film -->
 			<?php
@@ -219,18 +251,15 @@ include("db_connect.php");
 					<input type="hidden" value="<?php echo $idFilm; ?>" name="id" />
 				</form>
 			</div>
-			<!-- Suppression de tag -->
 			<div>
-				<form autocomplete="off" action="lire_film.php?idfilm=<?php echo $idFilm?>" method="post">
-					Supprimer un tag pour <?php echo $titre_du_film; ?> :
-					<div class="autocomplete">
-						<input id="completion" type="text" name="nomtag" placeholder="Votre tag" />
-					</div>
-					<input type="submit" name="supprtag" value="Go !" />
+				<form action="lire_film.php?idfilm=<?php echo $idFilm?>" method="post">
+				Date de sortie
+				<input type="number" name="newdate" min="1940" max="2030"/>
+				<input type="submit" name="changeMetadata" value="GO"/>
 				</form>
 			</div>
+			
 			<script>
-				/*An array containing all the country names in the world:*/
 				var tabFilms = [
 				<?php
 					$requete = mysqli_prepare($link, "SELECT nomTag 

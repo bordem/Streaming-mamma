@@ -1,7 +1,7 @@
 @media screen and (max-device-width:480px){
     body{
         background-image:url("../../../images/background.jpg");
-		background-repeat: no-repeat;
+		background-repeat: repeat;
 		background-attachment: fixed;
 		-webkit-background-size: cover;
 		-moz-background-size: cover;
@@ -20,6 +20,7 @@
     header{
     	font-size: medium;
     }
+    
     a{
 		color: #9d9d9d;
 		text-decoration: none;
@@ -50,16 +51,64 @@
 	.pagination{
 		display: inline-block;
     	margin-top: 50px;
-		margin-left: 20%;
-		margin-bottom:50px;
+		margin-left: 10%;
+		margin-bottom:100px;
 	}
 	#searchbar{
+		margin-top:10%;
 		z-index:2;
 		text-align: center;
 		margin-left: 10%;
 	}
+	#cacheMobile{
+		display: none;
+	}
 	
-	
-    
+	/*//////////////////////////////////////////////////*/
+	/*						CLASSE						*/
+	/*//////////////////////////////////////////////////*/
+	.item1 { grid-area: 1 / 1 / 2 / 2; }
+	.item2 { grid-area: 1 / 2 / 2 / 3; }
+	.item3 { grid-area: 1 / 3 / 2 / 4; }
+	.item4 { grid-area: 1 / 4 / 2 / 5; }
+	.item5 { grid-area: 1 / 5 / 2 / 6; }
+	.grid-container {
+	  display: grid;
+	  margin-left:5%;
+	}
+	.autocomplete {
+		/*the container must be positioned relative:*/
+		position: relative;
+		display: inline-block;
+		z-index:-10;
+	}
+	.autocomplete-items {
+		position: absolute;
+		border: 1px solid #d4d4d4;
+		border-bottom: none;
+		border-top: none;
+		z-index: 99;
+		/*position the autocomplete items to be the same width as the container:*/
+		top: 100%;
+		left: 0;
+		right: 0;
+	}
+
+	.autocomplete-items div {
+		padding: 10px;
+		cursor: pointer;
+		background-color: #fff; 
+		border-bottom: 1px solid #d4d4d4;
+	}
+
+/*when hovering an item:*/
+	.autocomplete-items div:hover {
+		background-color: #e9e9e9; 
+	}
+	#formulaireConnexion{
+		/*background-color:#f00;*/
+		text-align: center;
+		margin-top:50%;
+	}
 }
 

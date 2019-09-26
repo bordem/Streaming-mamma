@@ -76,14 +76,18 @@ include("db_connect.php");
 
 
 			//Affichage sur la page !
-			print("<br />Film sur le disque :");
+			print("<br />");print("<br />");print("<br />");print("<br />");print("<br />");
+			print("<br /><h1>Film sur le disque :</h1>");
+			print("<br />");
 			$films = $vectorFilmUSB->getTab();
 			for($i=0;$i<count($films);$i++)
 			{
-				echo "<br />".$films[$i];
+				echo "<br />".$films[$i][0];
 			}
 			echo "\n";
-			print("<br />Film dans la base de donnée :");
+			print("<br />");
+			print("<br /><h1>Film dans la base de donnée :</h1>");
+			print("<br />");
 			while ($row = mysqli_fetch_assoc($rqtAfficher)) {
 				$titre=$row['titre'];
 				$chemin=$row['chemin'];
@@ -103,6 +107,12 @@ include("db_connect.php");
 						echo "<br /> Ce film existe deja : ".$nomFilm;
 					}
 				}
+				
+				//Recuperation des donnees depuis les metadonnees
+				//$commande = "exitfool -createdate ".$cheminFilm;
+				//$date = exec($commande);
+				
+				
 				$rqtInsertion = mysqli_prepare($link,"INSERT INTO `films`(`chemin`,`affiche`,`titre`) VALUES ( ?, ?, ?)") or die(mysql_error());
 				if($existeDeja == false){
 					$cheminFilm = $vectorFilmUSB->at2($i)."/".$vectorFilmUSB->at1($i);
@@ -119,7 +129,9 @@ include("db_connect.php");
 			}*/
 			
 			// TODO suprimer de la bdd les films qui ne sont plus sur le disque
-			echo "<br />Suppression de la base de données <br />";
+			print("<br />");
+			echo "<br /><h1>Suppression de la base de données</h1><br />";
+			print("<br />");
 			for($i=0;$i<$vectorFilmBDD->size();$i++){
 				$aSupprimer=true;
 				$nomFilm=explode(".",$vectorFilmBDD->at1($i));

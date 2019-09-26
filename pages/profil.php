@@ -140,7 +140,7 @@
 					$requete_films->close();
 				?>
 				</tr>
-			</table>			
+			</table>
 			<h1>Films proposés</h1>
 			<!-- Affichage -->
 			<table class="historique">
