@@ -36,6 +36,7 @@ include("db_connect.php");
 				$loginUser=$_SESSION['login'];
 				$userId = $_SESSION['userId'];
 				$idFilm=$_GET['idfilm'];
+				$note=$_GET['note'];
 
 				date_default_timezone_set('UTC');
 				$requete = mysqli_prepare($link,"INSERT INTO historiqueFilms (idfilm, idusr, date) 
@@ -129,6 +130,35 @@ include("db_connect.php");
 					$requete1->close();	
 				}
 				
+				if($note<>NULL){
+					
+					$requete=mysqli_prepare($link,"	SELECT idNote 
+													FROM notes 
+													WHERE idUser= ? AND idFilm = ?") or die(mysqli_error($link));
+					$requete->bind_param("ss",$userId,$idFilm);
+					$requete->execute();
+					$requete->bind_result($idNote);
+					$requete->fetch();
+					$requete->close();
+					
+					if($idNote==NULL){
+						$requete = mysqli_prepare($link, "	INSERT 
+															INTO `notes`(`idFilm`, `idUser`, `note`) 
+															VALUES (?,?,?)") or die(mysqli_error($link)); 
+						$requete->bind_param("sss",$idFilm,$userId,$note);
+						$requete->execute();
+						$requete->close();
+					}
+					else{
+						$requete = mysqli_prepare($link, "	UPDATE `notes` 
+															SET `note`= ? 
+															WHERE idUser = ? AND idFilm = ? ") or die(mysqli_error($link)); 
+						$requete->bind_param("sss",$note,$userId,$idFilm);
+						$requete->execute();
+						$requete->close();
+					}
+				}
+				
 				//On récupère le titre et le chemin du film		
 				$requete = mysqli_prepare($link, "SELECT titre,chemin
 												FROM films 
@@ -154,6 +184,7 @@ include("db_connect.php");
 			<div id="infoFilm">
 				<h2>Info:</h2>
 				<?php 
+					
 					/*Intégrer image, année et réalisateur*/
 					$requete = mysqli_prepare($link, "SELECT `affiche`,`titre`,`realisateur`,`anneesortie` FROM `films` WHERE `idfilm`=?") or mysqli_error($link);
 					$requete->bind_param("i",$idFilm); 
@@ -176,7 +207,36 @@ include("db_connect.php");
 					}else{
 						echo "<img src=\"../images/unknown_poster.jpg\">";
 					}
+					echo "<br />";
 					$requete->close();
+					?>
+					<div class="rating">
+						<a href="lire_film.php?idfilm=<?php echo $idFilm?>&note=5" title="Donner 5 étoiles">☆</a>
+						<a href="lire_film.php?idfilm=<?php echo $idFilm?>&note=4" title="Donner 4 étoiles">☆</a>
+						<a href="lire_film.php?idfilm=<?php echo $idFilm?>&note=3" title="Donner 3 étoiles">☆</a>
+						<a href="lire_film.php?idfilm=<?php echo $idFilm?>&note=2" title="Donner 2 étoiles">☆</a>
+						<a href="lire_film.php?idfilm=<?php echo $idFilm?>&note=1" title="Donner 1 étoile ">☆</a>
+					</div>
+					<?php
+					
+					$cumul=0;
+					$j=0;
+					$requete=mysqli_prepare($link,"	SELECT `note` 
+													FROM `notes` 
+													WHERE idFilm = ?") or die(mysqli_error($link));
+					//echo $idFilm;
+					$requete->bind_param("i",$idFilm);
+					$requete->execute();
+					$requete->bind_result($NOTES);
+					while ( $requete->fetch() ) {
+						$cumul=$cumul+$NOTES;
+						$j++;
+					}
+					$requete->close();
+					$cumul=$cumul/$j;
+					echo "Note global : ".$cumul."<br />";
+					
+
 				?>
 			</div>
 			<!-- Affichage des tags attachés au film -->
