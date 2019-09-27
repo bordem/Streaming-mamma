@@ -119,8 +119,89 @@ include("db_connect.php");
 					$cheminAffiche = $dirAffiche."/".$nomFilm.".jpg";
 					$rqtInsertion->bind_param("sss",$cheminFilm, $cheminAffiche, $nomFilm);
 					$rqtInsertion->execute();
-					echo "<br /> Ajout de : ".$nomFilm;
+					$rqtInsertion->close();
+					echo "<br /> Ajout de : ".$nomFilm."<br />";
+					
+					
+					//echo "<br />Rajout des tags initiaux :<br />";
+					$input = array();
+					$input=explode("/",$cheminFilm);
+					//Supprimer le dernier élément à $input
+					array_splice($input, -1);
+					array_splice($input, 0, 2);
+					
+					/*for($j=0;$j<count($input);$j++)
+					{
+						echo $input[$j]."<br />";
+					}*/
+					
+					$requete=mysqli_prepare($link,"	SELECT idfilm
+													FROM films 
+													WHERE titre = ?") or die(mysqli_error($link));
+					$requete->bind_param("s",$nomFilm);
+					$requete->execute();
+					$requete->bind_result($idFilm);
+					$requete->fetch();
+					$requete->close();
+						//echo "ID film : ".$idFilm." du film ".$nomFilm."<br />";
+					
+					
+					for($j=0;$j<count($input);$j++){
+						$idTag=NULL;
+						
+						$requete=mysqli_prepare($link,"	SELECT idTag 
+														FROM tags 
+														WHERE nomTag = ?") or die(mysqli_error($link));
+						$requete->bind_param("s",$input[$j]);
+						$requete->execute();
+						$requete->bind_result($idTag);
+						$requete->fetch();
+						$requete->close();
+						echo "Tag : ".$input[$j]." - ".$idTag."<br />";
+						
+						if($idTag == NULL){
+						
+							echo "Le tag ".$input[$j]." n'existe pas<br />";
+							$requete = mysqli_prepare($link,"	INSERT 
+																INTO `tags`(`nomTag`) 
+																VALUES (?)")or die(mysqli_error($link));
+							$requete->bind_param("s",$input[$j]);
+							$requete->execute();
+							$requete->fetch();
+							$requete->close();
+							
+							$requete=mysqli_prepare($link,"	SELECT idTag 
+															FROM tags 
+															WHERE nomTag = ?") or die(mysqli_error($link));
+							$requete->bind_param("s",$input[$j]);
+							$requete->execute();
+							$requete->bind_result($idTag);
+							$requete->fetch();
+							$requete->close();
+							
+							$requete = mysqli_prepare($link,"	INSERT 
+																INTO `occurenceTags`(`idFilm`, `idTag`) 
+																VALUES (?,?)")or die(mysqli_error($link));
+							$requete->bind_param("ss",$idFilm,$idTag);
+							$requete->execute();
+							$requete->fetch();
+							$requete->close();
+						}else{
+							echo "Le tag".$input[$j]." existe deja <br />";
+							$requete = mysqli_prepare($link,"	INSERT 
+																INTO `occurenceTags`(`idFilm`, `idTag`) 
+																VALUES (?,?)")or die(mysqli_error($link));
+							$requete->bind_param("ss",$idFilm,$idTag);
+							$requete->execute();
+							$requete->fetch();
+							$requete->close();
+							echo $idTag;
+						}
+					}
 				}
+				
+				
+				
 			}
 			
 			/*echo "Affichage tableau vectorFilmUSB <br />";
@@ -128,7 +209,7 @@ include("db_connect.php");
 				echo $vectorFilmUSB->at1($j)."<br />";
 			}*/
 			
-			// TODO suprimer de la bdd les films qui ne sont plus sur le disque
+			// suprimer de la bdd les films qui ne sont plus sur le disque
 			print("<br />");
 			echo "<br /><h1>Suppression de la base de données</h1><br />";
 			print("<br />");

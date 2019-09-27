@@ -54,7 +54,7 @@
 	}
 	if ($_SESSION['statut'] == "admin") {
 	   echo "
-	   			<div class=\"item1\"><a href= \"accueil.php\">Accueil</a></div>
+	   			<div id=\"cacheMobile\" class=\"item1\"><a href= \"accueil.php\">Accueil</a></div>
 	   			<div class=\"item2\"><a href= \"choix_film.php?pages=0\">Tous les films</a></div>
 				<div class=\"item3\"><a href= \"gerer_membres.php\">Gérer les membres</a></div>
 				<div class=\"item4\"><a href= \"gerer_films.php\">Gérer les films</a></div>

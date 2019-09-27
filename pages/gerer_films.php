@@ -56,43 +56,68 @@ include("db_connect.php");
 				} while($requete->fetch() );
 				echo "</table><br />";
 			}
+			$requete->close();
 		}
 		
 		
 		// MODIFICATION DE LA BD ---------------------------------------
-
 		
 		if(isset($_POST['bouttonsupr'])){ // SUPRESSION
-			$titre = $_POST['titrefilm2'];
-			$requete0 = mysqli_prepare($link, "SELECT `idfilm` FROM `films` WHERE `titre`= ?");
-			$requete0->bind_param("s",$titre);
-			$requete0->execute();
-			$requete0->bind_result($id);
-			$requete0->close();
 			
-			$requete1 = mysqli_prepare($link, "DELETE FROM films WHERE titre = ?");
-			$requete1->bind_param("s",$titre);
-			$requete1->execute();
-
+			$titre = $_POST['titrefilm2'];
+			$requete = mysqli_prepare($link, "SELECT `idfilm` FROM `films` WHERE `titre`= ?");
+			$requete->bind_param("s",$titre);
+			$requete->execute();
+			$requete->bind_result($id);
+			$requete->close();
+			
+			$requete = mysqli_prepare($link, "DELETE FROM films WHERE titre = ?");
+			$requete->bind_param("s",$titre);
+			$requete->execute();
+			$requete->close();
 			
 			if (mysqli_affected_rows($link) > 0) {
 				echo "<div class=\"info\">";
 				echo "Film supprimé avec succès.";
 				echo "</div>";
 				//Supprimer aussi 
-				$requete2 = mysqli_prepare($link, "DELETE FROM `historiqueFilms` WHERE `idfilm`= ?");
-				$requete2->bind_param("s",$id);
-				$requete2->execute();
+				$requete = mysqli_prepare($link, "DELETE FROM `historiqueFilms` WHERE `idfilm`= ?");
+				$requete->bind_param("s",$id);
+				$requete->execute();
+				$requete->close();
 				
-				$requete3 = mysqli_prepare($link, "DELETE FROM `occurenceTags` WHERE `idFilm`= ?");
-				$requete3->bind_param("s",$id);
-				$requete3->execute();
+				$requete = mysqli_prepare($link, "DELETE FROM `occurenceTags` WHERE `idFilm`= ?");
+				$requete->bind_param("s",$id);
+				$requete->execute();
+				$requete->close();
 			}
 			else {
 				echo "<div class=\"error\">";
 				echo "Erreur dans la supression: " . mysqli_error($link)." Veuillez recommencer.";
 				echo "</div>";
 			}
+		}
+		if(isset($_POST['supprall'])){
+			$requete = mysqli_prepare($link, "DELETE FROM `films`");
+			$requete->execute();
+			$requete->close();
+			
+			$requete = mysqli_prepare($link, "DELETE FROM `occurenceTags`");
+			$requete->execute();
+			$requete->close();
+			
+			$requete = mysqli_prepare($link, "DELETE FROM `notes`");
+			$requete->execute();
+			$requete->close();
+			
+			$requete = mysqli_prepare($link, "DELETE FROM `historiqueFilms`");
+			$requete->execute();
+			$requete->close();
+			
+			$requete = mysqli_prepare($link, "DELETE FROM `tags`");
+			$requete->execute();
+			$requete->close();
+			
 		}
 		?>
 		
@@ -136,6 +161,11 @@ include("db_connect.php");
 				<input type="submit" name="bouttonsupr" value="Valider"/>
 			</form>
 			<br />
+			
+			<h1>Supprimer la base de donnees</h1><br />
+			<form action="gerer_films.php" method="post">
+				<input type="submit" name="supprall" onclick="return confirm('Etes vous sur ?')" value="Valider">
+			</form>
 		</main>
 		<?php include('footer.html'); ?>
 	</body>

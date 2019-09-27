@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php session_start(); 
+include('db_connect.php');
+?>
 
 <html>
 	<head>
@@ -16,6 +18,8 @@
 		<?php include('header.php'); ?>
 	
 		<main>
+			<br />
+			<br />
 			<?php
 			$target_dir = "../Films/affiche/";
 			$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -39,46 +43,39 @@
 				$uploadOk = false;
 			}
 			else{
-		echo "Le fichier est d'une taille acceptable";
+				echo "Le fichier est d'une taille acceptable<br />";
 			}
 
 			// Allow certain file formats
 			if($imageFileType != "jpg") {
-				echo "<div class=\"error\">";
-				echo "Seul le format JPG est autorisé. ";
-				echo "</div>";
+				echo "Seul le format JPG est autorisé. <br />";
 				$uploadOk = false;
 			}
 
 			// Check if $uploadOk is false
 			if (!$uploadOk) {
-				echo "<div class=\"error\">";
-				echo "Désolé, le téléchargement ne peut pas être effectué.";
-				echo "</div>";
+				echo "Désolé, le téléchargement ne peut pas être effectué. <br />";
 				
 			// if everything is ok, put it in the db
 			} else {
-				echo $_FILES["fileToUpload"]["tmp_name"];
+				/*echo "<br />";
+				echo $_FILES["fileToUpload"]["tmp_name"];*/
 				$result=move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
 				if ($result) {
 					rename($target_file, "../Films/affiche/".$_POST["nom"].".jpg");
-					echo "<div class=\"info\">";
-					echo "Le fichier a bien été uploadé.<br/>";
-					echo "</div>";
+					echo "<center><h1>Le fichier a bien été uploadé.</h1></center><br/>";
 					
 				} else {
-					echo "<div class=\"error\">";
-					echo "Désolé, il y a eu une erreur dans le téléchargement du fichier.";
-					echo "</div>";
+					echo "<center><h1>Désolé, il y a eu une erreur dans le téléchargement du fichier.</h1></center><br />";
 				}
 			}
 			?>
-			
-			<a href="lire_film.php?idfilm=<?php echo $_POST["id"] ?>">Revenir au film</a>
+			<br />
+			<center><a href="lire_film.php?idfilm=<?php echo $_POST["id"] ?>"><h1>Revenir au film</h1></a></center>
 			<br/>
 			<?php
-	   	echo $_FILES['fileToUpload']['type'];
-		echo $_FILES['fileToUpload']['name'];
+	   			/*echo $_FILES['fileToUpload']['type'];
+				echo $_FILES['fileToUpload']['name'];*/
 			?>
 			
 		</main>
