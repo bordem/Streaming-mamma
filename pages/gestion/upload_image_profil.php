@@ -1,6 +1,7 @@
 <?php 
-	session_start(); 
-	include("db_connect.php");
+	session_start();
+	$_SESSION['partie']='neutre';
+	include("../struct/db_connect.php");
 	?>
 
 <html>
@@ -8,15 +9,15 @@
 		<meta charset="utf-8" />
 		<title>L'image de profil</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
- 		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
-		<link rel="stylesheet" href="style/largeScreen/style.css" />
-		<link rel="stylesheet" href="style/mobile/style.css" />
+		<link rel="shortcut icon" type="image/x-icon" href="../../images/icon.ico" />
+ 		<script src="../../scripts/boite_dialogue.js" type="text/javascript"></script>	
+		<link rel="stylesheet" href="../style/largeScreen/style.css" />
+		<link rel="stylesheet" href="../style/mobile/style.css" />
 	</head>
 	
 	<body>
 		<!-- Haut de page -->
-		<?php include('header.php'); ?>
+		<?php include('../struct/header.php'); ?>
 	
 		<main>
 		<br />
@@ -113,7 +114,7 @@
 					}
 					
 					
-					$path="../Films/profil/".$idusr.".jpg";
+					$path="../../Films/profil/".$idusr.".jpg";
 					$rqt = mysqli_prepare($link,"UPDATE `utilisateurs` SET `imagePath`=?  WHERE `idusr`=?");
 					$rqt->bind_param("ss",$path, $idusr);
 					$rqt->execute();
@@ -129,7 +130,7 @@
 		</main>
 		<?php header('Location:profil.php');?>
 		<!-- Bas de page (mentions légales, ...) -->
-		<?php include('footer.html'); ?>
+		<?php include('../struct/footer.html'); ?>
 	</body>
 </html>
 

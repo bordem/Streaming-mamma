@@ -50,12 +50,6 @@
 		padding-left:10px;
 		padding-right:10px;
 	}
-	video{
-		height:60%; 
-		width:70%;
-		display:block;
-		float:left;
-	}
 	nav{
 		text-align:center;
 	}
@@ -74,23 +68,6 @@
 	   text-align: center;
 	   color: #9d9d9d;
 	}
-
-	#tableauFilms {
-		min-height:60%;
-		min-width:60%;
-		max-width:60%;
-		float: right;
-		border:1px;
-		text-align:center;
-		margin-right : 15%;
-		border-collapse: separate;
-		border-spacing: 5px 8px;
-		font-size:medium;
-	}
-	#tableauFilms img{
-		height:290px;
-		width:215px;
-	}
 	#tableauFilmsRecherche {
 		min-height:80%;
 		margin-left:auto;
@@ -103,23 +80,8 @@
 	#infoFilm{
 		margin-left:75%;
 	}
-	#searchbar{
-		float: right;
-		margin-right:5%;
-		position: relative;
-		z-index:2;
-	}
-	#Categorie{
-		float: left;
-		list-style: none;
-		border-style:solid;
-		padding-left:0px;
-		width:15%;
-	}
-	#LotDeTags{
-		margin-bottom:25px;
-		margin-top:100px;
-	}
+
+
 	#tableauFilmsRecherche img{
 		height:290px;
 		width:215px;
@@ -138,38 +100,6 @@
 	}
 	.gestion{
 		margin-left:5%;
-	}
-	.autocomplete {
-		/*the container must be positioned relative:*/
-		position: relative;
-		display: inline-block;
-	}
-	.autocomplete-items {
-		position: absolute;
-		border: 1px solid #d4d4d4;
-		border-bottom: none;
-		border-top: none;
-		/*z-index: 99;*/
-		/*position the autocomplete items to be the same width as the container:*/
-		top: 100%;
-		left: 0;
-		right: 0;
-	}
-
-	.autocomplete-items div {
-		padding: 10px;
-		cursor: pointer;
-		background-color: #fff; 
-		border-bottom: 1px solid #d4d4d4; 
-	}
-
-/*when hovering an item:*/
-	.autocomplete-items div:hover {
-		background-color: #e9e9e9; 
-	}
-	
-	.rating{
-		font-size:xx-large;
 	}
 
 	.info, .error{
@@ -199,44 +129,4 @@
 		margin-right: 20px;
 	}
 
-	.pagination {
-		display: inline-block;
-		margin-top: 50px;
-		margin-left: 40%;
-		margin-bottom:50px;
-	}
-
-	.pagination a {
-		color: white;
-		padding: 8px 16px;
-		text-decoration: none;
-		border: 1px solid #ddd; /* Gray */
-	}
-	.tagIndividuelle {
-		border-style: solid;
-		background-color: black;
-		border-radius : 15px;
-		padding:5px;
-		border-width:2px;
-	}
-	.rating{
-		direction: rtl;
-		margin-right : 40%;
-	}
-	.rating a {
-		color: #aaa;
-		text-decoration: none;
-		transition: color .4s;
-	}
-	.rating a:hover,
-	.rating a:focus {
-		color: orange;
-		cursor: pointer;
-	}
-	.rating a:hover ~ a,
-	.rating a:focus ~ a {
-		color: orange;
-	}
-}
-	
 }

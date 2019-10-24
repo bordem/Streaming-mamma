@@ -1,6 +1,7 @@
 <?php
 session_start();
-include("db_connect.php");
+$_SESSION['partie']='movie';
+include("../struct/db_connect.php");
 ?>
 
 <!doctype html>
@@ -10,15 +11,17 @@ include("db_connect.php");
 		<meta charset="utf-8"  />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
-		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
-		<link rel="stylesheet" href="style/largeScreen/style.css" />
-		<link rel="stylesheet" href="style/mobile/style.css" />
+		<!--Script javascript-->
+		<script src="../../scripts/boite_dialogue.js" type="text/javascript"></script>	
+		<!--Feuille de style-->
+		<link rel="stylesheet" href="../style/largeScreen/style.css" />
+		<link rel="stylesheet" href="../style/mobile/style.css" />
 	</head>
 	
 	<body>
 		<?php
-			include('header.php');
-			include('Cvector.php');
+			include('../struct/header.php');
+			include('../struct/Cvector.php');
 			
 			///////////////////////////////////////
 			//Permet de chercher dans un truc USB//
@@ -67,8 +70,8 @@ include("db_connect.php");
 			$vectorFilmUSB = new vector;
 			$vectorFilmBDD = new vector;
 			$nbTab=0;
-			$dir = '../Films';
-			$dirAffiche = '../Films/affiche';
+			$dir = '../../Films';
+			$dirAffiche = '../../Films/affiche';
 			$films = array();
 
 			//vectorFilmUSB est rempli par le contenu du fichier contenu dans le disque
@@ -92,9 +95,13 @@ include("db_connect.php");
 				$titre=$row['titre'];
 				$chemin=$row['chemin'];
 				$vectorFilmBDD->add($titre,$chemin);
-				//print(",".$titre);
+				echo "-> ".$titre."<br />";
 			}
-			//FIN Affichage sur la page !
+			//FIN Affichage sur la page des films present dans la base de données
+			
+			print("<br />");
+			print("<br /><h1>Insertion dans la base de donnée :</h1>");
+			print("<br />");
 
 			//Insertion dans la base de donnée si le film n'existe pas '
 			for($i=0;$i<$vectorFilmUSB->size();$i++){
@@ -128,7 +135,7 @@ include("db_connect.php");
 					$input=explode("/",$cheminFilm);
 					//Supprimer le dernier élément à $input
 					array_splice($input, -1);
-					array_splice($input, 0, 2);
+					array_splice($input, 0, 3);
 					
 					/*for($j=0;$j<count($input);$j++)
 					{
@@ -209,7 +216,7 @@ include("db_connect.php");
 				echo $vectorFilmUSB->at1($j)."<br />";
 			}*/
 			
-			// suprimer de la bdd les films qui ne sont plus sur le disque
+			// supprimer de la bdd les films qui ne sont plus sur le disque
 			print("<br />");
 			echo "<br /><h1>Suppression de la base de données</h1><br />";
 			print("<br />");
@@ -237,6 +244,6 @@ include("db_connect.php");
 			
 		?>
 
-	   <?php include('footer.html'); ?> 
+	   <?php include('../struct/footer.html'); ?> 
 	</body>
 </html>

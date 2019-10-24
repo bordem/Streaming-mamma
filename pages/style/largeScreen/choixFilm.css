@@ -1,0 +1,78 @@
+@media only screen and (min-width : 480px){
+	.pagination {
+		display: inline-block;
+		margin-top: 50px;
+		margin-left: 40%;
+		margin-bottom:50px;
+	}
+
+	.pagination a {
+		color: white;
+		padding: 8px 16px;
+		text-decoration: none;
+		border: 1px solid #ddd; /* Gray */
+	}
+	
+	#titreTableau{
+		margin-left:20%;
+	}
+	#tableauFilms {
+		min-height:60%;
+		min-width:60%;
+		max-width:60%;
+		float: right;
+		border:1px;
+		text-align:center;
+		margin-right : 15%;
+		border-collapse: separate;
+		border-spacing: 5px 8px;
+		font-size:medium;
+	}
+	#tableauFilms img{
+		height:290px;
+		width:215px;
+	}
+	#searchbar{
+		float: right;
+		margin-right:5%;
+		position: relative;
+		z-index:2;
+	}
+	#Categorie{
+		visibility: visible;
+		float: left;
+		list-style: none;
+		border-style:solid;
+		padding-left:0px;
+		width:15%;
+	}
+	.autocomplete {
+		/*the container must be positioned relative:*/
+		position: relative;
+		display: inline-block;
+	}
+	.autocomplete-items {
+		position: absolute;
+		border: 1px solid #d4d4d4;
+		border-bottom: none;
+		border-top: none;
+		/*z-index: 99;*/
+		/*position the autocomplete items to be the same width as the container:*/
+		top: 100%;
+		left: 0;
+		right: 0;
+	}
+
+	.autocomplete-items div {
+		padding: 10px;
+		cursor: pointer;
+		background-color: #fff; 
+		border-bottom: 1px solid #d4d4d4; 
+	}
+
+	/*when hovering an item:*/
+	.autocomplete-items div:hover {
+		background-color: #e9e9e9;
+	}
+
+}

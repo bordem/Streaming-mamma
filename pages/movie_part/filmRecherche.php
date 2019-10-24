@@ -1,6 +1,7 @@
 <?php 
-session_start(); 
-include("db_connect.php");
+session_start();
+$_SESSION['partie']='movie';
+include("../struct/db_connect.php");
 ?>
 
 <!doctype html>
@@ -11,16 +12,22 @@ include("db_connect.php");
 		<meta charset="utf-8" />
 		<title>Choix du film</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
-		<link rel="stylesheet" href="style/largeScreen/style.css" />
-		<link rel="stylesheet" href="style/mobile/style.css" />
-		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>
-		<script src="../scripts/autoCompletion.js" type="text/javascript"></script>
+		<link rel="shortcut icon" type="image/x-icon" href="../../images/icon.ico" />
+		<!--Feuille de style-->
+		<link rel="stylesheet" href="../style/largeScreen/style.css" />
+		<link rel="stylesheet" href="../style/largeScreen/rechercheFilm.css" />
+		<link rel="stylesheet" href="../style/mobile/style.css" />
+		<!--Script Javascript-->
+		<script src="../../scripts/boite_dialogue.js" type="text/javascript"></script>
+		<script src="../../scripts/autoCompletion.js" type="text/javascript"></script>
 	</head>
 	
 	<body>
 		<!-- Haut de page -->
-		<?php include('header.php'); ?>
+		<?php 
+			include('../struct/header.php');
+			include('../struct/Cvector.php');
+		?>
 		<main>
 
 
@@ -85,7 +92,7 @@ include("db_connect.php");
 		
 		<table id="tableauFilmsRecherche">
 			<?php
-
+			$vector = new vector;
 			$rqt = "SELECT films.idfilm,titre,anneesortie,realisateur,affiche
 					FROM films JOIN occurenceTags on films.idfilm=occurenceTags.idFilm 
 					JOIN tags USING(idTag)
@@ -94,32 +101,34 @@ include("db_connect.php");
 			$requete->bind_param("s",$tagCherche);
 			$requete->execute();
 			$requete->bind_result($idFilm, $titre, $annesortie, $realisateur, $affiche);
-				while ($requete->fetch()) {
-						if($i%3 == 0)
-							echo "<tr>";
-						?>
-						
-						<td>
-							<a href=<?php echo "lire_film.php?idfilm=".$idFilm; ?>>
-								<?php echo $titre; ?><br />
-								<!--Verification que le film est une affiche importé sinon affichage de l'affiche par defaut-->
-								<?php if(is_file($affiche)){ ?>
-									<img src="<?php echo $affiche; ?>">
-								<?php 
-								}else{
-									echo "<img src=\"../images/unknown_poster.jpg\">";
-								}
-								?>
-							</a><br />
-							<?php //echo $anneesortie; ?><br />
-							<?php //echo $realisateur; ?><br />
-						</td>
-			
-						<?php
-						if($i%3==2)
-							echo "</tr>";
-						$i++;				
+			while ($requete->fetch()) {
+				$vector->add($idFilm,NULL);
+				if($i%3 == 0)
+					echo "<tr>";
+				?>
+				
+				
+					<td>
+						<a href=<?php echo "lire_film.php?idfilm=".$idFilm; ?>>
+						<?php echo $titre; ?><br />
+						<!--Verification que le film est une affiche importé sinon affichage de l'affiche par defaut-->
+						<?php if(is_file($affiche)){ ?>
+						<img src="<?php echo $affiche; ?>">
+						<?php 
+				}else{
+					echo "<img src=\"../../images/unknown_poster.jpg\">";
 				}
+				?>
+						</a><br />
+						<?php //echo $anneesortie; ?><br />
+						<?php //echo $realisateur; ?><br />
+					</td>
+			
+				<?php
+				if($i%3==2)
+				echo "</tr>";
+				$i++;
+			}
 					
 			$rqt2=mysqli_prepare($link,"SELECT idfilm,titre,affiche FROM films WHERE titre LIKE ?");
 			$tagCherche = "%$tagCherche%";
@@ -127,32 +136,42 @@ include("db_connect.php");
 			$rqt2->execute();
 			$rqt2->bind_result($idFilm, $titre, $affiche);
 			while ( $rqt2->fetch() ){
-				if($i%3 == 0)
-					echo "<tr>";
-				?>			
-						<td>
-							<a href=<?php echo "lire_film.php?idfilm=".$idFilm; ?>>
-								<?php echo $titre; ?><br />
-								<!--Verification que le film est une affiche importé sinon affichage de l'affiche par defaut-->
-								<?php if(is_file($affiche)){ ?>
-									<img src="<?php echo $affiche; ?>">
-								<?php 
-								}else{
-									echo "<img src=\"../images/unknown_poster.jpg\">";
-								}
-								?>
-							</a>
-						</td>
+				$existeDeja=FALSE;
+				for($k=0;$k<$vector->size();$k++){
+					if($idFilm == $vector->at1($k)){
+						$existeDeja=TRUE;
+					}
+				}
+				if($existeDeja==FALSE){
+					if($i%3 == 0)
+						echo "<tr>";
+					?>			
+							<td>
+								<a href=<?php echo "lire_film.php?idfilm=".$idFilm; ?>>
+									<?php echo $titre; ?><br />
+									<!--Verification que le film est une affiche importé sinon affichage de l'affiche par defaut-->
+									<?php if(is_file($affiche)){ ?>
+										<img src="<?php echo $affiche; ?>">
+									<?php 
+									}else{
+										echo "<img src=\"../../images/unknown_poster.jpg\">";
+									}
+									?>
+								</a>
+							</td>
 			<?php 
+					$i++;
+				}else{
+					//echo "Presence de doublon";
+				}
 				if($i%3==2){
 					echo "</tr>";
 				}
-				$i++;
 			}?>
 		</table>
 		<?php $rqt2->close(); ?>
 		</main>
 		<!-- Bas de page (mentions légales, ...) -->
-		<?php include('footer.html'); ?>
+		<?php include('../struct/footer.html'); ?>
 	</body>
 </html>

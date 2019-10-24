@@ -9,13 +9,13 @@
 <body>
 <div>
 	<?php
-		header('Location: pages/connexion.php');
+		header('Location: pages/struct/connexion.php');
 	  	exit();
   	?>
   	<h1>Index </h1>
 	<p>Index des pages web de mon serveur raspberry</p>
 </div>
-	<center><a href="pages/connexion.php">Site de streaming</a></center>
+	<center><a href="pages/struct/connexion.php">Site de streaming</a></center>
 
 
 </body>

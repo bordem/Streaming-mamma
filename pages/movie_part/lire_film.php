@@ -1,6 +1,7 @@
 <?php
 session_start();
-include("db_connect.php");
+$_SESSION['partie']='movie';
+include("../struct/db_connect.php");
 
 ?>
 
@@ -9,16 +10,19 @@ include("db_connect.php");
 		<meta charset="utf-8" />
 		<title>Le film</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
-		<link rel="stylesheet" href="style/largeScreen/style.css" />
-		<link rel="stylesheet" href="style/mobile/style.css" />
-		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>
-		<script src="../scripts/autoCompletion.js" type="text/javascript"></script>
+		<link rel="shortcut icon" type="image/x-icon" href="../../images/icon.ico" />
+		<!--Feuille de style-->
+		<link rel="stylesheet" href="../style/largeScreen/lireFilm.css" />
+		<link rel="stylesheet" href="../style/largeScreen/style.css" />
+		<link rel="stylesheet" href="../style/mobile/style.css" />
+		<!--Script Javascript-->
+		<script src="../../scripts/boite_dialogue.js" type="text/javascript"></script>
+		<script src="../../scripts/autoCompletion.js" type="text/javascript"></script>
 	</head>
 
 	<body>
 		<!-- Haut de page -->
-		<?php include('header.php'); ?>
+		<?php include('../struct/header.php'); ?>
 		
 		
 		<main>
@@ -87,7 +91,7 @@ include("db_connect.php");
 					$requete3->close();
 				}
 				
-				if(isset($_POST['changeMetadata'])){
+				if(isset($_POST['changeMetadataDate'])){
 					$nouvelleDate=$_POST['newdate'];
 					$requete=mysqli_prepare($link,	"UPDATE `films` 
 													SET `anneesortie`= ? 
@@ -107,6 +111,27 @@ include("db_connect.php");
 					
 					$commande = "exiftool -createdate=\"".$nouvelleDate.":00:00 00:00:00\" ".$chemin_du_film;
 					exec($commande);
+				}
+				if(isset($_POST['changeMetadataReal'])){
+					$nouveauRealisateur=$_POST['newreal'];
+					$requete=mysqli_prepare($link,	"UPDATE `films` 
+													SET `realisateur`= ? 
+													WHERE `idfilm`= ?") or die(mysqli_error($link));
+					$requete->bind_param("ii",$nouveauRealisateur,$idFilm);
+					$requete->execute();
+					$requete->close();
+					
+					$requete=mysqli_prepare($link,	"SELECT chemin
+													FROM films 
+													WHERE idfilm= ? ") or die(mysqli_error($link));
+					$requete->bind_param("i",$idFilm);
+					$requete->execute();
+					$requete->bind_result($chemin_du_film);
+					$requete->fetch();
+					$requete->close();
+					
+					//$commande = "exiftool -createdate=\"".$nouvelleDate.":00:00 00:00:00\" ".$chemin_du_film;
+					//exec($commande);
 				}
 				
 				
@@ -134,25 +159,29 @@ include("db_connect.php");
 					
 					$requete=mysqli_prepare($link,"	SELECT idNote 
 													FROM notes 
-													WHERE idUser= ? AND idFilm = ?") or die(mysqli_error($link));
+													WHERE idUser= ? AND idFile = ?") or die(mysqli_error($link));
 					$requete->bind_param("ss",$userId,$idFilm);
 					$requete->execute();
 					$requete->bind_result($idNote);
 					$requete->fetch();
 					$requete->close();
+					//echo $userId;
+					//echo $idFilm;
+					//echo $idNote;
 					
 					if($idNote==NULL){
 						$requete = mysqli_prepare($link, "	INSERT 
-															INTO `notes`(`idFilm`, `idUser`, `note`) 
-															VALUES (?,?,?)") or die(mysqli_error($link)); 
+															INTO `notes`(`idFile`, `idUser`, `note`,`typeFile`) 
+															VALUES (?,?,?,\"film\")") or die(mysqli_error($link)); 
 						$requete->bind_param("sss",$idFilm,$userId,$note);
 						$requete->execute();
+						$requete->fetch();
 						$requete->close();
 					}
 					else{
 						$requete = mysqli_prepare($link, "	UPDATE `notes` 
 															SET `note`= ? 
-															WHERE idUser = ? AND idFilm = ? ") or die(mysqli_error($link)); 
+															WHERE idUser = ? AND idFile = ? ") or die(mysqli_error($link)); 
 						$requete->bind_param("sss",$note,$userId,$idFilm);
 						$requete->execute();
 						$requete->close();
@@ -160,9 +189,9 @@ include("db_connect.php");
 				}
 				
 				//On récupère le titre et le chemin du film		
-				$requete = mysqli_prepare($link, "SELECT titre,chemin
-												FROM films 
-												WHERE idfilm= ? ") or die(mysqli_error($link)); 
+				$requete = mysqli_prepare($link, "	SELECT titre,chemin
+													FROM films 
+													WHERE idfilm= ? ") or die(mysqli_error($link)); 
 				$requete->bind_param("i",$idFilm);
 				$requete->execute();
 				$requete->bind_result($titre_du_film, $chemin_du_film);
@@ -205,7 +234,7 @@ include("db_connect.php");
 					if (is_file($affiche)){
 						echo "<img src=\"$affiche\">";
 					}else{
-						echo "<img src=\"../images/unknown_poster.jpg\">";
+						echo "<img src=\"../../images/unknown_poster.jpg\">";
 					}
 					echo "<br />";
 					$requete->close();
@@ -223,7 +252,7 @@ include("db_connect.php");
 					$j=0;
 					$requete=mysqli_prepare($link,"	SELECT `note` 
 													FROM `notes` 
-													WHERE idFilm = ?") or die(mysqli_error($link));
+													WHERE idFile = ? AND typeFile=\"film\"") or die(mysqli_error($link));
 					//echo $idFilm;
 					$requete->bind_param("i",$idFilm);
 					$requete->execute();
@@ -233,10 +262,11 @@ include("db_connect.php");
 						$j++;
 					}
 					$requete->close();
-					$cumul=$cumul/$j;
-					echo "Note global : ".$cumul."<br />";
-					
-
+					//echo $j;
+					if($j!=0){
+						$cumul=$cumul/$j;
+						echo "Note global : ".$cumul."<br />";
+					}
 				?>
 			</div>
 			<!-- Affichage des tags attachés au film -->
@@ -298,7 +328,7 @@ include("db_connect.php");
 			<?php
 				if($_SESSION['statut'] != "admin") {
 					echo "</main>";
-					include('footer.html');
+					include('../struct/footer.html');
 					exit();
 				}
 			?>
@@ -313,9 +343,16 @@ include("db_connect.php");
 			</div>
 			<div>
 				<form action="lire_film.php?idfilm=<?php echo $idFilm?>" method="post">
-				Date de sortie
+				Date de sortie : 
 				<input type="number" name="newdate" min="1940" max="2030"/>
-				<input type="submit" name="changeMetadata" value="GO"/>
+				<input type="submit" name="changeMetadataDate" value="GO"/>
+				</form>
+			</div>
+			<div>
+				<form action="lire_film.php?idfilm=<?php echo $idFilm?>" method="post">
+				Nom du réalisateur : 
+				<input type="text" name="newreal"/>
+				<input type="submit" name="changeMetadataReal" value="GO"/>
 				</form>
 			</div>
 			
@@ -343,5 +380,5 @@ include("db_connect.php");
 			
 	</main>
 	<!-- Bas de page (mentions légales, ...) -->
-	<?php include('footer.html'); ?>
+	<?php include('../struct/footer.html'); ?>
 </html>

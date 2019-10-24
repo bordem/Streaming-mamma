@@ -1,6 +1,7 @@
 <?php
-session_start(); 
-include("db_connect.php");
+session_start();
+$_SESSION['partie']='neutre';
+include("../struct/db_connect.php");
 ?>
 
 <!doctype html>
@@ -11,15 +12,17 @@ include("db_connect.php");
         <meta charset="utf-8"  />
         <meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
-		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
-		<link rel="stylesheet" href="style/largeScreen/style.css" />
-        <link rel="stylesheet" href="style/mobile/style.css" />
+		<link rel="shortcut icon" type="image/x-icon" href="../../images/icon.ico" />
+		<!--Feuille de style-->
+		<link rel="stylesheet" href="../style/largeScreen/style.css" />
+        <link rel="stylesheet" href="../style/mobile/style.css" />
+        <!--Script Javascript-->
+        <script src="../../scripts/boite_dialogue.js" type="text/javascript"></script>	
     </head>
     
     <body>
     
-        <?php include('header.php'); ?>
+        <?php include('../struct/header.php'); ?>
         <main class="gestion">
         
         
@@ -126,6 +129,6 @@ include("db_connect.php");
             
             
         </main>
-        <?php include('footer.html'); ?>
+        <?php include('../struct/footer.html'); ?>
     </body>
 </html>

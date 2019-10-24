@@ -1,6 +1,7 @@
 <?php
 	session_start();
 	$_SESSION['statut']='other';
+	$_SESSION['partie']='neutre';
 	include("db_connect.php");
 
 
@@ -11,9 +12,11 @@
     	<title>Connexion</title>
     	<meta charset="utf-8" />
     	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	    <link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
-        <link rel="stylesheet" href="style/largeScreen/style.css" />
-        <link rel="stylesheet" href="style/mobile/style.css" />
+    	<!--Feuille de style-->
+	    <link rel="shortcut icon" type="image/x-icon" href="../../images/icon.ico" />
+        <link rel="stylesheet" href="../style/largeScreen/style.css" />
+        <link rel="stylesheet" href="../style/mobile/style.css" />*
+        <!--Script Javascript-->
 		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
 	</head>
 	<body>
@@ -47,7 +50,7 @@ if(isset($_POST['connexion'])) { // bouton connexion cliqué
 			$_SESSION['statut'] = $stat;
 			$_SESSION['userId'] = $idusr;
 			mysqli_close($link);
-			header("Location: choix_film.php?pages=0"); // Redirection du navigateur
+			header("Location: ../struct/accueil.php"); // Redirection du navigateur
 		}
 	}
 }

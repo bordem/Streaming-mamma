@@ -1,6 +1,7 @@
 <?php 
 session_start();
-include("db_connect.php");
+$_SESSION['partie']='neutre';
+include("../struct/db_connect.php");
 ?>
 
 <!doctype html>
@@ -9,14 +10,14 @@ include("db_connect.php");
         <title>A propos</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
-		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
-		<link rel="stylesheet" href="style/largeScreen/style.css" />
-		<link rel="stylesheet" href="style/mobile/style.css" />
+        <link rel="shortcut icon" type="image/x-icon" href="../../images/icon.ico" />
+		<script src="../../scripts/boite_dialogue.js" type="text/javascript"></script>	
+		<link rel="stylesheet" href="../style/largeScreen/style.css" />
+		<link rel="stylesheet" href="../style/mobile/style.css" />
     </head>
 
     <body>
-        <?php include('header.php');?>
+        <?php include('../struct/header.php');?>
         <main>
         	<h2>/!\ Développement en cours ! </h2>
         	<section>
@@ -51,6 +52,6 @@ include("db_connect.php");
 				
         	</section>
         </main>
-        <?php include('footer.html');?>
+        <?php include('../struct/footer.html');?>
     </body>
 </html>

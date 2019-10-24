@@ -1,5 +1,6 @@
-<?php session_start(); 
-include('db_connect.php');
+<?php session_start();
+$_SESSION['partie']='music';
+include('../struct/db_connect.php');
 ?>
 
 <html>
@@ -7,21 +8,25 @@ include('db_connect.php');
 		<meta charset="utf-8" />
 		<title>Le film</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
- 		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
-		<link rel="stylesheet" href="style/largeScreen/style.css" />
-		<link rel="stylesheet" href="style/mobile/style.css" />
+		<link rel="shortcut icon" type="image/x-icon" href="../../images/icon.ico" />
+ 		<!--Script javascript-->
+ 		<script src="../../scripts/boite_dialogue.js" type="text/javascript"></script>	
+		<!--Feuille de style-->
+		<link rel="stylesheet" href="../style/largeScreen/style.css" />
+		<link rel="stylesheet" href="../style/mobile/style.css" />
 	</head>
 	
 	<body>
 		<!-- Haut de page -->
-		<?php include('header.php'); ?>
+		<?php include('../struct/header.php'); ?>
 	
 		<main>
 			<br />
 			<br />
 			<?php
-			$target_dir = "../Films/affiche/";
+			$idmusic=$_GET['idmusic'];
+			
+			$target_dir = "../../Musics/pochette/";
 			$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 			$uploadOk = true;
 			$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -45,6 +50,7 @@ include('db_connect.php');
 			else{
 				echo "Le fichier est d'une taille acceptable<br />";
 			}
+			//echo $idmusic;
 
 			// Allow certain file formats
 			if($imageFileType != "jpg") {
@@ -62,16 +68,27 @@ include('db_connect.php');
 				echo $_FILES["fileToUpload"]["tmp_name"];*/
 				$result=move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
 				if ($result) {
-					rename($target_file, "../Films/affiche/".$_POST["nom"].".jpg");
+					rename($target_file, "../../Musics/pochette/".$idmusic.".jpg");
+					
+					$commande = "chmod 777 ../../Musics/pochette/".$idmusic.".jpg";
+					//echo $commande;
+					exec($commande);
 					echo "<center><h1>Le fichier a bien été uploadé.</h1></center><br/>";
 					
 				} else {
 					echo "<center><h1>Désolé, il y a eu une erreur dans le téléchargement du fichier.</h1></center><br />";
 				}
+				$chemin="../../Musics/pochette/".$idmusic.".jpg";
+				$requete = mysqli_prepare($link, "	UPDATE `music` 
+													SET `pochette`= ? 
+													WHERE idmusic = ?") or die(mysqli_error($link)); 
+				$requete->bind_param("ss",$chemin,$idmusic);
+				$requete->execute();
+				$requete->close();
 			}
 			?>
 			<br />
-			<center><a href="lire_film.php?idfilm=<?php echo $_POST["id"] ?>"><h1>Revenir au film</h1></a></center>
+			<center><a href="lire_music.php?idmusic=<?php echo $idmusic ?>"><h1>Revenir a la musique</h1></a></center>
 			<br/>
 			<?php
 	   			/*echo $_FILES['fileToUpload']['type'];
@@ -81,7 +98,7 @@ include('db_connect.php');
 		</main>
 		
 		<!-- Bas de page (mentions légales, ...) -->
-		<?php include('footer.html'); ?>
+		<?php include('../struct/footer.html'); ?>
 	</body>
 </html>
 

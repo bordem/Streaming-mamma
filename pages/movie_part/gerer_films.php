@@ -1,6 +1,7 @@
 <?php
-session_start(); 
-include("db_connect.php");
+session_start();
+$_SESSION['partie']='movie';
+include("../struct/db_connect.php");
 ?>
 
 <!doctype html>
@@ -9,15 +10,17 @@ include("db_connect.php");
 		<title>Films</title>
 		<meta charset="utf-8"  />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
-		<link rel="stylesheet" href="style/largeScreen/style.css" />
-		<link rel="stylesheet" href="style/mobile/style.css" />
-		<link rel="stylesheet" href="style/largeScreen/gestion.css" />
-		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>	
+		<link rel="shortcut icon" type="image/x-icon" href="../../images/icon.ico" />
+		<!--Feuille de style-->
+		<link rel="stylesheet" href="../style/largeScreen/style.css" />
+		<link rel="stylesheet" href="../style/mobile/style.css" />
+		<link rel="stylesheet" href="../style/largeScreen/gestion.css" />
+		<!--Script javascript-->
+		<script src="../../scripts/boite_dialogue.js" type="text/javascript"></script>	
 	</head>
 	
 	<body>
-		<?php include('header.php'); ?>
+		<?php include('../struct/header.php'); ?>
 		
 		
 		<?php
@@ -98,7 +101,7 @@ include("db_connect.php");
 			}
 		}
 		if(isset($_POST['supprall'])){
-			$requete = mysqli_prepare($link, "DELETE FROM `films`");
+			$requete = mysqli_prepare($link, "TRUNCATE `films`");
 			$requete->execute();
 			$requete->close();
 			
@@ -167,6 +170,6 @@ include("db_connect.php");
 				<input type="submit" name="supprall" onclick="return confirm('Etes vous sur ?')" value="Valider">
 			</form>
 		</main>
-		<?php include('footer.html'); ?>
+		<?php include('../struct/footer.html'); ?>
 	</body>
 </html>

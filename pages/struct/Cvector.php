@@ -3,8 +3,6 @@
 	//CLASS vector , tableau dynamique//
 	////////////////////////////////////
 	class vector {
-		//private $_arrayList=array();
-		//private $_arrayList2=array();
 		private $_data=array();
 		private $_tailleTableau=0;
 	   
@@ -17,6 +15,9 @@
 		}
 		public function getTab(){
 			return $this->_data;
+		}
+		public function setTab($data){
+			$this->_data=$data;
 		}
 		public function at($i){
 			return $this->_data[$i];

@@ -1,5 +1,5 @@
 <?php
-include("db_connect.php");
+include("../struct/db_connect.php");
 echo "<p>";
 $titre = $_POST['titrefilm'];
 $categorie = $_POST['categorie'];
@@ -15,11 +15,11 @@ echo "Sortie : ".$sortie."<br/>";
 
 
 //FILM
-$dossierCible = "../Films/".$categorie."/";
+$dossierCible = "../../Films/".$categorie."/";
 echo "Dossier cible où le film doit etre enregistré : ".$dossierCible."<br/>";
 
 //AFFICHE
-$dossierAfficheCible = "../Films/affiche/";
+$dossierAfficheCible = "../../Films/affiche/";
 echo "Dossier cible où l'affiche' doit etre enregistré : ".$dossierAfficheCible."<br/>";
 
 //FILM

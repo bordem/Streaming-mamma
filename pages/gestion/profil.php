@@ -1,7 +1,8 @@
 <?php 
 	session_start();
-	include("db_connect.php");
-	include("Cvector.php");
+	$_SESSION['partie']='neutre';
+	include("../struct/db_connect.php");
+	include("../struct/Cvector.php");
 ?>
 <!doctype html>
 <html>
@@ -9,14 +10,16 @@
 	<meta charset="utf-8" />
 		<title>Mon profil</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
-		<link rel="stylesheet" href="style/largeScreen/style.css" />
-		<link rel="stylesheet" href="style/largeScreen/profil.css" />
-		<link rel="stylesheet" href="style/mobile/profil.css" />
-        <link rel="stylesheet" href="style/mobile/style.css" />
-		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>
+		<link rel="shortcut icon" type="image/x-icon" href="../../images/icon.ico" />
+		<!--Feuille de style-->
+		<link rel="stylesheet" href="../style/largeScreen/style.css" />
+		<link rel="stylesheet" href="../style/largeScreen/profil.css" />
+		<link rel="stylesheet" href="../style/mobile/profil.css" />
+        <link rel="stylesheet" href="../style/mobile/style.css" />
+		<!--Script javascript-->
+		<script src="../../scripts/boite_dialogue.js" type="text/javascript"></script>
 </head>
-	<?php 	include('header.php'); 
+	<?php 	include('../struct/header.php'); 
 	?>
 	<main>
 		<?php 
@@ -121,13 +124,13 @@
 							if ($i<=4) {
 							?>	<td>
 										
-									<a href= "lire_film.php?idfilm= <?php echo $idfilm; ?>">
+									<a href= "../movie_part/lire_film.php?idfilm= <?php echo $idfilm; ?>">
 										<?php 
 										echo "<div>".$titre."</div>";
 										if(is_file($affiche)){
 											echo "<img src=\"$affiche\">";
 										}else{
-											echo "<img src=\"../images/unknown_poster.jpg\">";
+											echo "<img src=\"../../images/unknown_poster.jpg\">";
 										}
 										?>
 									</a>
@@ -204,11 +207,11 @@
 					if($existeDeja==false){
 						if($k<5){
 							$affichage->add($idfilm,0);
-							echo "<td><a href=\"lire_film.php?idfilm=$idfilm\"><div>".$titre."</div>";
+							echo "<td><a href=\"../movie_part/lire_film.php?idfilm=$idfilm\"><div>".$titre."</div>";
 							if(is_file($affiche)){
 								echo "<img src=\"$affiche\">";
 							}else{
-								echo "<img src=\"../images/unknown_poster.jpg\">";
+								echo "<img src=\"../../images/unknown_poster.jpg\">";
 							}
 							echo "</span></a></td>";
 							$k=$k+1;
@@ -221,6 +224,6 @@
 			</tr>
 			</table>
 	</main>
-	<?php include('footer.html'); ?>
+	<?php include('../struct/footer.html'); ?>
 </body>
 </html>

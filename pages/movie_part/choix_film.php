@@ -1,7 +1,8 @@
 <?php
 
-session_start(); 
-include("db_connect.php");
+session_start();
+$_SESSION['partie']='movie';
+include("../struct/db_connect.php");
 ?>
 
 <!doctype html>
@@ -10,16 +11,19 @@ include("db_connect.php");
 		<meta charset="utf-8" />
 		<title>Choix du film</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" type="image/x-icon" href="../images/icon.ico" />
-		<link rel="stylesheet" href="style/largeScreen/style.css" />
-		<link rel="stylesheet" href="style/mobile/style.css" />
-		<script src="../scripts/boite_dialogue.js" type="text/javascript"></script>
-		<script src="../scripts/autoCompletion.js" type="text/javascript"></script>
+		<link rel="shortcut icon" type="image/x-icon" href="../../images/icon.ico" />
+		<!--Feuille de style-->
+		<link rel="stylesheet" href="../style/largeScreen/choixFilm.css" />
+		<link rel="stylesheet" href="../style/largeScreen/style.css" />
+		<link rel="stylesheet" href="../style/mobile/style.css" />
+		<!--Script Javascript-->
+		<script src="../../scripts/boite_dialogue.js" type="text/javascript"></script>
+		<script src="../../scripts/autoCompletion.js" type="text/javascript"></script>
 	</head>
 	
 	<body>
 		<!-- Haut de page -->
-		<?php 	include('header.php');?>
+		<?php 	include('../struct/header.php');?>
 		<main>
 
 		<?php
@@ -27,7 +31,7 @@ include("db_connect.php");
 			if ($_SESSION['statut'] != "admin" 
 			&& $_SESSION['statut'] != "user") {
 				echo("<div class=\"error\">Vous devez être connecté pour accéder à cette page.</div></main>");
-				include('footer.html');
+				include('../struct/footer.html');
 				exit();
 			}
 			$rqt ="SELECT COUNT(*) FROM films";
@@ -48,13 +52,13 @@ include("db_connect.php");
 		//var_dump($_GET['pages']);
 		?>
 		
-		<h1>Tous les films</h1> <br />
+		<h1 id="titreTableau">Films :</h1> <br />
 		<div id="searchbar">
 			<form autocomplete="off" action="filmRecherche.php" method="post">
 				<div class="autocomplete">
 					<input id="completion" type="text" name="tagCherche" placeholder="Rechercher"/>
 				</div>
-				<input type="submit" value="OK" />	
+				<input type="submit" value="OK" />
 			</form>
 		</div>
 		
@@ -117,9 +121,13 @@ include("db_connect.php");
 							echo "$titre<br />";
 							// Verification que le film est une affiche importé sinon affichage de l'affiche par defaut
 							if (is_file($affiche)){
-								echo "<img src=\"$affiche\">";
+								echo "<img 
+								title=\"Titre : $titre  ";
+								if($anneesortie!=NULL){echo "\n Annee de sortie : $anneesortie";}
+								if($realisateur!=NULL){echo "\n Realisateur : $realisateur";}
+								echo "\" src=\"$affiche\">";
 							}else{
-								echo '<img src="../images/unknown_poster.jpg"';
+								echo '<img src="../../images/unknown_poster.jpg"';
 							}
 							echo "</a><br />";
 							//echo "$anneesortie<br />";
@@ -148,6 +156,6 @@ include("db_connect.php");
 		
 		</main>
 		<!-- Bas de page (mentions légales, ...) -->
-		<?php include('footer.html'); ?>
+		<?php include('../struct/footer.html'); ?>
 	</body>
 </html>
